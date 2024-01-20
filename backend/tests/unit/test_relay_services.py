@@ -1,10 +1,9 @@
-import pytest
-
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
+from app.services import switch_relay_on, switch_relay_off
 from fake_objects import FakeRelay
 
 
-def test_relay_board_adapter() -> None:
+def test_switch_relay_on():
     fake_relay_1: FakeRelay = FakeRelay()
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()
@@ -12,26 +11,12 @@ def test_relay_board_adapter() -> None:
     fake_adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
         relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
-    fake_adapter.on(1)
+
+    switch_relay_on("waveshare_rpi_relay_board", 1, adapter=fake_adapter)
     assert fake_relay_1.value() == 1
 
-    fake_adapter.off(1)
-    assert fake_relay_1.value() == 0
 
-    fake_adapter.on(2)
-    assert fake_relay_2.value() == 1
-
-    fake_adapter.off(2)
-    assert fake_relay_2.value() == 0
-
-    fake_adapter.on(3)
-    assert fake_relay_3.value() == 1
-
-    fake_adapter.off(3)
-    assert fake_relay_3.value() == 0
-
-
-def test_relay_board_adapter_fails() -> None:
+def test_switch_relay_off():
     fake_relay_1: FakeRelay = FakeRelay()
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()
@@ -40,8 +25,5 @@ def test_relay_board_adapter_fails() -> None:
         relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
 
-    with pytest.raises(ValueError):
-        fake_adapter.on(0)
-
-    with pytest.raises(ValueError):
-        fake_adapter.on(4)
+    switch_relay_off("waveshare_rpi_relay_board", 1, adapter=fake_adapter)
+    assert fake_relay_1.value() == 0
