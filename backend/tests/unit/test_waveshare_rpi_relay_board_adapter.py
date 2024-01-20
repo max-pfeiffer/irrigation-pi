@@ -13,22 +13,22 @@ def test_relay_board_adapter() -> None:
         relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
     fake_adapter.on(1)
-    assert fake_relay_1.value() == 1
+    assert fake_relay_1.value == 1
 
     fake_adapter.off(1)
-    assert fake_relay_1.value() == 0
+    assert fake_relay_1.value == 0
 
     fake_adapter.on(2)
-    assert fake_relay_2.value() == 1
+    assert fake_relay_2.value == 1
 
     fake_adapter.off(2)
-    assert fake_relay_2.value() == 0
+    assert fake_relay_2.value == 0
 
     fake_adapter.on(3)
-    assert fake_relay_3.value() == 1
+    assert fake_relay_3.value == 1
 
     fake_adapter.off(3)
-    assert fake_relay_3.value() == 0
+    assert fake_relay_3.value == 0
 
 
 def test_relay_board_adapter_fails() -> None:

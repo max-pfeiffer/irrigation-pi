@@ -13,7 +13,7 @@ def test_switch_relay_on():
     )
 
     switch_relay_on("waveshare_rpi_relay_board", 1, adapter=fake_adapter)
-    assert fake_relay_1.value() == 1
+    assert fake_relay_1.value == 1
 
 
 def test_switch_relay_off():
@@ -26,4 +26,4 @@ def test_switch_relay_off():
     )
 
     switch_relay_off("waveshare_rpi_relay_board", 1, adapter=fake_adapter)
-    assert fake_relay_1.value() == 0
+    assert fake_relay_1.value == 0
