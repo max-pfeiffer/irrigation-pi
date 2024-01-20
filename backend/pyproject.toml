@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "irrigation-pi"
+version = "0.1.0"
+description = ""
+authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "0.109.0"
+
+pydantic-settings = "2.1.0"
+
+gpiozero = "2.0"
+pigpio = "1.78"
+lgpio = "0.0.0.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "7.4.4"
+
+# https://docs.pytest.org/en/latest/reference/customize.html
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
