@@ -1,9 +1,6 @@
 import pytest
 
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
-import pytest
-
-from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 
 
 class FakeRelay:
@@ -22,7 +19,9 @@ def test_relay_board_adapter() -> None:
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()
 
-    adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(relays=[fake_relay_1, fake_relay_2, fake_relay_3])
+    adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
+        relays=[fake_relay_1, fake_relay_2, fake_relay_3]
+    )
     adapter.on(1)
     assert fake_relay_1.state
 
@@ -47,7 +46,9 @@ def test_relay_board_adapter_fails() -> None:
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()
 
-    adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(relays=[fake_relay_1, fake_relay_2, fake_relay_3])
+    adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
+        relays=[fake_relay_1, fake_relay_2, fake_relay_3]
+    )
 
     with pytest.raises(ValueError):
         adapter.on(0)
