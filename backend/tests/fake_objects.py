@@ -8,5 +8,6 @@ class FakeRelay:
     def off(self) -> None:
         self._value = 0
 
-    def value(self) -> int:
+    @property
+    def value(self):
         return self._value
