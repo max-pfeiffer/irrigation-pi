@@ -1,15 +1,13 @@
 from time import sleep
 
-from app.adapters.output_devices import Relay
-from app.adapters.relay import RelayAdapter
+from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 
 
 def test_relay_adapter():
-    relay: Relay = Relay(26)
-    adapter: RelayAdapter = RelayAdapter([relay])
-    adapter.on()
+    adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter()
+    adapter.on(1)
 
     sleep(5)
 
-    adapter.off()
+    adapter.off(1)
 
