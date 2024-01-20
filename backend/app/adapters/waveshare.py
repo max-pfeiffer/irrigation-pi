@@ -16,7 +16,7 @@ class WaveshareRpiRelayBoardAdapter:
 
     def __init__(self, relays: list[Relay] = None):
         if relays is None:
-            [Relay(26), Relay(20), Relay(21)]
+            relays = [Relay(26), Relay(20), Relay(21)]
 
         self.relays: list[Relay] = relays
 
