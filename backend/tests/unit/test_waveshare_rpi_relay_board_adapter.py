@@ -1,8 +1,8 @@
 """Tests for the Waveshare board adapter."""
 import pytest
-from fake_objects import FakeRelay
 
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
+from tests.fake_objects import FakeRelay
 
 
 def test_relay_board_adapter() -> None:
