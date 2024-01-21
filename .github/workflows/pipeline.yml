@@ -9,7 +9,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
       - name: Install Poetry
@@ -19,9 +19,9 @@ jobs:
           virtualenvs-in-project: true
       - name: Load cached venv
         id: cached-poetry-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: .venv
+          path: backend/.venv
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
@@ -30,6 +30,7 @@ jobs:
           poetry install --no-interaction --no-root
       - name: Run ruff
         run: |
+          cd backend
           source .venv/bin/activate
           ruff check .
   
@@ -40,7 +41,7 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
       - name: Setup Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: 3.9
       - name: Install Poetry
@@ -50,20 +51,22 @@ jobs:
           virtualenvs-in-project: true
       - name: Load cached venv
         id: cached-poetry-dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
-          path: .venv
+          path: backend/.venv
           key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}        
       - name: Install dependencies
         run: |
+          cd backend
           poetry install --no-interaction --no-root
       - name: Run all tests with pytest
         run: |
+          cd backend
           source .venv/bin/activate
           pytest --cov --cov-report=xml:coverage_report.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: ./coverage_report.xml
+          files: backend/coverage_report.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
