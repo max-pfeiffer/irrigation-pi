@@ -1,3 +1,4 @@
+"""Base stuff."""
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 
 ADAPTER_TYPE_MAPPING: dict = {

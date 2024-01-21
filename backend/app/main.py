@@ -1,3 +1,4 @@
+"""FastAPI application."""
 from fastapi import FastAPI, Request, status
 from fastapi.responses import RedirectResponse
 from furl import furl
@@ -9,8 +10,9 @@ app = FastAPI()
 
 @app.get("/", include_in_schema=False)
 def redirect_to_autodocs(request: Request) -> RedirectResponse:
-    """Home Page
-    :param request:
+    """Home Page of the application.
+
+    :param Request request:
     :return: RedirectResponse
     """
     furl_item: furl = furl(request.base_url)
