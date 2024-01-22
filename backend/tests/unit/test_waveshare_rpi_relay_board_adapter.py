@@ -1,10 +1,15 @@
+"""Tests for the Waveshare board adapter."""
 import pytest
 
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
-from fake_objects import FakeRelay
+from tests.fake_objects import FakeRelay
 
 
 def test_relay_board_adapter() -> None:
+    """Tests switching relays on the board.
+
+    :return:
+    """
     fake_relay_1: FakeRelay = FakeRelay()
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()
@@ -32,6 +37,10 @@ def test_relay_board_adapter() -> None:
 
 
 def test_relay_board_adapter_fails() -> None:
+    """Tests invalid relay positions.
+
+    :return:
+    """
     fake_relay_1: FakeRelay = FakeRelay()
     fake_relay_2: FakeRelay = FakeRelay()
     fake_relay_3: FakeRelay = FakeRelay()

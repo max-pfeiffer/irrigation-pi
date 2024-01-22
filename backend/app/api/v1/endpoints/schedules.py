@@ -1,3 +1,4 @@
+"""API endpoints for Schedule objects."""
 from fastapi import APIRouter
 
 router = APIRouter()
@@ -5,7 +6,5 @@ router = APIRouter()
 
 @router.post("/")
 def create_schedule() -> int:
-    """
-    Create Schedule
-    """
+    """Create Schedule."""
     pass
