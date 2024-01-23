@@ -1,14 +1,26 @@
 """FastAPI application."""
+from apscheduler.triggers.cron import CronTrigger
 from fastapi import FastAPI, Request, status
+from fastapi.middleware import Middleware
 from fastapi.responses import RedirectResponse
 from furl import furl
 
 from app.api.v1.api import api_router
-from app.scheduling import scheduler, SchedulerMiddleware
-from fastapi.middleware import Middleware
+from app.scheduling import SchedulerMiddleware, scheduler, switch_relays
 
 middleware = [Middleware(SchedulerMiddleware, scheduler=scheduler)]
 app = FastAPI(middleware=middleware)
+
+
+@app.on_event("startup")
+async def startup_event():
+    """Startup event.
+
+    :return:
+    """
+    await scheduler.add_schedule(
+        switch_relays, CronTrigger.from_crontab("* * * * *"), id="switch_relays"
+    )
 
 
 @app.get("/", include_in_schema=False)
