@@ -1,4 +1,6 @@
 """Application configuration."""
+from pathlib import Path
+
 from pydantic import computed_field
 from pydantic_settings import BaseSettings
 
@@ -14,7 +16,12 @@ class ApplicationSettings(BaseSettings):
 
         :return:
         """
-        return f"sqlite:///{self.database_name}.db"
+        db_path: Path = (
+            Path(__file__).parent.parent.resolve()
+            / "sqlite_db"
+            / f"{self.database_name}.db"
+        )
+        return f"sqlite:///{db_path!s}"
 
 
 application_settings = ApplicationSettings()
