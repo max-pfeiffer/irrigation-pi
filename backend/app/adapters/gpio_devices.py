@@ -8,7 +8,7 @@ class Relay(DigitalOutputDevice):
     """Relay which is triggered by GPIO pins."""
 
     def __init__(self, pin: Union[int, str]):
-        """Initialize object.
+        """Initialize relay object.
 
         :param Union[int, str] pin:
         """
