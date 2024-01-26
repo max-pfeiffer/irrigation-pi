@@ -55,19 +55,18 @@ async def create_trigger_data(schedule_data: dict) -> dict:
     return data
 
 
-async def add_trigger(scheduler: AsyncScheduler, schedule_data: dict):
+async def add_trigger(scheduler: AsyncScheduler, schedule_data: dict) -> int:
     """Add a trigger to the scheduler.
 
     :param AsyncScheduler scheduler:
     :param dict schedule_data:
     :return:
     """
-    trigger_data = await create_trigger_data(schedule_data)
-    await scheduler.add_schedule(
-        switch_relays, CronTrigger(**trigger_data), id="switch_relays"
+    trigger_data: dict = await create_trigger_data(schedule_data)
+    primary_key: int = await scheduler.add_schedule(
+        switch_relays, CronTrigger(**trigger_data)
     )
-    test = await scheduler.get_schedules()
-    print(test)
+    return primary_key
 
 
 async def add_triggers(scheduler: AsyncScheduler, schedule_data_list: list[dict]):

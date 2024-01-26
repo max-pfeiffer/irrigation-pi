@@ -3,10 +3,10 @@ from datetime import time, timezone
 from random import randint
 
 import pytest
-from apscheduler import AsyncScheduler
+from apscheduler import AsyncScheduler, Schedule
 
 from app.scheduling import Repeat
-from app.services.trigger import add_trigger, create_trigger_data
+from app.services.trigger import add_trigger, add_triggers, create_trigger_data
 
 
 @pytest.mark.parametrize("repeat", Repeat)
@@ -86,5 +86,40 @@ async def test_add_trigger():
 
     async with AsyncScheduler() as scheduler:
         await add_trigger(scheduler, schedule_data)
-        schedules = await scheduler.get_schedules()
+        schedules: list[Schedule] = await scheduler.get_schedules()
+
         assert schedules
+        assert len(schedules) == 1
+
+
+async def test_add_multiple_triggers():
+    """Tests adding multiple triggers to the scheduler.
+
+    :return:
+    """
+    schedule_data: list[dict] = [
+        {
+            "start_time": time(hour=2, minute=57, tzinfo=timezone.utc),
+            "duration": 10,
+            "repeat": Repeat.every_day,
+            "active": True,
+        },
+        {
+            "start_time": time(hour=14, minute=10, tzinfo=timezone.utc),
+            "duration": 10,
+            "repeat": Repeat.friday,
+            "active": True,
+        },
+        {
+            "start_time": time(hour=22, minute=53, tzinfo=timezone.utc),
+            "duration": 10,
+            "repeat": Repeat.weekends,
+            "active": True,
+        },
+    ]
+    async with AsyncScheduler() as scheduler:
+        await add_triggers(scheduler, schedule_data)
+        schedules: list[Schedule] = await scheduler.get_schedules()
+
+        assert schedules
+        assert len(schedules) == 3

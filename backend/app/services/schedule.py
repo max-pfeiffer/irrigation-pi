@@ -5,6 +5,7 @@ from sqlmodel import Session
 from app.database.config import database_engine
 from app.database.models import Schedule
 from app.repositories import ScheduleRepository
+from app.scheduling import scheduler
 from app.services.trigger import add_trigger
 
 
@@ -44,9 +45,11 @@ def service_create_schedule(**kwargs) -> int:
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.create(**kwargs)
+
         primary_key: int = schedule.id
         data: dict = schedule.model_dump()
-        syncify(add_trigger)(data)
+
+        syncify(add_trigger)(scheduler, data)
 
     return primary_key
 

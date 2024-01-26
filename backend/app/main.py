@@ -21,7 +21,7 @@ async def startup_event():
     :return:
     """
     schedule_data_list: list[dict] = await run_in_threadpool(service_get_schedules)
-    await add_triggers(schedule_data_list)
+    await add_triggers(scheduler, schedule_data_list)
 
 
 @app.get("/", include_in_schema=False)
