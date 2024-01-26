@@ -8,7 +8,7 @@ class ScheduleRepository:
     """Repository for persisting Schedule objects."""
 
     def __init__(self, session: Session) -> None:
-        """Initializer.
+        """Initialize object.
 
         :param Session session:
         """
@@ -36,11 +36,11 @@ class ScheduleRepository:
         result = self.session.scalars(statement).all()
         return result
 
-    def create(self, **kwargs) -> int:
+    def create(self, **kwargs) -> Schedule:
         """Create a new Schedule object.
 
         :param kwargs:
-        :return:
+        :return Schedule:
         """
         schedule: Schedule = Schedule(**kwargs)
         self.session.add(schedule)
@@ -48,7 +48,7 @@ class ScheduleRepository:
         # unit of work feature/pattern.
         # https://docs.sqlalchemy.org/en/20/tutorial/orm_data_manipulation.html#flushing
         self.session.flush()
-        return schedule.id
+        return schedule
 
     def update(self, **kwargs):
         """Update a Schedule object.

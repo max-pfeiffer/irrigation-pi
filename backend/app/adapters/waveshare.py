@@ -19,7 +19,7 @@ class WaveshareRpiRelayBoardAdapter:
     }
 
     def __init__(self, relays: Optional[list[Relay]] = None):
-        """Initializer.
+        """Initialize object.
 
         :param list[Relay] relays:
         """
@@ -29,7 +29,7 @@ class WaveshareRpiRelayBoardAdapter:
         self.relays: list[Relay] = relays
 
     def on(self, relay_position: int):
-        """Turns relay at relay_position on.
+        """Turn on relay at relay_position.
 
         :param int relay_position:
         :return:
@@ -41,7 +41,7 @@ class WaveshareRpiRelayBoardAdapter:
         relay.on()
 
     def off(self, relay_position: int):
-        """Turns relay at relay_position off.
+        """Turn off relay at relay_position.
 
         :param int relay_position:
         :return:
