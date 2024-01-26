@@ -38,7 +38,7 @@ class SchedulerMiddleware:
         app: ASGIApp,
         scheduler: AsyncScheduler,
     ) -> None:
-        """Initializer.
+        """Initialize object.
 
         :param ASGIApp app:
         :param AsyncScheduler scheduler:
@@ -47,7 +47,7 @@ class SchedulerMiddleware:
         self.scheduler = scheduler
 
     async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        """Handles ASGI call.
+        """Handle ASGI call.
 
         :param Scope scope:
         :param Receive receive:

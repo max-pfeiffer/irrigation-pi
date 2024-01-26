@@ -5,7 +5,7 @@ class FakeRelay:
     """Class for faking a relay."""
 
     def __init__(self):
-        """Initializer."""
+        """Initialize object."""
         self._value: int = None
 
     def on(self) -> None:

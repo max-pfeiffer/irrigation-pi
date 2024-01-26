@@ -1,9 +1,11 @@
 """Services for handling persistence of Schedule objects."""
+from asyncer import syncify
 from sqlmodel import Session
 
 from app.database.config import database_engine
 from app.database.models import Schedule
-from app.schedule import ScheduleRepository
+from app.repositories import ScheduleRepository
+from app.services.trigger import add_trigger
 
 
 def service_get_schedule(primary_key: int) -> dict:
@@ -41,7 +43,10 @@ def service_create_schedule(**kwargs) -> int:
     """
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
-        primary_key = repo.create(**kwargs)
+        schedule: Schedule = repo.create(**kwargs)
+        primary_key: int = schedule.id
+        data: dict = schedule.model_dump()
+        syncify(add_trigger)(data)
 
     return primary_key
 
