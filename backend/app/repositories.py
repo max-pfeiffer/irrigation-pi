@@ -112,9 +112,9 @@ class ApSchedulerRepository:
         }
 
         stop_date_time: datetime = datetime.combine(
-            date.today(), start_time
+            date.today(), start_time, tzinfo=start_time.tzinfo
         ) + timedelta(minutes=duration)
-        stop_time: datetime.time = stop_date_time.time()
+        stop_time: datetime.time = stop_date_time.timetz()
         stop_data: dict = {
             "hour": stop_time.hour,
             "minute": stop_time.minute,
