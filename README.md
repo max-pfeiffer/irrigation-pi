@@ -3,10 +3,17 @@
 ![pipeline workflow](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/pipeline.yml/badge.svg)
 
 # Irrigation Pi
-This is a web application which turns your [Raspberry Pi](https://www.raspberrypi.com/) into an irrigation system.
+This web application turns your [Raspberry Pi](https://www.raspberrypi.com/) into an irrigation system.
 
-There are several Relay HATs vom various manufactures available for the Raspberry Pi. This application support currently these boards:
+There are several relay HATs vom various manufactures available for the [Raspberry Pi](https://www.raspberrypi.com/).
+This application support currently the following boards:
 * [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) (3 relays)
+
+Contributions for other boards are warmly welcome.
+
+## Features
+* Add schedules for switching the relays
+* Relays are switches automatically according to the schedules
 
 ## Installation
 todo
