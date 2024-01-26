@@ -4,9 +4,8 @@ from sqlmodel import Session
 
 from app.database.config import database_engine
 from app.database.models import Schedule
-from app.repositories import ScheduleRepository
+from app.repositories import ApSchedulerRepository, ScheduleRepository
 from app.scheduling import scheduler
-from app.services.trigger import add_trigger
 
 
 def service_get_schedule(primary_key: int) -> dict:
@@ -49,7 +48,14 @@ def service_create_schedule(**kwargs) -> int:
         primary_key: int = schedule.id
         data: dict = schedule.model_dump()
 
-        syncify(add_trigger)(scheduler, data)
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        return_data: dict = syncify(ap_repo.add_triggers_for_schedule)(data)
+
+        repo.update(
+            primary_key=primary_key,
+            start_schedule_id=return_data["start_schedule_id"],
+            stop_schedule_id=return_data["stop_schedule_id"],
+        )
 
     return primary_key
 
