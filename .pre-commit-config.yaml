@@ -10,4 +10,4 @@ repos:
     rev: v0.1.14
     hooks:
       - id: ruff
-        args: ["backend"]
+        args: ["--config", "backend/pyproject.toml", "backend"]
