@@ -1,6 +1,7 @@
 """Tests for services."""
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 from app.services.relay import switch_relay_off, switch_relay_on
+
 from tests.fake_objects import FakeRelay
 
 

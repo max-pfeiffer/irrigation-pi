@@ -3,10 +3,9 @@ from datetime import time, timezone
 from random import randint
 
 import pytest
-from apscheduler import AsyncScheduler, Schedule
-
 from app.scheduling import Repeat
 from app.services.trigger import add_trigger, add_triggers, create_trigger_data
+from apscheduler import AsyncScheduler, Schedule
 
 
 @pytest.mark.parametrize("repeat", Repeat)
