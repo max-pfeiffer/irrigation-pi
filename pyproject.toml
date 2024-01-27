@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Irrigation Pi"
+name = "manage"
 version = "0.1.0"
 description = ""
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
@@ -9,7 +9,29 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.9"
 pre-commit = "3.6.0"
+click = "8.1.7"
+ruff = "0.1.14"
 
+[tool.poetry.scripts]
+manage = 'manage:cli'
+
+[tool.ruff]
+exclude = [".venv", "backend", "frontend"]
+
+[tool.ruff.lint]
+select = [
+    "F", # Pyflakes
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "I", # isort
+    "D",   # pydocstyle
+    "UP",  # pyupgrade
+    "ASYNC", # flake8-async
+    "RUF",  # Ruff-specific rules
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "pep257"
 
 [build-system]
 requires = ["poetry-core"]
