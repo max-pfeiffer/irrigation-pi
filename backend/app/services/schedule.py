@@ -49,7 +49,7 @@ def service_create_schedule(**kwargs) -> int:
         data: dict = schedule.model_dump()
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        return_data: dict = syncify(ap_repo.add_triggers_for_schedule)(data)
+        return_data: dict = syncify(ap_repo.create)(data)
 
         repo.update(
             primary_key=primary_key,
@@ -68,7 +68,18 @@ def service_update_schedule(**kwargs):
     """
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
-        repo.update(**kwargs)
+        schedule: Schedule = repo.update(**kwargs)
+
+        data: dict = schedule.model_dump()
+
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        return_data: dict = syncify(ap_repo.update)(data)
+
+        repo.update(
+            primary_key=schedule.id,
+            start_schedule_id=return_data["start_schedule_id"],
+            stop_schedule_id=return_data["stop_schedule_id"],
+        )
 
 
 def service_delete_schedule(primary_key: int):
@@ -79,4 +90,11 @@ def service_delete_schedule(primary_key: int):
     """
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
+        schedule: Schedule = repo.get(primary_key)
+
+        data: dict = schedule.model_dump()
+
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        syncify(ap_repo.delete)(data)
+
         repo.delete(primary_key)

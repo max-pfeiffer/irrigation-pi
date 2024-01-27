@@ -6,7 +6,7 @@ from apscheduler import AsyncScheduler
 from starlette.types import ASGIApp, Receive, Scope, Send
 
 from app.adapters import RelayBoardType
-from app.services.relay import switch_relay
+from app.services.relay import service_switch_relay
 
 
 class Repeat(str, Enum):
@@ -24,7 +24,7 @@ class Repeat(str, Enum):
     sunday = "sunday"
 
 
-def execute_task(relay_board_type: RelayBoardType, relay_position: int, on: bool):
+def task_switch_relay(relay_board_type: RelayBoardType, relay_position: int, on: bool):
     """Trigger function to switch relays.
 
     :param relay_board_type:
@@ -33,7 +33,7 @@ def execute_task(relay_board_type: RelayBoardType, relay_position: int, on: bool
     :return:
     """
     print(f"{relay_board_type}: position:{relay_position} on:{on}, {datetime.now()}]")
-    switch_relay(relay_board_type, relay_position, on)
+    service_switch_relay(relay_board_type, relay_position, on)
 
 
 class SchedulerMiddleware:

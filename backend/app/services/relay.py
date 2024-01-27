@@ -2,7 +2,7 @@
 from app.adapters import RELAY_BOARD_TYPE_ADAPTER_MAPPING, RelayBoardType
 
 
-def switch_relay(
+def service_switch_relay(
     relay_board_type: RelayBoardType, relay_position: int, on: bool, adapter=None
 ) -> None:
     """Switches relay on.
