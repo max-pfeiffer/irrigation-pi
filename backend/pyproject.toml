@@ -1,9 +1,9 @@
 [project]
-name = "Irrigation Pi Backend"
+name = "irrigation-pi-backend"
 requires-python = ">=3.9"
 
 [tool.poetry]
-name = "Irrigation Pi Backend"
+name = "irrigation-pi-backend"
 version = "0.1.0"
 description = ""
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
