@@ -1,4 +1,4 @@
-"""Update commands."""
+"""Export commands."""
 from pathlib import Path
 
 import click
@@ -10,22 +10,26 @@ from manage.utils import (
 )
 
 
-@click.command(name="poetry")
-def update_poetry():
-    """Update Poetry installation.
-
-    :return:
-    """
-    execute_command(["poetry", "self", "update"])
-
-
-@click.command(name="backend-dependencies")
-def update_backend_dependencies():
-    """Update backend installation.
+@click.command()
+def backend():
+    """Run backend application.
 
     :return:
     """
     backend_path: Path = PROJECT_ROOT_PATH / "backend"
     virtual_environment_path: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
     env: dict = activate_virtual_environment(virtual_environment_path)
-    execute_command(["poetry", "update"], cwd=backend_path, env=env)
+    execute_command(
+        [
+            "uvicorn",
+            "--workers",
+            "1",
+            "--host",
+            "0.0.0.0",
+            "--port",
+            "80",
+            "app.main:app",
+        ],
+        cwd=backend_path,
+        env=env,
+    )

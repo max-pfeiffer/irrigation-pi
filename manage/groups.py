@@ -3,6 +3,7 @@ import click
 
 from manage.export import backend_api_specs
 from manage.install import install_backend_dependencies, install_poetry
+from manage.run import backend
 from manage.update import update_backend_dependencies, update_poetry
 
 
@@ -30,6 +31,18 @@ def update():
 
 update.add_command(update_poetry)
 update.add_command(update_backend_dependencies)
+
+
+@click.group()
+def run():
+    """Run sub command group.
+
+    :return:
+    """
+    pass
+
+
+run.add_command(backend)
 
 
 @click.group()
