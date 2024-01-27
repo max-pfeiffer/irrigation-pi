@@ -1,28 +1,22 @@
 """Services for relay switching."""
-from app.adapters.base import ADAPTER_TYPE_MAPPING
+from app.adapters import RELAY_BOARD_TYPE_ADAPTER_MAPPING, RelayBoardType
 
 
-def switch_relay_on(adapter_type: str, relay_position: int, adapter=None) -> None:
+def service_switch_relay(
+    relay_board_type: RelayBoardType, relay_position: int, on: bool, adapter=None
+) -> None:
     """Switches relay on.
 
-    :param adapter_type:
+    :param relay_board_type:
     :param relay_position:
+    :param on:
     :param adapter:
     :return:
     """
     if adapter is None:
-        adapter = ADAPTER_TYPE_MAPPING[adapter_type]()
-    adapter.on(relay_position)
+        adapter = RELAY_BOARD_TYPE_ADAPTER_MAPPING[relay_board_type]()
 
-
-def switch_relay_off(adapter_type: str, relay_position: int, adapter=None) -> None:
-    """Switches relay off.
-
-    :param adapter_type:
-    :param relay_position:
-    :param adapter:
-    :return:
-    """
-    if adapter is None:
-        adapter = ADAPTER_TYPE_MAPPING[adapter_type]()
-    adapter.off(relay_position)
+    if on:
+        adapter.on(relay_position)
+    else:
+        adapter.off(relay_position)

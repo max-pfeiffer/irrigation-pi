@@ -6,7 +6,7 @@
 This web application turns your [Raspberry Pi](https://www.raspberrypi.com/) into an irrigation system.
 
 There are several relay HATs vom various manufactures available for the [Raspberry Pi](https://www.raspberrypi.com/).
-This application support currently the following boards:
+This application currently supports the following boards:
 * [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) (3 relays)
 
 Contributions for other boards are warmly welcome.

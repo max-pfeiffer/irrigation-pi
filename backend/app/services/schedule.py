@@ -4,9 +4,8 @@ from sqlmodel import Session
 
 from app.database.config import database_engine
 from app.database.models import Schedule
-from app.repositories import ScheduleRepository
+from app.repositories import ApSchedulerRepository, ScheduleRepository
 from app.scheduling import scheduler
-from app.services.trigger import add_trigger
 
 
 def service_get_schedule(primary_key: int) -> dict:
@@ -49,7 +48,14 @@ def service_create_schedule(**kwargs) -> int:
         primary_key: int = schedule.id
         data: dict = schedule.model_dump()
 
-        syncify(add_trigger)(scheduler, data)
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        return_data: dict = syncify(ap_repo.create)(data)
+
+        repo.update(
+            primary_key=primary_key,
+            start_schedule_id=return_data["start_schedule_id"],
+            stop_schedule_id=return_data["stop_schedule_id"],
+        )
 
     return primary_key
 
@@ -62,7 +68,18 @@ def service_update_schedule(**kwargs):
     """
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
-        repo.update(**kwargs)
+        schedule: Schedule = repo.update(**kwargs)
+
+        data: dict = schedule.model_dump()
+
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        return_data: dict = syncify(ap_repo.update)(data)
+
+        repo.update(
+            primary_key=schedule.id,
+            start_schedule_id=return_data["start_schedule_id"],
+            stop_schedule_id=return_data["stop_schedule_id"],
+        )
 
 
 def service_delete_schedule(primary_key: int):
@@ -73,4 +90,11 @@ def service_delete_schedule(primary_key: int):
     """
     with Session(database_engine) as database_session, database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
+        schedule: Schedule = repo.get(primary_key)
+
+        data: dict = schedule.model_dump()
+
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        syncify(ap_repo.delete)(data)
+
         repo.delete(primary_key)
