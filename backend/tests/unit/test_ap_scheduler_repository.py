@@ -144,3 +144,57 @@ async def test_create_multiple_schedules():
 
         assert schedules
         assert len(schedules) == 6
+
+async def test_delete_schedule():
+    """Tests deleting a schedule.
+
+    :return:
+    """
+    schedule_data: dict = {
+        "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
+        "duration": 10,
+        "repeat": Repeat.every_day,
+        "active": True,
+        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
+        "relay_position": 1,
+    }
+
+    async with AsyncScheduler() as scheduler:
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        created_schedule_data: dict = await ap_repo.create(schedule_data)
+
+        schedules: list[Schedule] = await scheduler.get_schedules()
+        assert len(schedules) == 2
+
+        await ap_repo.delete(created_schedule_data)
+        schedules: list[Schedule] = await scheduler.get_schedules()
+        assert not schedules
+
+
+async def test_update_schedule():
+    """Tests updating a schedule.
+
+    :return:
+    """
+    schedule_data: dict = {
+        "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
+        "duration": 10,
+        "repeat": Repeat.every_day,
+        "active": True,
+        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
+        "relay_position": 1,
+    }
+
+    async with AsyncScheduler() as scheduler:
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        created_schedule_data: dict = await ap_repo.create(schedule_data)
+
+        schedules: list[Schedule] = await scheduler.get_schedules()
+        assert len(schedules) == 2
+
+        created_schedule_data["relay_position"] = 2
+        await ap_repo.update(created_schedule_data)
+
+        schedules: list[Schedule] = await scheduler.get_schedules()
+        assert len(schedules) == 2
+        assert len([schedule for schedule in schedules if schedule.args[1] == 2]) == 2
