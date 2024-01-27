@@ -16,7 +16,9 @@ def install_poetry():
 
     :return:
     """
-    execute_command(["poetry", "--version"])
+    execute_command(
+        ["curl", "-sSL", "https://install.python-poetry.org", "|", "python3", "-"]
+    )
 
 
 @click.command(name="backend-dependencies")

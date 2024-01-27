@@ -11,8 +11,8 @@ PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
 
 
 def execute_command(
-    command: list[str], cwd: Optional[str] = None, env: Optional[dict] = None
-) -> list[str]:
+    command: list[str], cwd: Optional[Path] = None, env: Optional[dict] = None
+):
     """Execute command with Popen and prints it's output.
 
     :param command:
