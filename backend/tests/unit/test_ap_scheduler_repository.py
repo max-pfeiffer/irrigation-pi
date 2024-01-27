@@ -83,8 +83,8 @@ async def test_create_trigger_data_fail():
             await ap_repo._create_trigger_data(schedule_data)
 
 
-async def test_add_trigger():
-    """Tests adding one trigger to the scheduler.
+async def test_create_schedule():
+    """Tests adding one schedule (trigger + task) to the scheduler.
 
     :return:
     """
@@ -99,15 +99,15 @@ async def test_add_trigger():
 
     async with AsyncScheduler() as scheduler:
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        await ap_repo.add_triggers_for_schedule(schedule_data)
+        await ap_repo.create(schedule_data)
         schedules: list[Schedule] = await scheduler.get_schedules()
 
         assert schedules
         assert len(schedules) == 2
 
 
-async def test_add_multiple_triggers():
-    """Tests adding multiple triggers to the scheduler.
+async def test_create_multiple_schedules():
+    """Tests adding multiple schedules (trigger + task) to the scheduler.
 
     :return:
     """
@@ -139,7 +139,7 @@ async def test_add_multiple_triggers():
     ]
     async with AsyncScheduler() as scheduler:
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        await ap_repo.add_triggers_for_schedules(schedule_data)
+        await ap_repo.create_multiple(schedule_data)
         schedules: list[Schedule] = await scheduler.get_schedules()
 
         assert schedules

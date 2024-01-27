@@ -22,7 +22,7 @@ async def startup_event():
     """
     schedule_data_list: list[dict] = await run_in_threadpool(service_get_schedules)
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    await ap_repo.add_triggers_for_schedules(schedule_data_list)
+    await ap_repo.create_multiple(schedule_data_list)
 
 
 @app.get("/", include_in_schema=False)

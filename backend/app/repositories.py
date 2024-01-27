@@ -6,7 +6,7 @@ from apscheduler.triggers.cron import CronTrigger
 from sqlmodel import Session, select
 
 from app.database.models import Schedule
-from app.scheduling import Repeat, execute_task
+from app.scheduling import Repeat, task_switch_relay
 
 
 class ScheduleRepository:
@@ -55,9 +55,10 @@ class ScheduleRepository:
         self.session.flush()
         return schedule
 
-    def update(self, **kwargs):
+    def update(self, **kwargs) -> Schedule:
         """Update a Schedule object.
 
+        :param int primary_key:
         :param kwargs:
         :return:
         """
@@ -68,6 +69,7 @@ class ScheduleRepository:
             setattr(schedule, key, value)
 
         self.session.flush()
+        return schedule
 
     def delete(self, primary_key: int):
         """Delete a schedule by primary_key.
@@ -81,7 +83,7 @@ class ScheduleRepository:
 
 
 class ApSchedulerRepository:
-    """Repository for persisting Schedule objects."""
+    """Repository for interfacing with ApScheduler library."""
 
     def __init__(self, scheduler: AsyncScheduler) -> None:
         """Initialize object.
@@ -114,7 +116,7 @@ class ApSchedulerRepository:
         stop_date_time: datetime = datetime.combine(
             date.today(), start_time, tzinfo=start_time.tzinfo
         ) + timedelta(minutes=duration)
-        stop_time: datetime.time = stop_date_time.timetz()
+        stop_time: time = stop_date_time.timetz()
         stop_data: dict = {
             "hour": stop_time.hour,
             "minute": stop_time.minute,
@@ -158,7 +160,7 @@ class ApSchedulerRepository:
 
         return start_data, stop_data
 
-    async def add_triggers_for_schedule(self, schedule_data: dict) -> dict:
+    async def create(self, schedule_data: dict) -> dict:
         """Add a trigger to the scheduler.
 
         :param dict schedule_data:
@@ -166,7 +168,7 @@ class ApSchedulerRepository:
         """
         start_data, stop_data = await self._create_trigger_data(schedule_data)
         primary_key_start: str = await self.scheduler.add_schedule(
-            execute_task,
+            task_switch_relay,
             CronTrigger(**start_data),
             args=[
                 schedule_data["relay_board_type"],
@@ -175,7 +177,7 @@ class ApSchedulerRepository:
             ],
         )
         primary_key_stop: str = await self.scheduler.add_schedule(
-            execute_task,
+            task_switch_relay,
             CronTrigger(**stop_data),
             args=[
                 schedule_data["relay_board_type"],
@@ -189,7 +191,7 @@ class ApSchedulerRepository:
         return_data["stop_schedule_id"] = primary_key_stop
         return return_data
 
-    async def add_triggers_for_schedules(self, schedule_data_list: list[dict]):
+    async def create_multiple(self, schedule_data_list: list[dict]):
         """Add multiple triggers to the scheduler.
 
         :param list[dict] schedule_data_list:
@@ -198,7 +200,27 @@ class ApSchedulerRepository:
         return_data_list: list[dict] = []
 
         for schedule_data in schedule_data_list:
-            return_data: dict = await self.add_triggers_for_schedule(schedule_data)
+            return_data: dict = await self.create(schedule_data)
             return_data_list.append(return_data)
 
         return return_data_list
+
+    async def delete(self, schedule_data: dict):
+        """Add a trigger to the scheduler.
+
+        :param dict schedule_data:
+        :return:
+        """
+        await self.scheduler.remove_schedule(schedule_data["start_schedule_id"])
+        await self.scheduler.remove_schedule(schedule_data["stop_schedule_id"])
+
+
+    async def update(self, schedule_data: dict) -> dict:
+        """Add a trigger to the scheduler.
+
+        :param dict schedule_data:
+        :return:
+        """
+        await self.delete(schedule_data)
+        return_data: dict = await self.create(schedule_data)
+        return return_data
