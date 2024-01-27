@@ -14,7 +14,33 @@ Contributions for other boards are warmly welcome.
 ## Features
 * Add schedules for switching the relays
 * Relays are switches automatically according to the schedules
+* Backend application with REST API
+* Frontend: coming soon
 
 ## Installation
-todo
+[Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
+```shell
+curl -sSL https://install.python-poetry.org | python3 -
+```
 
+In project root install Python package dependencies with Poetry:
+```shell
+poetry install
+```
+
+Configure poetry to install virtual environments in project folders:
+```shell
+poetry config virtualenvs.in-project true
+```
+
+After this you are able to use the projects management CLI. Install backend dependencies:
+```shell
+manage install backend-dependencies
+```
+
+Start the backend application:
+```shell
+manage run backend
+```
+
+The backend application is running afterwards and is accessible on: http://0.0.0.0:80 
