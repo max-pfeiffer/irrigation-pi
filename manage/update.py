@@ -1,10 +1,10 @@
 """Update commands."""
-from pathlib import Path
 
 import click
 
 from manage.utils import (
-    PROJECT_ROOT_PATH,
+    BACKEND_PATH,
+    BACKEND_VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     execute_command,
 )
@@ -21,11 +21,9 @@ def update_poetry():
 
 @click.command(name="backend-dependencies")
 def update_backend_dependencies():
-    """Update backend installation.
+    """Update backend dependencies.
 
     :return:
     """
-    backend_path: Path = PROJECT_ROOT_PATH / "backend"
-    virtual_environment_path: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
-    env: dict = activate_virtual_environment(virtual_environment_path)
-    execute_command(["poetry", "update"], cwd=backend_path, env=env)
+    env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
+    execute_command(["poetry", "update"], cwd=BACKEND_PATH, env=env)

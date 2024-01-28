@@ -1,10 +1,10 @@
 """Install commands."""
-from pathlib import Path
 
 import click
 
 from manage.utils import (
-    PROJECT_ROOT_PATH,
+    BACKEND_PATH,
+    BACKEND_VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     execute_command,
 )
@@ -12,7 +12,7 @@ from manage.utils import (
 
 @click.command(name="poetry")
 def install_poetry():
-    """Execute poetry installation.
+    """Install Poetry.
 
     :return:
     """
@@ -23,11 +23,19 @@ def install_poetry():
 
 @click.command(name="backend-dependencies")
 def install_backend_dependencies():
-    """Execute backend installation.
+    """Install backend dependencies.
 
     :return:
     """
-    backend_path: Path = PROJECT_ROOT_PATH / "backend"
-    virtual_environment_path: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
-    env: dict = activate_virtual_environment(virtual_environment_path)
-    execute_command(["poetry", "install"], cwd=backend_path, env=env)
+    env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
+    execute_command(["poetry", "install"], cwd=BACKEND_PATH, env=env)
+
+
+@click.command(name="backend-database")
+def install_backend_database():
+    """Install backend database.
+
+    :return:
+    """
+    env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
+    execute_command(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
