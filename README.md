@@ -33,8 +33,10 @@ In project root install Python package dependencies with Poetry:
 poetry install
 ```
 
-After this you are able to use the projects management CLI. Install backend dependencies and database:
+Now you are able to use the projects management CLI after activating the virtual environment.
+Activate virtual environment, then install backend dependencies and database:
 ```shell
+source .venv/bin/activate
 manage install backend-dependencies
 manage install backend-database
 ```
@@ -44,4 +46,4 @@ Start the backend application:
 manage run backend
 ```
 
-The backend application is running afterwards and is accessible on: http://0.0.0.0:80 
+The backend application is running afterwards and is accessible on: http://0.0.0.0:8000 

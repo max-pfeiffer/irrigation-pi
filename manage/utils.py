@@ -11,7 +11,8 @@ PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
 BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
 BACKEND_VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
 
-def execute_command(
+
+def run_subprocess(
     command: list[str], cwd: Optional[Path] = None, env: Optional[dict] = None
 ):
     """Execute command with Popen and prints it's output.
@@ -21,7 +22,9 @@ def execute_command(
     :param env:
     :return:
     """
-    with Popen(command, cwd=cwd, env=env, stdout=PIPE, universal_newlines=True) as cp:
+    with Popen(
+        command, cwd=cwd, env=env, stdout=PIPE, bufsize=1, universal_newlines=True
+    ) as cp:
         for line in cp.stdout:
             click.echo(line)
 
