@@ -23,19 +23,20 @@ Contributions for other boards are warmly welcome.
 curl -sSL https://install.python-poetry.org | python3 -
 ```
 
-In project root install Python package dependencies with Poetry:
-```shell
-poetry install
-```
-
 Configure poetry to install virtual environments in project folders:
 ```shell
 poetry config virtualenvs.in-project true
 ```
 
-After this you are able to use the projects management CLI. Install backend dependencies:
+In project root install Python package dependencies with Poetry:
+```shell
+poetry install
+```
+
+After this you are able to use the projects management CLI. Install backend dependencies and database:
 ```shell
 manage install backend-dependencies
+manage install backend-database
 ```
 
 Start the backend application:

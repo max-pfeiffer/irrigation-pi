@@ -8,7 +8,8 @@ from typing import Optional
 import click
 
 PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
-
+BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
+BACKEND_VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
 
 def execute_command(
     command: list[str], cwd: Optional[Path] = None, env: Optional[dict] = None
