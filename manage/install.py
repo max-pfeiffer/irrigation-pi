@@ -6,7 +6,7 @@ from manage.utils import (
     BACKEND_PATH,
     BACKEND_VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
-    execute_command,
+    run_subprocess,
 )
 
 
@@ -16,7 +16,7 @@ def install_poetry():
 
     :return:
     """
-    execute_command(
+    run_subprocess(
         ["curl", "-sSL", "https://install.python-poetry.org", "|", "python3", "-"]
     )
 
@@ -28,7 +28,11 @@ def install_backend_dependencies():
     :return:
     """
     env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
-    execute_command(["poetry", "install"], cwd=BACKEND_PATH, env=env)
+    run_subprocess(
+        ["poetry", "install", "--no-interaction", "--no-root"],
+        cwd=BACKEND_PATH,
+        env=env,
+    )
 
 
 @click.command(name="backend-database")
@@ -38,4 +42,4 @@ def install_backend_database():
     :return:
     """
     env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
-    execute_command(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
+    run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
