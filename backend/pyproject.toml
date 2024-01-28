@@ -26,6 +26,7 @@ pydantic-settings = "2.1.0"
 gpiozero = "2.0"
 pigpio = "1.78"
 lgpio = "0.0.0.2"
+"RPi.GPIO" = "0.7.1"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "7.4.0"
