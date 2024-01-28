@@ -2,7 +2,11 @@
 import click
 
 from manage.export import backend_api_specs
-from manage.install import install_backend_dependencies, install_poetry
+from manage.install import (
+    install_backend_database,
+    install_backend_dependencies,
+    install_poetry,
+)
 from manage.run import backend
 from manage.update import update_backend_dependencies, update_poetry
 
@@ -18,6 +22,7 @@ def install():
 
 install.add_command(install_poetry)
 install.add_command(install_backend_dependencies)
+install.add_command(install_backend_database)
 
 
 @click.group()
