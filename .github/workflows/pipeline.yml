@@ -17,18 +17,32 @@ jobs:
         with:
           version: 1.7.1
           virtualenvs-in-project: true
-      - name: Load cached venv
-        id: cached-poetry-dependencies
+      - name: Load cached virtual environment for manage
+        id: cached-manage-dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: manage-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install manage dependencies
+        if: steps.cached-manage-dependencies.outputs.cache-hit != 'true'
+        run: |
+          poetry install --no-interaction --no-root
+      - name: Run ruff for manage
+        run: |
+          source .venv/bin/activate
+          ruff check --config pyproject.toml manage
+      - name: Load cached virtual environment for backend
+        id: cached-backend-dependencies
         uses: actions/cache@v4
         with:
           path: backend/.venv
-          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: manage-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        if: steps.cached-backend-dependencies.outputs.cache-hit != 'true'
         working-directory: ./backend
         run: |
           poetry install --no-interaction --no-root
-      - name: Run ruff
+      - name: Run ruff for backend
         run: |
           source backend/.venv/bin/activate
           ruff check --config backend/pyproject.toml backend
