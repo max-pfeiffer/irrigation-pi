@@ -1,6 +1,7 @@
 """Tests for the Waveshare board adapter."""
 import pytest
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
+from gpiozero.pins.mock import MockFactory
 
 from tests.fake_objects import FakeRelay
 
@@ -15,6 +16,7 @@ def test_relay_board_adapter() -> None:
     fake_relay_3: FakeRelay = FakeRelay()
 
     fake_adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
+        pin_factory=MockFactory(),
         relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
     fake_adapter.on(1)
@@ -46,6 +48,7 @@ def test_relay_board_adapter_fails() -> None:
     fake_relay_3: FakeRelay = FakeRelay()
 
     fake_adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
+        pin_factory=MockFactory(),
         relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
 

@@ -1,28 +1,26 @@
 """FastAPI application."""
+from contextlib import asynccontextmanager
+
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI, Request, status
-from fastapi.concurrency import run_in_threadpool
-from fastapi.middleware import Middleware
 from fastapi.responses import RedirectResponse
 from furl import furl
 
 from app.api.v1.api import api_router
-from app.repositories import ApSchedulerRepository
-from app.scheduling import SchedulerMiddleware, scheduler
-from app.services.schedule import service_get_schedules
-
-middleware = [Middleware(SchedulerMiddleware, scheduler=scheduler)]
-app = FastAPI(middleware=middleware)
 
 
-@app.on_event("startup")
-async def startup_event():
-    """Startup event.
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context."""
+    app.state.scheduler = AsyncIOScheduler()
+    try:
+        app.state.scheduler.start()
+        yield
+    finally:
+        app.state.scheduler.shutdown()
 
-    :return:
-    """
-    schedule_data_list: list[dict] = await run_in_threadpool(service_get_schedules)
-    ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    await ap_repo.create_multiple(schedule_data_list)
+
+app = FastAPI(lifespan=lifespan)
 
 
 @app.get("/", include_in_schema=False)
@@ -40,3 +38,4 @@ def redirect_to_autodocs(request: Request) -> RedirectResponse:
 
 
 app.include_router(api_router, prefix="/v1")
+

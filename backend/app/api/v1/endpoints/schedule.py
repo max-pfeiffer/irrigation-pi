@@ -1,5 +1,5 @@
 """API endpoints for Schedule objects."""
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
 
 from app.api.v1.models import ScheduleCreate, ScheduleResponse, ScheduleUpdate
 from app.services.schedule import (
@@ -30,21 +30,25 @@ def get_schedules() -> list[ScheduleResponse]:
 
 
 @router.post("/")
-def create_schedule(schedule_data: ScheduleCreate) -> int:
+def create_schedule(request: Request, schedule_data: ScheduleCreate) -> int:
     """Create Schedule."""
-    primary_key: int = service_create_schedule(**schedule_data.model_dump())
+    primary_key: int = service_create_schedule(
+        request.app.state.scheduler, **schedule_data.model_dump()
+    )
     return primary_key
 
 
 @router.put("/{primary_key}")
-def update_schedule(primary_key: int, schedule_data: ScheduleUpdate):
+def update_schedule(request: Request, primary_key: int, schedule_data: ScheduleUpdate):
     """Update Schedule."""
     service_update_schedule(
-        primary_key=primary_key, **schedule_data.model_dump(exclude_defaults=True)
+        request.app.state.scheduler,
+        primary_key=primary_key,
+        **schedule_data.model_dump(exclude_defaults=True),
     )
 
 
 @router.delete("/{primary_key}")
-def delete_schedule(primary_key: int):
+def delete_schedule(request: Request, primary_key: int):
     """Delete Schedule."""
-    service_delete_schedule(primary_key)
+    service_delete_schedule(request.app.state.scheduler, primary_key)

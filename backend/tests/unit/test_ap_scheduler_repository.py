@@ -6,7 +6,8 @@ import pytest
 from app.adapters import RelayBoardType
 from app.repositories import ApSchedulerRepository
 from app.scheduling import Repeat
-from apscheduler import AsyncScheduler, Schedule
+from apscheduler.job import Job
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 @pytest.mark.parametrize("repeat", Repeat)
@@ -18,7 +19,7 @@ async def test_create_trigger_data(repeat: Repeat):
     """
     hour: int = randint(0, 23)
     minute: int = randint(0, 59)
-    schedule_data: dict = {
+    job_data: dict = {
         "start_time": time(hour=hour, minute=minute, tzinfo=timezone.utc),
         "duration": randint(1, 1440),
         "repeat": repeat,
@@ -26,9 +27,9 @@ async def test_create_trigger_data(repeat: Repeat):
         "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
         "relay_position": 1,
     }
-    async with AsyncScheduler() as scheduler:
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        start_data, stop_data = await ap_repo._create_trigger_data(schedule_data)
+
+    ap_repo: ApSchedulerRepository = ApSchedulerRepository(AsyncIOScheduler())
+    start_data, stop_data = ap_repo._create_trigger_data(job_data)
 
     assert start_data["hour"] == hour
     assert start_data["minute"] == minute
@@ -67,7 +68,7 @@ async def test_create_trigger_data_fail():
 
     :return:
     """
-    schedule_data: dict = {
+    job_data: dict = {
         "start_time": time(
             hour=randint(0, 23), minute=randint(0, 59), tzinfo=timezone.utc
         ),
@@ -78,9 +79,8 @@ async def test_create_trigger_data_fail():
         "relay_position": 1,
     }
     with pytest.raises(Exception):
-        async with AsyncScheduler() as scheduler:
-            ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-            await ap_repo._create_trigger_data(schedule_data)
+        ap_repo: ApSchedulerRepository = ApSchedulerRepository(AsyncIOScheduler())
+        ap_repo._create_trigger_data(job_data)
 
 
 async def test_create_schedule():
@@ -88,7 +88,7 @@ async def test_create_schedule():
 
     :return:
     """
-    schedule_data: dict = {
+    job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
         "duration": 10,
         "repeat": Repeat.every_day,
@@ -97,13 +97,12 @@ async def test_create_schedule():
         "relay_position": 1,
     }
 
-    async with AsyncScheduler() as scheduler:
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        await ap_repo.create(schedule_data)
-        schedules: list[Schedule] = await scheduler.get_schedules()
+    scheduler = AsyncIOScheduler()
+    ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+    ap_repo.create(job_data)
+    jobs: list[Job] = scheduler.get_jobs()
 
-        assert schedules
-        assert len(schedules) == 2
+    assert len(jobs) == 2
 
 
 async def test_create_multiple_schedules():
@@ -111,7 +110,7 @@ async def test_create_multiple_schedules():
 
     :return:
     """
-    schedule_data: list[dict] = [
+    job_data: list[dict] = [
         {
             "start_time": time(hour=2, minute=57, tzinfo=timezone.utc),
             "duration": 10,
@@ -137,20 +136,20 @@ async def test_create_multiple_schedules():
             "relay_position": 1,
         },
     ]
-    async with AsyncScheduler() as scheduler:
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        await ap_repo.create_multiple(schedule_data)
-        schedules: list[Schedule] = await scheduler.get_schedules()
+    scheduler = AsyncIOScheduler()
+    ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+    ap_repo.create_multiple(job_data)
+    jobs: list[Job] = scheduler.get_jobs()
 
-        assert schedules
-        assert len(schedules) == 6
+    assert len(jobs) == 6
+
 
 async def test_delete_schedule():
     """Tests deleting a schedule.
 
     :return:
     """
-    schedule_data: dict = {
+    job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
         "duration": 10,
         "repeat": Repeat.every_day,
@@ -159,16 +158,16 @@ async def test_delete_schedule():
         "relay_position": 1,
     }
 
-    async with AsyncScheduler() as scheduler:
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        created_schedule_data: dict = await ap_repo.create(schedule_data)
+    scheduler = AsyncIOScheduler()
+    ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+    created_job_data: dict = ap_repo.create(job_data)
 
-        schedules: list[Schedule] = await scheduler.get_schedules()
-        assert len(schedules) == 2
+    jobs: list[Job] = scheduler.get_jobs()
+    assert len(jobs) == 2
 
-        await ap_repo.delete(created_schedule_data)
-        schedules: list[Schedule] = await scheduler.get_schedules()
-        assert not schedules
+    ap_repo.delete(created_job_data)
+    jobs: list[Job] = scheduler.get_jobs()
+    assert not jobs
 
 
 async def test_update_schedule():
@@ -176,7 +175,7 @@ async def test_update_schedule():
 
     :return:
     """
-    schedule_data: dict = {
+    job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
         "duration": 10,
         "repeat": Repeat.every_day,
@@ -185,16 +184,16 @@ async def test_update_schedule():
         "relay_position": 1,
     }
 
-    async with AsyncScheduler() as scheduler:
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        created_schedule_data: dict = await ap_repo.create(schedule_data)
+    scheduler = AsyncIOScheduler()
+    ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+    created_job_data: dict = ap_repo.create(job_data)
 
-        schedules: list[Schedule] = await scheduler.get_schedules()
-        assert len(schedules) == 2
+    jobs: list[Job] = scheduler.get_jobs()
+    assert len(jobs) == 2
 
-        created_schedule_data["relay_position"] = 2
-        await ap_repo.update(created_schedule_data)
+    created_job_data["relay_position"] = 2
+    ap_repo.update(created_job_data)
 
-        schedules: list[Schedule] = await scheduler.get_schedules()
-        assert len(schedules) == 2
-        assert len([schedule for schedule in schedules if schedule.args[1] == 2]) == 2
+    jobs: list[Job] = scheduler.get_jobs()
+    assert len(jobs) == 2
+    assert len([job for job in jobs if job.args[1] == 2]) == 2
