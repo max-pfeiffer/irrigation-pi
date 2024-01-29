@@ -52,3 +52,10 @@ class ScheduleUpdate(BaseModel):
     relay_position: Union[PositiveInt, None] = Field(
         default=None, description="Position of the relay"
     )
+
+
+class Relay(BaseModel):
+    """Response schema for Relay object."""
+
+    position: PositiveInt = Field(description="Relay position on the board")
+    on: bool = Field(description="Indicates if relay is switched on")

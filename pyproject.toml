@@ -16,7 +16,7 @@ ruff = "0.1.14"
 manage = 'manage:cli'
 
 [tool.ruff]
-exclude = [".venv", "backend", "frontend"]
+exclude = [".venv", "backend/migrations", "frontend"]
 
 [tool.ruff.lint]
 select = [

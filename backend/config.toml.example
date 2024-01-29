@@ -1,0 +1,3 @@
+[backend]
+pin_factory_type = "pigpio"
+adapter_type = "waveshare_rpi_relay_board"

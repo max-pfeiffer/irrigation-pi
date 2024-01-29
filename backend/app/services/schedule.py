@@ -1,11 +1,10 @@
 """Services for handling persistence of Schedule objects."""
-from asyncer import syncify
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlmodel import Session
 
 from app.database.config import database_engine
 from app.database.models import Schedule
 from app.repositories import ApSchedulerRepository, ScheduleRepository
-from app.scheduling import scheduler
 
 
 def service_get_schedule(primary_key: int) -> dict:
@@ -35,10 +34,10 @@ def service_get_schedules() -> list[dict]:
     return data
 
 
-def service_create_schedule(**kwargs) -> int:
+def service_create_schedule(scheduler: AsyncIOScheduler, **kwargs) -> int:
     """Services creates and persists a Schedule object.
 
-    :param ScheduleCreate data:
+    :param AsyncIOScheduler scheduler:
     :return:
     """
     with Session(database_engine) as database_session, database_session.begin():
@@ -49,7 +48,7 @@ def service_create_schedule(**kwargs) -> int:
         data: dict = schedule.model_dump()
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        return_data: dict = syncify(ap_repo.create)(data)
+        return_data: dict = ap_repo.create(data)
 
         repo.update(
             primary_key=primary_key,
@@ -60,10 +59,10 @@ def service_create_schedule(**kwargs) -> int:
     return primary_key
 
 
-def service_update_schedule(**kwargs):
+def service_update_schedule(scheduler: AsyncIOScheduler, **kwargs):
     """Service updates and persists a Schedule object.
 
-    :param ScheduleUpdate data:
+    :param AsyncIOScheduler scheduler:
     :return:
     """
     with Session(database_engine) as database_session, database_session.begin():
@@ -73,7 +72,7 @@ def service_update_schedule(**kwargs):
         data: dict = schedule.model_dump()
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        return_data: dict = syncify(ap_repo.update)(data)
+        return_data: dict = ap_repo.update(data)
 
         repo.update(
             primary_key=schedule.id,
@@ -82,9 +81,10 @@ def service_update_schedule(**kwargs):
         )
 
 
-def service_delete_schedule(primary_key: int):
+def service_delete_schedule(scheduler: AsyncIOScheduler, primary_key: int):
     """Service deletes a persisted Schedule object.
 
+    :param AsyncIOScheduler scheduler:
     :param int primary_key:
     :return:
     """
@@ -95,6 +95,6 @@ def service_delete_schedule(primary_key: int):
         data: dict = schedule.model_dump()
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        syncify(ap_repo.delete)(data)
+        ap_repo.delete(data)
 
         repo.delete(primary_key)
