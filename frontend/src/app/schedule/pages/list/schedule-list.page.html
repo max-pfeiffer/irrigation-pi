@@ -1,0 +1,24 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Schedules</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="addSchedule()">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    @for (schedule of scheduleList; track schedule.id) {
+    <app-schedule-tile
+      [schedule]="schedule"
+      (refreshList)="refreshList()"
+    ></app-schedule-tile>
+    }
+  </ion-list>
+</ion-content>
