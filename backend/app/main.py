@@ -1,7 +1,7 @@
 """FastAPI application."""
 from fastapi import FastAPI, Request, status
 from fastapi.concurrency import run_in_threadpool
-from fastapi.middleware import Middleware
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from furl import furl
 
@@ -10,9 +10,15 @@ from app.repositories import ApSchedulerRepository
 from app.scheduling import SchedulerMiddleware, scheduler
 from app.services.schedule import service_get_schedules
 
-middleware = [Middleware(SchedulerMiddleware, scheduler=scheduler)]
-app = FastAPI(middleware=middleware)
-
+app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:8100"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+app.add_middleware(SchedulerMiddleware, scheduler=scheduler)
 
 @app.on_event("startup")
 async def startup_event():
