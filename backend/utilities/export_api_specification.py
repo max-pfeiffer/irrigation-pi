@@ -13,8 +13,11 @@ def main():
     api_specs: dict = app.openapi()
     version: str = api_specs["info"]["version"].replace(".", "_")
 
-    api_specs_path: Path = (Path(__file__).parent.parent.resolve()
-                            / "api_specification" / f"api_specs_v{version}.json")
+    api_specs_path: Path = (
+        Path(__file__).parent.parent.resolve()
+        / "api_specification"
+        / f"api_specs_v{version}.json"
+    )
 
     with open(api_specs_path, "w") as file:
         file.write(json.dumps(api_specs))

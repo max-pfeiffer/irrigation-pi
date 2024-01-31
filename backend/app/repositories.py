@@ -1,7 +1,8 @@
 """Repositories for data persistence."""
 from datetime import date, datetime, time, timedelta
 
-from apscheduler import AsyncScheduler
+from apscheduler.job import Job
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.triggers.cron import CronTrigger
 from sqlmodel import Session, select
 
@@ -85,14 +86,14 @@ class ScheduleRepository:
 class ApSchedulerRepository:
     """Repository for interfacing with ApScheduler library."""
 
-    def __init__(self, scheduler: AsyncScheduler) -> None:
+    def __init__(self, scheduler: AsyncIOScheduler) -> None:
         """Initialize object.
 
         :param AsyncScheduler scheduler:
         """
-        self.scheduler: AsyncScheduler = scheduler
+        self.scheduler: AsyncIOScheduler = scheduler
 
-    async def _create_trigger_data(self, schedule_data: dict) -> tuple[dict, dict]:
+    def _create_trigger_data(self, schedule_data: dict) -> tuple[dict, dict]:
         """Create trigger date from Schedule object.
 
         :param dict schedule_data:
@@ -160,38 +161,36 @@ class ApSchedulerRepository:
 
         return start_data, stop_data
 
-    async def create(self, schedule_data: dict) -> dict:
+    def create(self, schedule_data: dict) -> dict:
         """Add a trigger to the scheduler.
 
         :param dict schedule_data:
         :return:
         """
-        start_data, stop_data = await self._create_trigger_data(schedule_data)
-        primary_key_start: str = await self.scheduler.add_schedule(
+        start_data, stop_data = self._create_trigger_data(schedule_data)
+        start_job: Job = self.scheduler.add_job(
             task_switch_relay,
             CronTrigger(**start_data),
             args=[
-                schedule_data["relay_board_type"],
                 schedule_data["relay_position"],
                 True,
             ],
         )
-        primary_key_stop: str = await self.scheduler.add_schedule(
+        stop_job: Job = self.scheduler.add_job(
             task_switch_relay,
             CronTrigger(**stop_data),
             args=[
-                schedule_data["relay_board_type"],
                 schedule_data["relay_position"],
                 False,
             ],
         )
 
         return_data: dict = schedule_data.copy()
-        return_data["start_schedule_id"] = primary_key_start
-        return_data["stop_schedule_id"] = primary_key_stop
+        return_data["start_schedule_id"] = start_job.id
+        return_data["stop_schedule_id"] = stop_job.id
         return return_data
 
-    async def create_multiple(self, schedule_data_list: list[dict]):
+    def create_multiple(self, schedule_data_list: list[dict]):
         """Add multiple triggers to the scheduler.
 
         :param list[dict] schedule_data_list:
@@ -200,27 +199,26 @@ class ApSchedulerRepository:
         return_data_list: list[dict] = []
 
         for schedule_data in schedule_data_list:
-            return_data: dict = await self.create(schedule_data)
+            return_data: dict = self.create(schedule_data)
             return_data_list.append(return_data)
 
         return return_data_list
 
-    async def delete(self, schedule_data: dict):
+    def delete(self, schedule_data: dict):
         """Add a trigger to the scheduler.
 
         :param dict schedule_data:
         :return:
         """
-        await self.scheduler.remove_schedule(schedule_data["start_schedule_id"])
-        await self.scheduler.remove_schedule(schedule_data["stop_schedule_id"])
+        self.scheduler.remove_job(schedule_data["start_schedule_id"])
+        self.scheduler.remove_job(schedule_data["stop_schedule_id"])
 
-
-    async def update(self, schedule_data: dict) -> dict:
+    def update(self, schedule_data: dict) -> dict:
         """Add a trigger to the scheduler.
 
         :param dict schedule_data:
         :return:
         """
-        await self.delete(schedule_data)
-        return_data: dict = await self.create(schedule_data)
+        self.delete(schedule_data)
+        return_data: dict = self.create(schedule_data)
         return return_data
