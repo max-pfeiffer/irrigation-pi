@@ -65,7 +65,6 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
             pin_factory = NativeFactory()
     else:
         pin_factory = MockFactory()
-
     adapter = WaveshareRpiRelayBoardAdapter(pin_factory=pin_factory)
     return adapter
 
