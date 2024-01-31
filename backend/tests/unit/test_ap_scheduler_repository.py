@@ -196,4 +196,4 @@ async def test_update_schedule():
 
     jobs: list[Job] = scheduler.get_jobs()
     assert len(jobs) == 2
-    assert len([job for job in jobs if job.args[1] == 2]) == 2
+    assert len([job for job in jobs if job.args[0] == 2]) == 2
