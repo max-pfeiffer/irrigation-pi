@@ -2,11 +2,7 @@
 from datetime import datetime
 from enum import Enum
 
-from apscheduler import AsyncScheduler
-from starlette.types import ASGIApp, Receive, Scope, Send
-
-from app.adapters import RelayBoardType
-from app.services.relay import service_switch_relay
+from app.config import relayBoardAdapter
 
 
 class Repeat(str, Enum):
@@ -24,48 +20,17 @@ class Repeat(str, Enum):
     sunday = "sunday"
 
 
-def task_switch_relay(relay_board_type: RelayBoardType, relay_position: int, on: bool):
+def task_switch_relay(
+    relay_position: int, on: bool
+):
     """Trigger function to switch relays.
 
-    :param relay_board_type:
     :param relay_position:
     :param on:
     :return:
     """
-    print(f"{relay_board_type}: position:{relay_position} on:{on}, {datetime.now()}]")
-    service_switch_relay(relay_board_type, relay_position, on)
-
-
-class SchedulerMiddleware:
-    """Middleware to inject the scheduler instance."""
-
-    def __init__(
-        self,
-        app: ASGIApp,
-        scheduler: AsyncScheduler,
-    ) -> None:
-        """Initialize object.
-
-        :param ASGIApp app:
-        :param AsyncScheduler scheduler:
-        """
-        self.app = app
-        self.scheduler = scheduler
-
-    async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
-        """Handle ASGI call.
-
-        :param Scope scope:
-        :param Receive receive:
-        :param Send send:
-        :return:
-        """
-        if scope["type"] == "lifespan":
-            async with self.scheduler:
-                await self.scheduler.start_in_background()
-                await self.app(scope, receive, send)
-        else:
-            await self.app(scope, receive, send)
-
-
-scheduler = AsyncScheduler()
+    print(f"position:{relay_position} on:{on}, {datetime.now()}]")
+    if on:
+        relayBoardAdapter.on(relay_position)
+    else:
+        relayBoardAdapter.off(relay_position)
