@@ -82,13 +82,13 @@ zookeeper = ["kazoo"]
 
 [[package]]
 name = "asyncer"
-version = "0.0.3"
+version = "0.0.4"
 description = "Asyncer, async and await, focused on developer experience."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "asyncer-0.0.3-py3-none-any.whl", hash = "sha256:803398c31c23337285b97aa50e7594ac92fa99672a9e26e596e8dd92ed03fe1e"},
-    {file = "asyncer-0.0.3.tar.gz", hash = "sha256:4734ede2bbe9c45caf8d81573af7a98d1bf866e3b92aa174b3f17b191cc51726"},
+    {file = "asyncer-0.0.4-py3-none-any.whl", hash = "sha256:bc27f6bcea231a78c6fb730dff5977c74b0ee5a6f2ea080e273a03fac17ca3d1"},
+    {file = "asyncer-0.0.4.tar.gz", hash = "sha256:d9400418d4b508e5f3e819809bd3e7b9cd43d99a65c0a5eada14d41583164ca6"},
 ]
 
 [package.dependencies]
@@ -1361,4 +1361,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "6e777cea3e0ba670399542b045473add495279577bb08bfd3fb05403dd972039"
+content-hash = "2164647a1195c6b769f618296238d18b82631e20d5d1fb682f5cff9141ac3454"
