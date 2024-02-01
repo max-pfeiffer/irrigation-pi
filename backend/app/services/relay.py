@@ -3,9 +3,7 @@ from app.adapters.base import RelayBoardAdapter
 from app.adapters.gpio_devices import Relay
 
 
-def service_get_relay(
-    adapter: RelayBoardAdapter, relay_position: int
-) -> dict:
+def service_get_relay(adapter: RelayBoardAdapter, relay_position: int) -> dict:
     """Get relay data.
 
     :param adapter:

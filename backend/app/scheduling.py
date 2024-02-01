@@ -20,9 +20,7 @@ class Repeat(str, Enum):
     sunday = "sunday"
 
 
-def task_switch_relay(
-    relay_position: int, on: bool
-):
+def task_switch_relay(relay_position: int, on: bool):
     """Trigger function to switch relays.
 
     :param relay_position:
