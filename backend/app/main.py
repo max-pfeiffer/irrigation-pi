@@ -47,4 +47,3 @@ def redirect_to_autodocs(request: Request) -> RedirectResponse:
 
 
 app.include_router(api_router, prefix="/v1")
-
