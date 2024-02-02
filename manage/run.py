@@ -17,7 +17,7 @@ def backend():
     :return:
     """
     backend_path: Path = PROJECT_ROOT_PATH / "backend"
-    virtual_environment_path: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
+    virtual_environment_path: Path = PROJECT_ROOT_PATH / ".venv"
     env: dict = activate_virtual_environment(virtual_environment_path)
     run_subprocess(
         [

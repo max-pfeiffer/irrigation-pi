@@ -21,20 +21,6 @@ def install_poetry():
     )
 
 
-@click.command(name="backend-dependencies")
-def install_backend_dependencies():
-    """Install backend dependencies.
-
-    :return:
-    """
-    env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
-    run_subprocess(
-        ["poetry", "install", "--no-interaction", "--no-root"],
-        cwd=BACKEND_PATH,
-        env=env,
-    )
-
-
 @click.command(name="backend-database")
 def install_backend_database():
     """Install backend database.
