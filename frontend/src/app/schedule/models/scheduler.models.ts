@@ -1,37 +1,23 @@
-export enum Repeat {
-  EveryDay = 'every_day',
-  Weekdays = 'weekdays',
-  Weekends = 'weekends',
-  Monday = 'monday',
-  Tuesday = 'tuesday',
-  Wednesday = 'wednesday',
-  Thursday = 'thursday',
-  Friday = 'friday',
-  Saturday = 'saturday',
-  Sunday = 'sunday',
-}
+import type { Components, Paths } from 'frontend/@types/openapi';
 
-export enum RelayBoardType {
-  WaveshareRpiRelayBoard = 'waveshare_rpi_relay_board',
-}
+export type ScheduleResponse = Components.Schemas.ScheduleResponse;
+export type ScheduleUpdate = Components.Schemas.ScheduleUpdate;
+export type ScheduleCreate = Components.Schemas.ScheduleCreate;
+export type Repeat = Components.Schemas.Repeat;
 
-export interface Schedule {
-  id?: number;
-  start_time: string;
-  duration: number;
-  repeat: Repeat;
-  active: boolean;
-  relay_board_type: RelayBoardType;
-  relay_position: number;
-}
+export type CreateScheduleRequestBody =
+  Paths.CreateScheduleV1SchedulePost.RequestBody;
+export type CreateScheduleResponse =
+  Paths.CreateScheduleV1SchedulePost.Responses.$200;
 
-export const createSchedule = (overrides?: Partial<Schedule>): Schedule => {
+export const createSchedule = (
+  overrides?: Partial<ScheduleCreate>
+): ScheduleCreate => {
   return {
     start_time: '12:00',
     duration: 10,
-    repeat: Repeat.EveryDay,
-    active: false,
-    relay_board_type: RelayBoardType.WaveshareRpiRelayBoard,
+    repeat: 'every_day',
+    active: true,
     relay_position: 1,
     ...overrides,
   };
