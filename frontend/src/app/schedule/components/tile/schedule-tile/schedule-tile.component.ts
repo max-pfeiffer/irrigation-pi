@@ -8,14 +8,14 @@ import {
   Output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AlertController, IonicModule, NavController } from '@ionic/angular';
-import { finalize } from 'rxjs';
-import { Schedule } from '../../../models/scheduler.models';
-import { ScheduleService } from '../../../services/schedule.service';
-import { trash } from 'ionicons/icons';
-import { addIcons } from 'ionicons';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { AlertController, IonicModule, NavController } from '@ionic/angular';
+import { addIcons } from 'ionicons';
+import { trash } from 'ionicons/icons';
+import { finalize } from 'rxjs';
+import { ScheduleResponse } from '../../../models/scheduler.models';
 import { DisplayStringPipe } from '../../../pipes/display-string.pipe';
+import { ScheduleService } from '../../../services/schedule.service';
 
 @Component({
   selector: 'app-schedule-tile',
@@ -33,13 +33,13 @@ import { DisplayStringPipe } from '../../../pipes/display-string.pipe';
 })
 export class ScheduleTileComponent {
   @Input()
-  public schedule: Schedule;
+  public schedule: ScheduleResponse;
 
   @Output()
   public refreshList = new EventEmitter<void>();
 
   public constructor(
-    public schedulerService: ScheduleService,
+    public scheduleService: ScheduleService,
     public cdr: ChangeDetectorRef,
     public alertController: AlertController,
     public navController: NavController,
@@ -51,13 +51,10 @@ export class ScheduleTileComponent {
   }
 
   public toggleActive(): void {
-    const payload: Schedule = {
-      ...this.schedule,
-      active: !this.schedule.active,
-    };
-    delete payload.id;
-    this.schedulerService
-      .updateSchedule(this.schedule.id, payload)
+    let { id, ...payload } = this.schedule;
+    payload = { ...payload, active: !this.schedule.active };
+    this.scheduleService
+      .updateSchedule(id, payload)
       .pipe(
         finalize(() => {
           this.refreshList.emit();
@@ -75,7 +72,7 @@ export class ScheduleTileComponent {
           text: 'Yes',
           role: 'destructive',
           handler: () => {
-            this.schedulerService
+            this.scheduleService
               .deleteSchedule(this.schedule.id)
               .pipe(
                 finalize(() => {

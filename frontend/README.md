@@ -1,6 +1,6 @@
 # Irrigation Pi Frontend
 
-## Installation
+## Environment setup
 
 Install Nodejs using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
@@ -14,8 +14,10 @@ nvm install --lts=iron
 
 ```zsh
 nvm use lts/iron
-npm install -g npm@latest @ionic/cli@latest @angular/cli@latest
+npm install -g npm@latest @ionic/cli@latest @angular/cli@latest openapicmd@latest
 ```
+
+## Development setup
 
 ### Install frontend dependencies
 
@@ -23,15 +25,25 @@ npm install -g npm@latest @ionic/cli@latest @angular/cli@latest
 cd frontend && npm clean-install
 ```
 
-## Start fronted development server
+### Start fronted development server
 
 ```zsh
 nvm use lts/iron
 cd frontend && ionic serve
 ```
 
+## Openapi
 
-## Build production frontend application
+### Generating type definitions
+
+```zsh
+manage run backend
+openapi typegen http://localhost:8000/openapi.json > frontend/@types/openapi.d.ts
+```
+
+## Deployment
+
+### Build production frontend application
 
 ```zsh
 nvm use lts/iron
