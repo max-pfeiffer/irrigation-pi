@@ -4,7 +4,7 @@ import click
 
 from manage.utils import (
     BACKEND_PATH,
-    BACKEND_VIRTUAL_ENVIRONMENT_PATH,
+    VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     run_subprocess,
 )
@@ -27,5 +27,5 @@ def install_backend_database():
 
     :return:
     """
-    env: dict = activate_virtual_environment(BACKEND_VIRTUAL_ENVIRONMENT_PATH)
+    env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
