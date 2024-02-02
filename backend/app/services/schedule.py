@@ -1,6 +1,6 @@
 """Services for handling persistence of Schedule objects."""
 
-from datetime import date, datetime, time, timedelta
+from datetime import date, datetime, time, timedelta, timezone
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlmodel import Session
@@ -9,6 +9,19 @@ from app.database.config import database_engine
 from app.database.models import Schedule
 from app.repositories import ApSchedulerRepository, ScheduleRepository
 from app.scheduling import Repeat
+
+
+def set_system_timezone(time_input: time):
+    """Create new time object from input with system timezone.
+
+    :param time_input:
+    :return:
+    """
+    system_timezone: timezone = datetime.now(timezone.utc).astimezone().tzinfo
+    time_output = time(
+        hour=time_input.hour, minute=time_input.minute, tzinfo=system_timezone
+    )
+    return time_output
 
 
 def calculate_stop_time(start_time: time, duration: int) -> time:
@@ -63,9 +76,15 @@ def service_create_schedule(
     """Services creates and persists a Schedule object.
 
     :param AsyncIOScheduler scheduler:
+    :param time start_time:
+    :param Repeat repeat:
+    :param int duration:
+    :param bool active:
+    :param int relay_position:
     :return:
     """
     with Session(database_engine) as database_session, database_session.begin():
+        start_time = set_system_timezone(start_time)
         stop_time: time = calculate_stop_time(start_time, duration)
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
@@ -91,11 +110,7 @@ def service_create_schedule(
     return primary_key
 
 
-def service_update_schedule(
-    scheduler: AsyncIOScheduler,
-    primary_key: int,
-    **kwargs
-):
+def service_update_schedule(scheduler: AsyncIOScheduler, primary_key: int, **kwargs):
     """Service updates and persists a Schedule object.
 
     :param AsyncIOScheduler scheduler:
@@ -113,6 +128,8 @@ def service_update_schedule(
         for key, value in kwargs.items():
             if value is not None:
                 data[key] = value
+
+        data["start_time"] = set_system_timezone(data["start_time"])
 
         if data["active"]:
             stop_time: time = calculate_stop_time(data["start_time"], data["duration"])
