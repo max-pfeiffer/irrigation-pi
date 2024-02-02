@@ -17,7 +17,7 @@ class ApplicationSettings(BaseSettings):
     database_name: str = "sqlite"
 
     @computed_field
-    def  database_uri(self) -> str:
+    def database_uri(self) -> str:
         """URI for database connection.
 
         :return:
@@ -49,6 +49,8 @@ def load_application_configuration() -> Optional[dict]:
 def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
     """Create a relay board adapter.
 
+    gpiozero library has a certain way how it discovers pins factories.
+    Please see: https://gpiozero.readthedocs.io/en/latest/api_pins.htm
     :return:
     """
     config: dict = load_application_configuration()
@@ -57,16 +59,23 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
 
         if pin_factory_type == "rpi_gpio":
             from gpiozero.pins.rpigpio import RPiGPIOFactory
+
             pin_factory = RPiGPIOFactory()
         elif pin_factory_type == "pigpio":
             from gpiozero.pins.pigpio import PiGPIOFactory
+
             pin_factory = PiGPIOFactory()
         elif pin_factory_type == "native":
             pin_factory = NativeFactory()
     else:
+        # This MockFactory is used for development purposes. If application is
+        # not run on a Raspberry Pi and the pin hardware with low level drivers
+        # is available, the instantiation of any other pin factory will fail.
         pin_factory = MockFactory()
     adapter = WaveshareRpiRelayBoardAdapter(pin_factory=pin_factory)
     return adapter
 
 
+# We need to instantiate the board adapter with pin factory as global singleton.
+# Otherwise, switching relays during application runtime will fail.
 relayBoardAdapter = get_relay_board_adapter()
