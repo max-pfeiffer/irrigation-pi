@@ -15,6 +15,7 @@ class ScheduleResponse(BaseModel):
     duration: PositiveInt = Field(description="Duration in minutes")
     repeat: Repeat = Field(description="Specifies how the schedule is repeated")
     active: bool = Field(description="Whether the schedule is active")
+    relay_position: PositiveInt = Field(description="Position of the relay")
 
 
 class ScheduleCreate(BaseModel):
