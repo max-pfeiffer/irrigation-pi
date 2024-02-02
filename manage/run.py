@@ -1,10 +1,10 @@
 """Export commands."""
-from pathlib import Path
 
 import click
 
 from manage.utils import (
-    PROJECT_ROOT_PATH,
+    BACKEND_PATH,
+    VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     run_subprocess,
 )
@@ -16,9 +16,7 @@ def backend():
 
     :return:
     """
-    backend_path: Path = PROJECT_ROOT_PATH / "backend"
-    virtual_environment_path: Path = PROJECT_ROOT_PATH / ".venv"
-    env: dict = activate_virtual_environment(virtual_environment_path)
+    env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         [
             "uvicorn",
@@ -30,6 +28,6 @@ def backend():
             "8000",
             "app.main:app",
         ],
-        cwd=backend_path,
+        cwd=BACKEND_PATH,
         env=env,
     )

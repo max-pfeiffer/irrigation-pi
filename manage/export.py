@@ -1,26 +1,24 @@
 """Export commands."""
-from pathlib import Path
 
 import click
 
 from manage.utils import (
-    PROJECT_ROOT_PATH,
+    BACKEND_PATH,
+    VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     run_subprocess,
 )
 
 
-@click.command()
+@click.command(name="backend-api-specs")
 def backend_api_specs():
     """Export backend API specification.
 
     :return:
     """
-    backend_path: Path = PROJECT_ROOT_PATH / "backend"
-    virtual_environment_path: Path = PROJECT_ROOT_PATH / "backend" / ".venv"
-    env: dict = activate_virtual_environment(virtual_environment_path)
+    env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         ["python", "-m", "utilities.export_api_specification"],
-        cwd=backend_path,
+        cwd=BACKEND_PATH,
         env=env,
     )
