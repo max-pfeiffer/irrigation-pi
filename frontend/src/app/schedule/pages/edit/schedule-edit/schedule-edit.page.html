@@ -18,6 +18,12 @@
             >{{ addEditForm?.controls?.['start_time']?.value }}</ion-label
           >
         </ion-item>
+        <div
+          *ngIf="addEditForm.controls?.['start_time']?.errors"
+          class="error-msg ion-padding-start ion-padding-end"
+        >
+          Start time has wrong format.
+        </div>
 
         <!-- Duration -->
         <ion-item>
@@ -61,15 +67,6 @@
         >
           Please enter a positive integer.
         </div>
-
-        <!-- Board type -->
-        <ion-item (click)="openBoardTypePicker()">
-          <ion-label>Relay board type:</ion-label>
-          <ion-label class="ion-text-right"
-            >{{ addEditForm?.controls?.['relay_board_type']?.value |
-            displayString }}</ion-label
-          >
-        </ion-item>
 
         <!-- Active -->
         <ion-item>

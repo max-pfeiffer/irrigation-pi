@@ -6,11 +6,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { IonicModule, NavController, ViewDidEnter } from '@ionic/angular';
-import { environment } from 'frontend/src/environments/environment';
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { ScheduleTileComponent } from '../../components/tile/schedule-tile/schedule-tile.component';
-import { Schedule } from '../../models/scheduler.models';
+import { ScheduleResponse } from '../../models/scheduler.models';
 import { ScheduleService } from '../../services/schedule.service';
 
 @Component({
@@ -33,7 +32,7 @@ export class ScheduleListPage implements ViewDidEnter {
     });
   }
 
-  public scheduleList: Schedule[] = [];
+  public scheduleList: ScheduleResponse[] = [];
 
   public ionViewDidEnter(): void {
     this.refreshList();
@@ -41,14 +40,9 @@ export class ScheduleListPage implements ViewDidEnter {
 
   public refreshList(): void {
     this.schedulerService.getSchedules().subscribe({
-      next: (_scheduleList: Schedule[]) => {
+      next: (_scheduleList: ScheduleResponse[]) => {
         this.scheduleList = _scheduleList;
         this.cdr.detectChanges();
-      },
-      error: (error: unknown) => {
-        if (!environment.production) {
-          console.error(error);
-        }
       },
     });
   }
