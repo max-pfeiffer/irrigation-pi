@@ -43,6 +43,11 @@ TEST_DATA: list[dict] = [
         "data": None,
     },
     {
+        "path": "/v1/relay",
+        "method": "get",
+        "data": None,
+    },
+    {
         "path": "/v1/relay/1",
         "method": "get",
         "data": None,
@@ -56,7 +61,7 @@ TEST_DATA: list[dict] = [
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
-def test_root_options(test_client: TestClient, test_data: dict, monkeypatch):
+def test_all_api_endpoints(test_client: TestClient, test_data: dict, monkeypatch):
     """Test API endpoints."""
     method: str = test_data["method"]
     path: str = test_data["path"]

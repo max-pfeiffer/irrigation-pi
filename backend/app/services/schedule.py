@@ -1,7 +1,6 @@
 """Services for handling persistence of Schedule objects."""
 
 from datetime import date, datetime, time, timedelta
-from typing import Optional
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlmodel import Session
@@ -95,21 +94,13 @@ def service_create_schedule(
 def service_update_schedule(
     scheduler: AsyncIOScheduler,
     primary_key: int,
-    start_time: Optional[time] = None,
-    repeat: Optional[Repeat] = None,
-    duration: Optional[int] = None,
-    active: Optional[bool] = None,
-    relay_position: Optional[int] = None,
+    **kwargs
 ):
     """Service updates and persists a Schedule object.
 
     :param AsyncIOScheduler scheduler:
     :param int primary_key:
-    :param time start_time:
-    :param Repeat repeat:
-    :param int duration:
-    :param bool active:
-    :param int relay_position:
+    :param kwargs:
     :return:
     """
     with Session(database_engine) as database_session, database_session.begin():
@@ -118,41 +109,28 @@ def service_update_schedule(
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
 
-        # todo: find a better solution for this
-        if active is None:
-            active = schedule.active
+        data: dict = schedule.model_dump()
+        for key, value in kwargs.items():
+            if value is not None:
+                data[key] = value
 
-        if relay_position is None:
-            relay_position = schedule.relay_position
-
-        data: dict = {
-            "active": active,
-            "relay_position": relay_position,
-        }
-
-        if active:
-            if start_time and repeat and duration:
-                stop_time: time = calculate_stop_time(start_time, duration)
-                new_start_job_id, new_stop_job_id = ap_repo.update(
-                    start_time,
-                    stop_time,
-                    repeat,
-                    relay_position,
-                    schedule.start_job_id,
-                    schedule.stop_job_id,
-                )
-                data["start_time"] = start_time
-                data["stop_time"] = stop_time
-                data["duration"] = duration
-                data["repeat"] = repeat
-                data["start_job_id"] = new_start_job_id
-                data["stop_job_id"] = new_stop_job_id
-            elif start_time is not None:
-                "todo: handle error"
+        if data["active"]:
+            stop_time: time = calculate_stop_time(data["start_time"], data["duration"])
+            new_start_job_id, new_stop_job_id = ap_repo.update(
+                data["start_time"],
+                stop_time,
+                data["repeat"],
+                data["relay_position"],
+                schedule.start_job_id,
+                schedule.stop_job_id,
+            )
+            data["stop_time"] = stop_time
+            data["start_job_id"] = new_start_job_id
+            data["stop_job_id"] = new_stop_job_id
         else:
-            if schedule.start_job_id:
+            if data["start_job_id"]:
                 ap_repo.delete(schedule.start_job_id)
-            if schedule.stop_job_id:
+            if data["stop_job_id"]:
                 ap_repo.delete(schedule.stop_job_id)
             data["start_job_id"] = None
             data["stop_job_id"] = None

@@ -52,3 +52,9 @@ class Relay(BaseModel):
 
     position: PositiveInt = Field(description="Relay position on the board")
     on: bool = Field(description="Indicates if relay is switched on")
+
+
+class RelayUpdate(BaseModel):
+    """Update schema for Relay object."""
+
+    on: bool = Field(description="Indicates if relay is switched on")
