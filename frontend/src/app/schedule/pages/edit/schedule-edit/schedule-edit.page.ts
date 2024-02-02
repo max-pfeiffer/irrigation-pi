@@ -18,14 +18,15 @@ import {
   PickerController,
   ToastController,
 } from '@ionic/angular';
-import { Observable, catchError, of, throwError } from 'rxjs';
+import { Observable, of, switchMap } from 'rxjs';
 import {
-  RelayBoardType,
   Repeat,
+  ScheduleCreate,
+  ScheduleUpdate,
   createSchedule,
 } from '../../../models/scheduler.models';
-import { ScheduleService } from '../../../services/schedule.service';
 import { DisplayStringPipe } from '../../../pipes/display-string.pipe';
+import { ScheduleService } from '../../../services/schedule.service';
 
 @Component({
   selector: 'app-schedule-edit',
@@ -39,13 +40,25 @@ export class ScheduleEditPage implements OnInit {
   public id: number | null = null;
   public addEditForm: FormGroup;
   public repeatOptions: { text: string; value: string }[];
-  public boardTypeOptions: { text: string; value: string }[];
   public hourOptions: { text: string; value: string }[];
   public minuteOptions: { text: string; value: string }[];
   public cancelButton = {
     text: 'Cancel',
     role: 'cancel',
   };
+  public repeatValues: Repeat[] = [
+    'every_day',
+    'weekdays',
+    'weekends',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+  ];
+  public displayStringPipe: DisplayStringPipe;
 
   public constructor(
     public activatedRoute: ActivatedRoute,
@@ -55,20 +68,14 @@ export class ScheduleEditPage implements OnInit {
     public toastController: ToastController,
     public navController: NavController
   ) {
-    this.repeatOptions = Object.entries(Repeat).map(([text, value]) => {
+    this.displayStringPipe = new DisplayStringPipe();
+    this.repeatOptions = this.repeatValues.map((value) => {
       return {
-        text,
+        text: this.displayStringPipe.transform(value),
         value,
       };
     });
-    this.boardTypeOptions = Object.entries(RelayBoardType).map(
-      ([text, value]) => {
-        return {
-          text,
-          value,
-        };
-      }
-    );
+
     this.hourOptions = [...Array(24)].map((_, index) => {
       const hour = String(index).padStart(2, '0');
       return {
@@ -85,22 +92,18 @@ export class ScheduleEditPage implements OnInit {
     });
 
     this.addEditForm = new FormGroup({
-      start_time: new FormControl('', [
+      start_time: new FormControl<string>('', [
         Validators.required,
         Validators.pattern('^[0-9]{1,2}:[0-9]{1,2}$'),
       ]),
-      duration: new FormControl(1, [
+      duration: new FormControl<number>(1, [
         Validators.min(1),
         Validators.required,
         Validators.pattern('^[0-9]+$'),
       ]),
-      repeat: new FormControl(Repeat.EveryDay, Validators.required),
-      active: new FormControl(true, Validators.required),
-      relay_board_type: new FormControl(
-        RelayBoardType.WaveshareRpiRelayBoard,
-        Validators.required
-      ),
-      relay_position: new FormControl(1, [
+      repeat: new FormControl<Repeat>('every_day', Validators.required),
+      active: new FormControl<boolean>(true, Validators.required),
+      relay_position: new FormControl<number>(1, [
         Validators.min(1),
         Validators.pattern('^[0-9]+$'),
       ]),
@@ -111,13 +114,16 @@ export class ScheduleEditPage implements OnInit {
     this.id = parseInt(
       this.activatedRoute.snapshot.paramMap.get('id') as string
     );
-    const source = this.id
-      ? this.scheduleService.getSchedule(this.id)
-      : of(createSchedule());
-    source.subscribe((schedule) => {
-      this.addEditForm.patchValue(schedule);
-      this.cdr.detectChanges();
-    });
+    of(createSchedule())
+      .pipe(
+        switchMap((s) =>
+          this.id ? this.scheduleService.getSchedule(this.id) : of(s)
+        )
+      )
+      .subscribe((schedule: ScheduleCreate | ScheduleUpdate) => {
+        this.addEditForm.patchValue(schedule);
+        this.cdr.detectChanges();
+      });
   }
 
   public async openRepeatPicker() {
@@ -187,43 +193,6 @@ export class ScheduleEditPage implements OnInit {
     await picker.present();
   }
 
-  public async openBoardTypePicker() {
-    const picker = await this.pickerCtrl.create({
-      columns: [
-        {
-          name: 'relay_board_type',
-          options: this.boardTypeOptions,
-        },
-      ],
-      buttons: [
-        { ...this.cancelButton },
-        {
-          text: 'Confirm',
-          handler: (data: {
-            relay_board_type: {
-              text: string;
-              value: string;
-              columnIndex: number;
-            };
-          }) => {
-            this.addEditForm.patchValue({
-              relay_board_type: data.relay_board_type.value,
-            });
-            this.cdr.detectChanges();
-          },
-        },
-      ],
-    });
-    (await picker.getColumn('relay_board_type')).selectedIndex =
-      this.boardTypeOptions
-        .map(({ value }) => value)
-        .findIndex(
-          (value) =>
-            value === this.addEditForm?.controls?.['relay_board_type']?.value
-        );
-    await picker.present();
-  }
-
   public onSubmit(): void {
     // console.log(JSON.stringify(this.addEditForm.value));
     if (this.addEditForm.status === 'VALID') {
@@ -236,25 +205,9 @@ export class ScheduleEditPage implements OnInit {
       } else {
         action = this.scheduleService.createSchedule(this.addEditForm.value);
       }
-      action
-        .pipe(
-          catchError((error) => {
-            //todo: toast
-            return throwError(() => error);
-          })
-        )
-        .subscribe(() => {
-          this.toastController
-            .create({
-              message: `Schedule was ${this.id ? 'updated' : 'created'}`,
-              duration: 3000,
-              color: 'success',
-              position: 'bottom',
-            })
-            .then((toastElement) => toastElement.present())
-            .catch(() => {});
-          this.navController.navigateBack(['schedules']).catch(() => {});
-        });
+      action.subscribe(() => {
+        this.navController.navigateBack(['schedules']).catch(() => {});
+      });
     } else {
       this.toastController
         .create({
