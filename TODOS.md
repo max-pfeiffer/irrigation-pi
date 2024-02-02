@@ -1,0 +1,2 @@
+- CORS
+- start_time format HH:MM

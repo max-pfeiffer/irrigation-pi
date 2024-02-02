@@ -1,0 +1,84 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ id ? 'Edit' : 'Create' }} schedule</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="addEditForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <ion-item-group>
+        <!-- Start time -->
+        <ion-item (click)="openStartTimePicker()">
+          <ion-label>Start time:</ion-label>
+          <ion-label class="ion-text-right"
+            >{{ addEditForm?.controls?.['start_time']?.value }}</ion-label
+          >
+        </ion-item>
+
+        <!-- Duration -->
+        <ion-item>
+          <ion-input
+            type="number"
+            step="1"
+            class="ion-text-right"
+            label="Duration:"
+            formControlName="duration"
+          ></ion-input>
+        </ion-item>
+        <div
+          *ngIf="addEditForm.controls?.['duration']?.errors"
+          class="error-msg ion-padding-start ion-padding-end"
+        >
+          Please enter a positive integer.
+        </div>
+
+        <!-- Repeat -->
+        <ion-item (click)="openRepeatPicker()">
+          <ion-label>Repeat:</ion-label>
+          <ion-label class="ion-text-right"
+            >{{ addEditForm?.controls?.['repeat']?.value | displayString
+            }}</ion-label
+          >
+        </ion-item>
+
+        <!-- Relay position -->
+        <ion-item>
+          <ion-input
+            type="number"
+            step="1"
+            class="ion-text-right"
+            label="Relay position:"
+            formControlName="relay_position"
+          ></ion-input>
+        </ion-item>
+        <div
+          *ngIf="addEditForm.controls?.['relay_position']?.errors"
+          class="error-msg ion-padding-start ion-padding-end"
+        >
+          Please enter a positive integer.
+        </div>
+
+        <!-- Board type -->
+        <ion-item (click)="openBoardTypePicker()">
+          <ion-label>Relay board type:</ion-label>
+          <ion-label class="ion-text-right"
+            >{{ addEditForm?.controls?.['relay_board_type']?.value |
+            displayString }}</ion-label
+          >
+        </ion-item>
+
+        <!-- Active -->
+        <ion-item>
+          <ion-toggle justify="space-between" formControlName="active"
+            >Active</ion-toggle
+          >
+        </ion-item>
+      </ion-item-group>
+    </ion-list>
+    <ion-button expand="block" type="submit" color="danger">SAVE</ion-button>
+  </form>
+</ion-content>
