@@ -43,7 +43,7 @@ def update_schedule(request: Request, primary_key: int, schedule_data: ScheduleU
     """Update Schedule."""
     service_update_schedule(
         request.app.state.scheduler,
-        primary_key=primary_key,
+        primary_key,
         **schedule_data.model_dump(exclude_defaults=True),
     )
 

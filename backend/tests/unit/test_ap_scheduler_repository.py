@@ -17,27 +17,28 @@ async def test_create_trigger_data(repeat: Repeat):
     :param Repeat repeat:
     :return:
     """
-    hour: int = randint(0, 23)
-    minute: int = randint(0, 59)
+    start_hour: int = randint(0, 23)
+    start_minute: int = randint(0, 59)
+
+    stop_hour: int = randint(0, 23)
+    stop_minute: int = randint(0, 59)
+
     job_data: dict = {
-        "start_time": time(hour=hour, minute=minute, tzinfo=timezone.utc),
-        "duration": randint(1, 1440),
+        "start_time": time(hour=start_hour, minute=start_minute, tzinfo=timezone.utc),
+        "stop_time": time(hour=stop_hour, minute=stop_minute, tzinfo=timezone.utc),
         "repeat": repeat,
-        "active": True,
-        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
-        "relay_position": 1,
     }
 
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(AsyncIOScheduler())
-    start_data, stop_data = ap_repo._create_trigger_data(job_data)
+    start_data, stop_data = ap_repo._create_trigger_data(**job_data)
 
-    assert start_data["hour"] == hour
-    assert start_data["minute"] == minute
+    assert start_data["hour"] == start_hour
+    assert start_data["minute"] == start_minute
     assert start_data["day"] == "*"
     assert start_data["month"] == "*"
 
-    # assert stop_data["hour"] == hour
-    # assert stop_data["minute"] == minute
+    assert stop_data["hour"] == stop_hour
+    assert stop_data["minute"] == stop_minute
     assert stop_data["day"] == "*"
     assert stop_data["month"] == "*"
 
@@ -90,19 +91,21 @@ async def test_create_schedule():
     """
     job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
-        "duration": 10,
+        "stop_time": time(hour=23, minute=20, tzinfo=timezone.utc),
         "repeat": Repeat.every_day,
-        "active": True,
-        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
         "relay_position": 1,
     }
 
     scheduler = AsyncIOScheduler()
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    ap_repo.create(job_data)
+    start_job_id, stop_job_id = ap_repo.create(**job_data)
+    updated_job_data_ids: list[str] = [start_job_id, stop_job_id]
+
     jobs: list[Job] = scheduler.get_jobs()
+    job_ids: list[int] = [job.id for job in jobs]
 
     assert len(jobs) == 2
+    assert not set(updated_job_data_ids).difference(set(job_ids))
 
 
 async def test_create_multiple_schedules():
@@ -113,32 +116,28 @@ async def test_create_multiple_schedules():
     job_data: list[dict] = [
         {
             "start_time": time(hour=2, minute=57, tzinfo=timezone.utc),
-            "duration": 10,
+            "stop_time": time(hour=3, minute=20, tzinfo=timezone.utc),
             "repeat": Repeat.every_day,
-            "active": True,
-            "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
             "relay_position": 1,
         },
         {
             "start_time": time(hour=14, minute=10, tzinfo=timezone.utc),
-            "duration": 10,
+            "stop_time": time(hour=15, minute=20, tzinfo=timezone.utc),
             "repeat": Repeat.friday,
-            "active": True,
-            "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
             "relay_position": 1,
         },
         {
             "start_time": time(hour=22, minute=53, tzinfo=timezone.utc),
-            "duration": 10,
+            "stop_time": time(hour=23, minute=20, tzinfo=timezone.utc),
             "repeat": Repeat.weekends,
-            "active": True,
-            "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
             "relay_position": 1,
         },
     ]
     scheduler = AsyncIOScheduler()
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    ap_repo.create_multiple(job_data)
+
+    for data in job_data:
+        ap_repo.create(**data)
     jobs: list[Job] = scheduler.get_jobs()
 
     assert len(jobs) == 6
@@ -151,21 +150,20 @@ async def test_delete_schedule():
     """
     job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
-        "duration": 10,
+        "stop_time": time(hour=21, minute=14, tzinfo=timezone.utc),
         "repeat": Repeat.every_day,
-        "active": True,
-        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
         "relay_position": 1,
     }
 
     scheduler = AsyncIOScheduler()
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    created_job_data: dict = ap_repo.create(job_data)
+    start_job_id, stop_job_id = ap_repo.create(**job_data)
 
     jobs: list[Job] = scheduler.get_jobs()
     assert len(jobs) == 2
 
-    ap_repo.delete(created_job_data)
+    ap_repo.delete(start_job_id)
+    ap_repo.delete(stop_job_id)
     jobs: list[Job] = scheduler.get_jobs()
     assert not jobs
 
@@ -177,23 +175,31 @@ async def test_update_schedule():
     """
     job_data: dict = {
         "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
-        "duration": 10,
+        "stop_time": time(hour=22, minute=34, tzinfo=timezone.utc),
         "repeat": Repeat.every_day,
-        "active": True,
-        "relay_board_type": RelayBoardType.waveshare_rpi_relay_board,
         "relay_position": 1,
     }
 
     scheduler = AsyncIOScheduler()
     ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-    created_job_data: dict = ap_repo.create(job_data)
+    start_job_id, stop_job_id = ap_repo.create(**job_data)
 
     jobs: list[Job] = scheduler.get_jobs()
     assert len(jobs) == 2
 
-    created_job_data["relay_position"] = 2
-    ap_repo.update(created_job_data)
+    job_data_update: dict = {
+        "start_time": time(hour=4, minute=10, tzinfo=timezone.utc),
+        "stop_time": time(hour=5, minute=34, tzinfo=timezone.utc),
+        "repeat": Repeat.every_day,
+        "relay_position": 2,
+    }
 
-    jobs: list[Job] = scheduler.get_jobs()
-    assert len(jobs) == 2
-    assert len([job for job in jobs if job.args[0] == 2]) == 2
+    new_start_job_id, new_stop_job_id = ap_repo.update(
+        **job_data_update, start_job_id=start_job_id, stop_job_id=stop_job_id
+    )
+    assert start_job_id != new_start_job_id
+    assert stop_job_id != new_stop_job_id
+
+    updated_jobs: list[Job] = scheduler.get_jobs()
+    assert len(updated_jobs) == 2
+    assert len([job for job in updated_jobs if job.args[0] == 2]) == 2
