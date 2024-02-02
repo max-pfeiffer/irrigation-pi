@@ -14,9 +14,15 @@ Contributions for other boards are warmly welcome.
 
 ## Features
 * Add schedules for switching the relays
-* Relays are switches automatically according to the schedules
+* Relays are switched automatically according to the schedules
 * [FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) with self documenting REST API written in Python
 * [Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript
+
+## Todos
+The application is currently under heavy development. Current tasks/features are still to do:
+* fix CORS header for frontend application
+* simplify start_time format HH:MM
+
 
 ## Installation
 [Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
@@ -29,13 +35,13 @@ Configure poetry to install virtual environments in project folders:
 poetry config virtualenvs.in-project true
 ```
 
-In project root install Python package dependencies with Poetry:
+In project root install Python package dependencies with Poetry and create a virtual environment:
 ```shell
 poetry install
 ```
 
-Now you are able to use the projects management CLI after activating the virtual environment.
-Activate virtual environment, then install backend dependencies and database:
+After creating the virtual environment you are able to use the project's management CLI.
+Activate virtual environment, then install the [SQLite](https://www.sqlite.org/) database:
 ```shell
 source .venv/bin/activate
 manage install backend-database
