@@ -1,7 +1,5 @@
 """Tests for API root."""
 import pytest
-from app.api.v1.endpoints import schedule
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi.testclient import TestClient
 from httpx import Response
 from starlette import status
@@ -21,7 +19,7 @@ TEST_DATA: list[dict] = [
         "path": "/v1/schedule",
         "method": "post",
         "data": {
-            "start_time": "17:46:58.338Z",
+            "start_time": "23:46:58.338Z",
             "duration": 10,
             "repeat": "every_day",
             "active": True,
@@ -37,7 +35,7 @@ TEST_DATA: list[dict] = [
     {
         "path": "/v1/schedule/1",
         "method": "put",
-        "data": {"active": False},
+        "data": {"relay_position": 3},
     },
     {
         "path": "/v1/schedule/1",
@@ -60,32 +58,6 @@ TEST_DATA: list[dict] = [
 @pytest.mark.parametrize("test_data", TEST_DATA)
 def test_root_options(test_client: TestClient, test_data: dict, monkeypatch):
     """Test API endpoints."""
-
-    def fake_service_update_schedule(scheduler: AsyncIOScheduler, **kwargs):
-        """Fake service function.
-
-        :param scheduler:
-        :param kwargs:
-        :return:
-        """
-        pass
-
-    def fake_service_delete_schedule(scheduler: AsyncIOScheduler, primary_key: int):
-        """Fake service function.
-
-        :param scheduler:
-        :param primary_key:
-        :return:
-        """
-        pass
-
-    monkeypatch.setattr(
-        schedule, "service_update_schedule", fake_service_update_schedule
-    )
-    monkeypatch.setattr(
-        schedule, "service_delete_schedule", fake_service_delete_schedule
-    )
-
     method: str = test_data["method"]
     path: str = test_data["path"]
     data: str = test_data["data"]

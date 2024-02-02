@@ -17,7 +17,7 @@ class ApplicationSettings(BaseSettings):
     database_name: str = "sqlite"
 
     @computed_field
-    def database_uri(self) -> str:
+    def  database_uri(self) -> str:
         """URI for database connection.
 
         :return:
