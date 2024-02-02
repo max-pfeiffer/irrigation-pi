@@ -30,7 +30,7 @@ jobs:
       - name: Run ruff
         run: |
           source .venv/bin/activate
-          ruff check --config pyproject.toml .
+          ruff check --config pyproject.toml manage backend
 
   run-tests:
     needs: code-quality    
@@ -48,24 +48,22 @@ jobs:
           version: 1.7.1
           virtualenvs-in-project: true
       - name: Load cached venv
-        id: cached-backend-dependencies
+        id: cached-dependencies
         uses: actions/cache@v4
         with:
-          path: backend/.venv
-          key: backend-venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
-      - name: Install backend dependencies
-        if: steps.cached-backend-dependencies.outputs.cache-hit != 'true'
-        working-directory: ./backend
+          path: .venv
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('**/poetry.lock') }}
+      - name: Install dependencies
+        if: steps.cached-dependencies.outputs.cache-hit != 'true'
         run: |
           poetry install --no-interaction --no-root
       - name: Run all tests with pytest
-        working-directory: ./backend
         run: |
           source .venv/bin/activate
           pytest --cov --cov-report=xml:coverage_report.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
-          files: backend/coverage_report.xml
+          files: coverage_report.xml
           fail_ci_if_error: true
           token: ${{ secrets.CODECOV_TOKEN }}
