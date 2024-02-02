@@ -19,11 +19,10 @@ def monkeypatch_session() -> MonkeyPatch:
         yield mp
 
 
-
 @pytest.fixture(scope="session")
-def test_database(monkeypatch_session):
+def api_test_database(monkeypatch_session: MonkeyPatch):
     """Create a test database."""
-    database_name: str = "test_database"
+    database_name: str = "api_test"
     monkeypatch_session.setenv("database_name", database_name)
     monkeypatch_session.setattr(application_settings, "database_name", database_name)
 
@@ -43,7 +42,7 @@ def test_database(monkeypatch_session):
 
 
 @pytest.fixture(scope="session")
-def test_client(test_database: str) -> TestClient:
+def test_client(api_test_database: str) -> TestClient:
     """Provides test client for API tests."""
     from app.main import app
 
