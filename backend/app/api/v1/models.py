@@ -4,7 +4,6 @@ from typing import Union
 
 from pydantic import BaseModel, Field, PositiveInt
 
-from app.adapters import RelayBoardType
 from app.scheduling import Repeat
 
 
@@ -16,8 +15,6 @@ class ScheduleResponse(BaseModel):
     duration: PositiveInt = Field(description="Duration in minutes")
     repeat: Repeat = Field(description="Specifies how the schedule is repeated")
     active: bool = Field(description="Whether the schedule is active")
-    relay_board_type: RelayBoardType = Field(description="Type of the relay board")
-    relay_position: PositiveInt = Field(description="Position of the relay")
 
 
 class ScheduleCreate(BaseModel):
@@ -27,7 +24,6 @@ class ScheduleCreate(BaseModel):
     duration: PositiveInt = Field(description="Duration in minutes")
     repeat: Repeat = Field(description="Specifies how the schedule is repeated")
     active: bool = Field(default=True, description="Whether the schedule is active")
-    relay_board_type: RelayBoardType = Field(description="Type of the relay board")
     relay_position: PositiveInt = Field(description="Position of the relay")
 
 
@@ -46,9 +42,6 @@ class ScheduleUpdate(BaseModel):
     active: Union[bool, None] = Field(
         default=None, description="Whether the schedule is active"
     )
-    relay_board_type: Union[RelayBoardType, None] = Field(
-        default=None, description="Type of the relay board"
-    )
     relay_position: Union[PositiveInt, None] = Field(
         default=None, description="Position of the relay"
     )
@@ -58,4 +51,10 @@ class Relay(BaseModel):
     """Response schema for Relay object."""
 
     position: PositiveInt = Field(description="Relay position on the board")
+    on: bool = Field(description="Indicates if relay is switched on")
+
+
+class RelayUpdate(BaseModel):
+    """Update schema for Relay object."""
+
     on: bool = Field(description="Indicates if relay is switched on")

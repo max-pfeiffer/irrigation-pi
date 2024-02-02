@@ -16,8 +16,7 @@ def test_relay_board_adapter() -> None:
     fake_relay_3: FakeRelay = FakeRelay()
 
     fake_adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
-        pin_factory=MockFactory(),
-        relays=[fake_relay_1, fake_relay_2, fake_relay_3]
+        pin_factory=MockFactory(), relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
     fake_adapter.on(1)
     assert fake_relay_1.value == 1
@@ -48,8 +47,7 @@ def test_relay_board_adapter_fails() -> None:
     fake_relay_3: FakeRelay = FakeRelay()
 
     fake_adapter: WaveshareRpiRelayBoardAdapter = WaveshareRpiRelayBoardAdapter(
-        pin_factory=MockFactory(),
-        relays=[fake_relay_1, fake_relay_2, fake_relay_3]
+        pin_factory=MockFactory(), relays=[fake_relay_1, fake_relay_2, fake_relay_3]
     )
 
     with pytest.raises(ValueError):

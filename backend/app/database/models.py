@@ -5,7 +5,6 @@ from typing import Optional
 from pydantic import PositiveInt
 from sqlmodel import Field, SQLModel
 
-from app.adapters import RelayBoardType
 from app.scheduling import Repeat
 
 
@@ -19,10 +18,10 @@ class Schedule(BaseModel, table=True):
     """Schedule."""
 
     start_time: time
+    stop_time: time
     duration: PositiveInt
     repeat: Repeat
     active: bool
-    relay_board_type: RelayBoardType
     relay_position: PositiveInt
-    start_schedule_id: Optional[str]
-    stop_schedule_id: Optional[str]
+    start_job_id: Optional[str]
+    stop_job_id: Optional[str]

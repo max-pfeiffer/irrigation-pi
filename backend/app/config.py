@@ -17,7 +17,7 @@ class ApplicationSettings(BaseSettings):
     database_name: str = "sqlite"
 
     @computed_field
-    def database_uri(self) -> str:
+    def  database_uri(self) -> str:
         """URI for database connection.
 
         :return:
@@ -57,9 +57,11 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
 
         if pin_factory_type == "rpi_gpio":
             from gpiozero.pins.rpigpio import RPiGPIOFactory
+
             pin_factory = RPiGPIOFactory()
         elif pin_factory_type == "pigpio":
             from gpiozero.pins.pigpio import PiGPIOFactory
+
             pin_factory = PiGPIOFactory()
         elif pin_factory_type == "native":
             pin_factory = NativeFactory()

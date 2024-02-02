@@ -40,13 +40,17 @@ class WaveshareRpiRelayBoardAdapter(RelayBoardAdapter):
             ]
         self.relays: list[Relay] = relays
 
-    def get_relay(self, relay_position: int):
+    def get_relay(self, relay_position: int) -> Relay:
         """Return the relay object at the desired position."""
         if relay_position not in self.relay_position_mapping.keys():
             raise ValueError("Invalid relay position")
 
         relay: Relay = self.relays[self.relay_position_mapping[relay_position]]
         return relay
+
+    def get_relays(self) -> list[Relay]:
+        """Return all relay objects."""
+        return self.relays
 
     def on(self, relay_position: int):
         """Turn on relay at relay_position.

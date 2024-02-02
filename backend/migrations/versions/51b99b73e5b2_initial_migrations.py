@@ -1,8 +1,8 @@
 """Initial Migrations
 
-Revision ID: d75cb1febed1
+Revision ID: 51b99b73e5b2
 Revises: 
-Create Date: 2024-01-26 21:25:56.550633
+Create Date: 2024-02-02 00:25:17.824043
 
 """
 from typing import Sequence, Union
@@ -13,7 +13,7 @@ import sqlmodel
 
 
 # revision identifiers, used by Alembic.
-revision: str = 'd75cb1febed1'
+revision: str = '51b99b73e5b2'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -24,13 +24,13 @@ def upgrade() -> None:
     op.create_table('schedule',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('start_time', sa.Time(), nullable=False),
+    sa.Column('stop_time', sa.Time(), nullable=False),
     sa.Column('duration', sa.Integer(), nullable=False),
     sa.Column('repeat', sa.Enum('every_day', 'weekdays', 'weekends', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', name='repeat'), nullable=False),
     sa.Column('active', sa.Boolean(), nullable=False),
-    sa.Column('relay_board_type', sa.Enum('waveshare_rpi_relay_board', name='relayboardtype'), nullable=False),
     sa.Column('relay_position', sa.Integer(), nullable=False),
-    sa.Column('start_schedule_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
-    sa.Column('stop_schedule_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('start_job_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
+    sa.Column('stop_job_id', sqlmodel.sql.sqltypes.AutoString(), nullable=True),
     sa.PrimaryKeyConstraint('id')
     )
     # ### end Alembic commands ###
