@@ -44,12 +44,18 @@ After creating the virtual environment you are able to use the project's managem
 Activate virtual environment, then install the [SQLite](https://www.sqlite.org/) database:
 ```shell
 source .venv/bin/activate
-manage install backend-database
+manage install database
 ```
 
 Start the backend application:
 ```shell
 manage run backend
 ```
-
 The backend application is running afterwards and is accessible on: http://0.0.0.0:8000 
+
+Start the frontend application in another terminal:
+```shell
+manage run frontend
+```
+The frontend application is running afterwards and is accessible on: http://0.0.0.0:8100
+
