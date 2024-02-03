@@ -4,6 +4,7 @@ import click
 
 from manage.utils import (
     BACKEND_PATH,
+    FRONTEND_PATH,
     VIRTUAL_ENVIRONMENT_PATH,
     activate_virtual_environment,
     run_subprocess,
@@ -30,4 +31,19 @@ def backend():
         ],
         cwd=BACKEND_PATH,
         env=env,
+    )
+
+
+@click.command()
+def frontend():
+    """Run frontend application.
+
+    :return:
+    """
+    run_subprocess(
+        [
+            "ionic",
+            "serve",
+        ],
+        cwd=FRONTEND_PATH,
     )
