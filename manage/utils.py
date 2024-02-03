@@ -10,6 +10,7 @@ import click
 PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
 VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / ".venv"
 BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
+FRONTEND_PATH: Path = PROJECT_ROOT_PATH / "frontend"
 
 
 def run_subprocess(
