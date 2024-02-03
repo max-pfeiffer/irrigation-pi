@@ -98,7 +98,9 @@ class ApSchedulerRepository:
     ) -> tuple[dict, dict]:
         """Create trigger date from Schedule object.
 
-        :param dict schedule_data:
+        :param time start_time:
+        :param time stop_time:
+        :param Repeat repeat:
         :return dict:
         """
         start_data: dict = {
@@ -157,7 +159,10 @@ class ApSchedulerRepository:
     ) -> Tuple[str, str]:
         """Add a trigger to the scheduler.
 
-        :param dict schedule_data:
+        :param time start_time:
+        :param time stop_time:
+        :param Repeat repeat:
+        :param int relay_position:
         :return:
         """
         start_data, stop_data = self._create_trigger_data(start_time, stop_time, repeat)
@@ -182,7 +187,7 @@ class ApSchedulerRepository:
     def delete(self, primary_key: str):
         """Add a trigger to the scheduler.
 
-        :param dict schedule_data:
+        :param int primary_key:
         :return:
         """
         self.scheduler.remove_job(primary_key)
@@ -198,7 +203,12 @@ class ApSchedulerRepository:
     ) -> Tuple[str, str]:
         """Add a trigger to the scheduler.
 
-        :param dict schedule_data:
+        :param time start_time:
+        :param time stop_time:
+        :param Repeat repeat:
+        :param int relay_position:
+        :param str start_job_id:
+        :param str stop_job_id:
         :return:
         """
         self.delete(start_job_id)

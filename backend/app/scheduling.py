@@ -3,6 +3,7 @@ from datetime import datetime
 from enum import Enum
 
 from app.config import relayBoardAdapter
+from app.services.relay import service_update_relay
 
 
 class Repeat(str, Enum):
@@ -28,7 +29,4 @@ def task_switch_relay(relay_position: int, on: bool):
     :return:
     """
     print(f"position:{relay_position} on:{on}, {datetime.now()}]")
-    if on:
-        relayBoardAdapter.on(relay_position)
-    else:
-        relayBoardAdapter.off(relay_position)
+    service_update_relay(relayBoardAdapter, relay_position, on)

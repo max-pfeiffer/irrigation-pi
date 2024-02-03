@@ -3,17 +3,21 @@ from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi import FastAPI, Request, status
+from fastapi.concurrency import run_in_threadpool
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import RedirectResponse
 from furl import furl
 
 from app.api.v1.api import api_router
+from app.services.jobs import service_recreate_jobs
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Lifespan context."""
     app.state.scheduler = AsyncIOScheduler()
+    await run_in_threadpool(service_recreate_jobs, app.state.scheduler)
+
     try:
         app.state.scheduler.start()
         yield
