@@ -21,8 +21,8 @@ def install_poetry():
     )
 
 
-@click.command(name="backend-database")
-def install_backend_database():
+@click.command(name="database")
+def install_database():
     """Install backend database.
 
     :return:
