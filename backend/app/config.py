@@ -14,7 +14,7 @@ from app.adapters import WaveshareRpiRelayBoardAdapter
 class ApplicationSettings(BaseSettings):
     """Application settings."""
 
-    database_name: str = "sqlite"
+    database_name: str = "backend"
 
     @computed_field
     def database_uri(self) -> str:
