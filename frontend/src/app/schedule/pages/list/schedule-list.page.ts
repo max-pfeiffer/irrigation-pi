@@ -3,14 +3,21 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { IonicModule, NavController, ViewDidEnter } from '@ionic/angular';
+import {
+  IonList,
+  IonicModule,
+  NavController,
+  ViewDidEnter,
+} from '@ionic/angular';
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { ScheduleTileComponent } from '../../components/tile/schedule-tile/schedule-tile.component';
 import { ScheduleResponse } from '../../models/scheduler.models';
 import { ScheduleService } from '../../services/schedule.service';
+import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-list',
@@ -21,6 +28,10 @@ import { ScheduleService } from '../../services/schedule.service';
   imports: [IonicModule, CommonModule, ScheduleTileComponent],
 })
 export class ScheduleListPage implements ViewDidEnter {
+  @ViewChild('scheduleList')
+  public scheduleList: IonList;
+  public schedules: ScheduleResponse[] = [];
+
   constructor(
     public schedulerService: ScheduleService,
     public cdr: ChangeDetectorRef,
@@ -32,19 +43,22 @@ export class ScheduleListPage implements ViewDidEnter {
     });
   }
 
-  public scheduleList: ScheduleResponse[] = [];
-
   public ionViewDidEnter(): void {
     this.refreshList();
   }
 
   public refreshList(): void {
-    this.schedulerService.getSchedules().subscribe({
-      next: (_scheduleList: ScheduleResponse[]) => {
-        this.scheduleList = _scheduleList;
-        this.cdr.detectChanges();
-      },
-    });
+    this.schedulerService
+      .getSchedules()
+      .pipe(
+        finalize(() => this.scheduleList.closeSlidingItems().catch(() => {}))
+      )
+      .subscribe({
+        next: (_schedules: ScheduleResponse[]) => {
+          this.schedules = _schedules;
+          this.cdr.detectChanges();
+        },
+      });
   }
 
   public addSchedule(): void {

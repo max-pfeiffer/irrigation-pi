@@ -13,8 +13,8 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-list>
-    @for (schedule of scheduleList; track schedule.id) {
+  <ion-list #scheduleList>
+    @for (schedule of schedules; track schedule.id) {
     <app-schedule-tile
       [schedule]="schedule"
       (refreshList)="refreshList()"
