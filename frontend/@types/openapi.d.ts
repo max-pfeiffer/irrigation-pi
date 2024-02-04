@@ -110,6 +110,11 @@ declare namespace Components {
              * Whether the schedule is active
              */
             active: boolean;
+            /**
+             * Relay Position
+             * Position of the relay
+             */
+            relay_position: number;
         }
         /**
          * ScheduleUpdate
