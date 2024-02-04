@@ -20,11 +20,10 @@ Contributions for other boards are warmly welcome.
 
 ## Todos
 The application is currently under heavy development. Current tasks/features are still to do:
-* fix CORS header for frontend application
-* simplify start_time format HH:MM
+* automate installation on Raspberry Pi
 
 
-## Installation
+## Installation for Development
 [Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
 ```shell
 curl -sSL https://install.python-poetry.org | python3 -
@@ -53,9 +52,11 @@ manage run backend
 ```
 The backend application is running afterwards and is accessible on: http://0.0.0.0:8000 
 
-Start the frontend application in another terminal:
+After environment and development setup for [frontend application](frontend/README.md), you can start the frontend application in another terminal:
 ```shell
 manage run frontend
 ```
 The frontend application is running afterwards and is accessible on: http://0.0.0.0:8100
 
+## Installation on Raspberry Pi
+Coming soon.
