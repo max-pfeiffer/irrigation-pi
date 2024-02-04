@@ -2,6 +2,7 @@
 from pathlib import Path
 from typing import Optional
 
+import semver
 import toml
 from gpiozero.pins.mock import MockFactory
 from gpiozero.pins.native import NativeFactory
@@ -14,11 +15,14 @@ from app.adapters import WaveshareRpiRelayBoardAdapter
 class ApplicationSettings(BaseSettings):
     """Application settings."""
 
+    title: str = "Irrigation Pi"
+    description: str = "REST API of Irrigation Pi backend application."
+    version: str = "1.0.0"
     database_name: str = "backend"
 
     @computed_field
     def database_uri(self) -> str:
-        """URI for database connection.
+        """URI for SQLite database connection.
 
         :return:
         """
@@ -28,6 +32,15 @@ class ApplicationSettings(BaseSettings):
             / f"{self.database_name}.db"
         )
         return f"sqlite:///{db_path!s}"
+
+    @computed_field
+    def api_prefix(self) -> str:
+        """Return API prefix.
+
+        :return:
+        """
+        version = semver.Version.parse(self.version)
+        return f"/v{version.major}"
 
 
 application_settings = ApplicationSettings()
@@ -67,6 +80,8 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
             pin_factory = PiGPIOFactory()
         elif pin_factory_type == "native":
             pin_factory = NativeFactory()
+        else:
+            raise Exception("Invalid pin_factory_type in config file")
     else:
         # This MockFactory is used for development purposes. If application is
         # not run on a Raspberry Pi and the pin hardware with low level drivers

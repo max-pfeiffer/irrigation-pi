@@ -9,6 +9,7 @@ from fastapi.responses import RedirectResponse
 from furl import furl
 
 from app.api.v1.api import api_router
+from app.config import application_settings
 from app.services.jobs import service_recreate_jobs
 
 
@@ -25,7 +26,12 @@ async def lifespan(app: FastAPI):
         app.state.scheduler.shutdown()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title=application_settings.title,
+    description=application_settings.description,
+    version=application_settings.version,
+    lifespan=lifespan,
+)
 
 app.add_middleware(
     CORSMiddleware,
@@ -50,4 +56,4 @@ def redirect_to_autodocs(request: Request) -> RedirectResponse:
     )
 
 
-app.include_router(api_router, prefix="/v1")
+app.include_router(api_router, prefix=application_settings.api_prefix)
