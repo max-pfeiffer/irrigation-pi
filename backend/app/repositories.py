@@ -1,6 +1,6 @@
 """Repositories for data persistence."""
 from datetime import time
-from typing import Tuple
+from typing import Optional, Tuple
 
 from apscheduler.job import Job
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -154,6 +154,18 @@ class ApSchedulerRepository:
 
         return start_data, stop_data
 
+    def exists(self, primary_key: str) -> bool:
+        """Check if job with the specified primary_key exists.
+
+        :param primary_key:
+        :return:
+        """
+        result: Optional[Job] = self.scheduler.get_job(primary_key)
+        if result is None:
+            return False
+        else:
+            return True
+
     def create(
         self, start_time: time, stop_time: time, repeat: Repeat, relay_position: int
     ) -> Tuple[str, str]:
@@ -191,29 +203,3 @@ class ApSchedulerRepository:
         :return:
         """
         self.scheduler.remove_job(primary_key)
-
-    def update(
-        self,
-        start_time: time,
-        stop_time: time,
-        repeat: Repeat,
-        relay_position: int,
-        start_job_id: str,
-        stop_job_id: str,
-    ) -> Tuple[str, str]:
-        """Add a trigger to the scheduler.
-
-        :param time start_time:
-        :param time stop_time:
-        :param Repeat repeat:
-        :param int relay_position:
-        :param str start_job_id:
-        :param str stop_job_id:
-        :return:
-        """
-        self.delete(start_job_id)
-        self.delete(stop_job_id)
-        return_data: Tuple[str, str] = self.create(
-            start_time, stop_time, repeat, relay_position
-        )
-        return return_data

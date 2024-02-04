@@ -123,6 +123,9 @@ def service_update_schedule(scheduler: AsyncIOScheduler, primary_key: int, **kwa
         schedule: Schedule = repo.get(primary_key)
 
         ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+        for job_id in [schedule.start_job_id, schedule.stop_job_id]:
+            if ap_repo.exists(job_id):
+                ap_repo.delete(job_id)
 
         data: dict = schedule.model_dump()
         for key, value in kwargs.items():
@@ -133,22 +136,16 @@ def service_update_schedule(scheduler: AsyncIOScheduler, primary_key: int, **kwa
 
         if data["active"]:
             stop_time: time = calculate_stop_time(data["start_time"], data["duration"])
-            new_start_job_id, new_stop_job_id = ap_repo.update(
-                data["start_time"],
-                stop_time,
-                data["repeat"],
-                data["relay_position"],
-                schedule.start_job_id,
-                schedule.stop_job_id,
+            start_job_id, stop_job_id = ap_repo.create(
+                start_time=data["start_time"],
+                stop_time=stop_time,
+                repeat=data["repeat"],
+                relay_position=data["relay_position"],
             )
             data["stop_time"] = stop_time
-            data["start_job_id"] = new_start_job_id
-            data["stop_job_id"] = new_stop_job_id
+            data["start_job_id"] = start_job_id
+            data["stop_job_id"] = stop_job_id
         else:
-            if data["start_job_id"]:
-                ap_repo.delete(schedule.start_job_id)
-            if data["stop_job_id"]:
-                ap_repo.delete(schedule.stop_job_id)
             data["start_job_id"] = None
             data["stop_job_id"] = None
 
@@ -166,8 +163,9 @@ def service_delete_schedule(scheduler: AsyncIOScheduler, primary_key: int):
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.get(primary_key)
 
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        ap_repo.delete(schedule.start_job_id)
-        ap_repo.delete(schedule.stop_job_id)
+        if schedule.active:
+            ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+            ap_repo.delete(schedule.start_job_id)
+            ap_repo.delete(schedule.stop_job_id)
 
         repo.delete(primary_key)
