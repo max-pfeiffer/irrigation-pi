@@ -184,7 +184,7 @@ export class ScheduleEditPage implements OnInit {
       ],
     });
     const match = this.addEditForm?.controls?.['start_time']?.value?.match(
-      /([0-9]{1,2}):([0-9]{1,2})/
+      /^([0-9]{1,2}):([0-9]{1,2})/
     );
     if (match) {
       (await picker.getColumn('hour')).selectedIndex = parseInt(match[1]);
