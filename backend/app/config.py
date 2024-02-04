@@ -15,8 +15,8 @@ from app.adapters import WaveshareRpiRelayBoardAdapter
 class ApplicationSettings(BaseSettings):
     """Application settings."""
 
-    title: str = "Irrigation Pi Backend"
-    description: str = "REST API of Irrigation Pi application"
+    title: str = "Irrigation Pi"
+    description: str = "REST API of Irrigation Pi backend application."
     version: str = "1.0.0"
     database_name: str = "backend"
 
