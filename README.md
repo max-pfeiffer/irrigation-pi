@@ -20,6 +20,7 @@ Contributions for other boards are warmly welcome.
 
 ## Todos
 The application is currently under heavy development. Current tasks/features are still to do:
+* generate and handle static files from frontend application
 * automate installation on Raspberry Pi
 
 
