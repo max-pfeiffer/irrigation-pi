@@ -13,11 +13,23 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import {
-  IonicModule,
+  IonBackButton,
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonInput,
+  IonItem,
+  IonItemGroup,
+  IonLabel,
+  IonList,
+  IonTitle,
+  IonToggle,
+  IonToolbar,
   NavController,
   PickerController,
   ToastController,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
 import { Observable, of, switchMap } from 'rxjs';
 import {
   Repeat,
@@ -34,7 +46,24 @@ import { ScheduleService } from '../../../services/schedule.service';
   styleUrls: ['./schedule-edit.page.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule, DisplayStringPipe],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    DisplayStringPipe,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonBackButton,
+    IonTitle,
+    IonContent,
+    IonList,
+    IonItemGroup,
+    IonItem,
+    IonLabel,
+    IonButton,
+    IonInput,
+    IonToggle,
+  ],
 })
 export class ScheduleEditPage implements OnInit {
   public id: number | null = null;

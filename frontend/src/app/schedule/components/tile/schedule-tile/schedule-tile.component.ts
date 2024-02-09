@@ -9,7 +9,16 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { AlertController, IonicModule, NavController } from '@ionic/angular';
+import {
+  AlertController,
+  IonChip,
+  IonIcon,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
+  IonLabel,
+  NavController,
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { trash } from 'ionicons/icons';
 import { finalize } from 'rxjs';
@@ -24,11 +33,16 @@ import { ScheduleService } from '../../../services/schedule.service';
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    IonicModule,
     CommonModule,
     FormsModule,
     RouterLink,
     DisplayStringPipe,
+    IonItemSliding,
+    IonLabel,
+    IonChip,
+    IonItemOptions,
+    IonItemOption,
+    IonIcon,
   ],
 })
 export class ScheduleTileComponent {
