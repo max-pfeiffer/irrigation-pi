@@ -49,4 +49,12 @@ openapi typegen http://localhost:8000/openapi.json > frontend/@types/openapi.d.t
 nvm use lts/iron
 cd frontend && ionic build
 ```
-The frontend application is compiled to static HTML and JavaScript files into the `fronted/www` directory. It can be served using a web server.
+The frontend application is compiled to static HTML and JavaScript files into the `fronted/www/browser` directory. It can be served using a web server.
+
+### Testing production build locally
+
+The production build can be served locally to test wether it compiled successfully.
+
+```zsh
+npx http-server --port=8100 --proxy http://localhost:8100\?  www/browser
+```

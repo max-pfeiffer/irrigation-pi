@@ -7,17 +7,25 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
   IonList,
-  IonicModule,
+  IonListHeader,
+  IonMenuButton,
+  IonTitle,
+  IonToolbar,
   NavController,
   ViewDidEnter,
-} from '@ionic/angular';
+} from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
+import { finalize } from 'rxjs';
 import { ScheduleTileComponent } from '../../components/tile/schedule-tile/schedule-tile.component';
 import { ScheduleResponse } from '../../models/scheduler.models';
 import { ScheduleService } from '../../services/schedule.service';
-import { finalize } from 'rxjs';
 
 @Component({
   selector: 'app-schedule-list',
@@ -25,7 +33,20 @@ import { finalize } from 'rxjs';
   styleUrls: ['./schedule-list.page.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [IonicModule, CommonModule, ScheduleTileComponent],
+  imports: [
+    CommonModule,
+    ScheduleTileComponent,
+    IonHeader,
+    IonToolbar,
+    IonButtons,
+    IonMenuButton,
+    IonTitle,
+    IonButton,
+    IonIcon,
+    IonContent,
+    IonListHeader,
+    IonList,
+  ],
 })
 export class ScheduleListPage implements ViewDidEnter {
   @ViewChild('scheduleList')
