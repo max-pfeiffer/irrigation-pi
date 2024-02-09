@@ -5,7 +5,6 @@ import {
   IonApp,
   IonContent,
   IonIcon,
-  IonItem,
   IonLabel,
   IonList,
   IonListHeader,
@@ -16,10 +15,7 @@ import {
   IonSplitPane,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import {
-  timerOutline,
-  timerSharp
-} from 'ionicons/icons';
+import { timerOutline, timerSharp } from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -38,16 +34,13 @@ import {
     IonListHeader,
     IonNote,
     IonMenuToggle,
-    IonItem,
     IonIcon,
     IonLabel,
     IonRouterOutlet,
   ],
 })
 export class AppComponent {
-  public appPages = [
-    { title: 'Schedules', url: '/schedules', icon: 'timer' },
-  ];
+  public appPages = [{ title: 'Schedules', url: '/schedules', icon: 'timer' }];
 
   public constructor() {
     addIcons({
