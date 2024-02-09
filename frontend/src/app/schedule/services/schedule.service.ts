@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular/standalone';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import {
   CreateScheduleRequestBody,
@@ -9,7 +9,6 @@ import {
   ScheduleResponse,
   ScheduleUpdate,
 } from '../models/scheduler.models';
-
 const BASE_PATH = 'http://localhost:8000/v1/schedule';
 
 @Injectable({
