@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastController } from '@ionic/angular/standalone';
+import { environment } from 'frontend/src/environments/environment';
 import { Observable, catchError, map, tap, throwError } from 'rxjs';
 import {
   CreateScheduleRequestBody,
@@ -9,7 +10,8 @@ import {
   ScheduleResponse,
   ScheduleUpdate,
 } from '../models/scheduler.models';
-const BASE_PATH = 'http://localhost:8000/v1/schedule';
+
+const BASE_PATH = '/v1/schedule';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +23,7 @@ export class ScheduleService {
   ) {}
 
   public getSchedule(primaryKey: number): Observable<ScheduleResponse> {
-    const url = new URL(`${BASE_PATH}/${primaryKey}`);
+    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
     return this.httpClient.get<ScheduleResponse>(url.toString()).pipe(
       map((schedule) => this.stripSeconds(schedule)),
       catchError((error) => {
@@ -32,7 +34,7 @@ export class ScheduleService {
   }
 
   public getSchedules(): Observable<ScheduleResponse[]> {
-    const url = new URL(`${BASE_PATH}/`);
+    const url = new URL(`${environment.api.host}${BASE_PATH}/`);
     return this.httpClient.get<ScheduleResponse[]>(url.toString()).pipe(
       map((schedules) => schedules.map((s) => this.stripSeconds(s))),
       catchError((error) => {
@@ -49,7 +51,7 @@ export class ScheduleService {
     schedule: CreateScheduleRequestBody
   ): Observable<CreateScheduleResponse> {
     const scheduleWithSeconds = this.addSeconds(schedule);
-    const url = new URL(`${BASE_PATH}/`);
+    const url = new URL(`${environment.api.host}${BASE_PATH}/`);
     return this.httpClient
       .post<CreateScheduleResponse>(url.toString(), scheduleWithSeconds)
       .pipe(
@@ -68,7 +70,7 @@ export class ScheduleService {
     schedule: ScheduleUpdate
   ): Observable<void> {
     const scheduleWithSeconds = this.addSeconds(schedule);
-    const url = new URL(`${BASE_PATH}/${primaryKey}`);
+    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
     return this.httpClient.put<void>(url.toString(), scheduleWithSeconds).pipe(
       tap(() => {
         this.showToast(`Schedule was updated sucessfully!`, 'success');
@@ -81,7 +83,7 @@ export class ScheduleService {
   }
 
   public deleteSchedule(primaryKey: number): Observable<void> {
-    const url = new URL(`${BASE_PATH}/${primaryKey}`);
+    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
     return this.httpClient.delete<void>(url.toString()).pipe(
       tap(() => {
         this.showToast(`Schedule was deleted sucessfully!`, 'success');
