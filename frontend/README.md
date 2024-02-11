@@ -4,7 +4,7 @@
 
 Install Nodejs using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
-### Install version 20 using nvm
+### Install Nodejs version 20 using nvm
 
 ```shell
 nvm install --lts=iron
@@ -32,6 +32,15 @@ nvm use lts/iron
 cd frontend && ionic serve
 ```
 
+### Development server configurations
+
+The `ionic serve` command takes the same configuration arguments like the `ionic build` command. The configurations differ in which backend URL is used by the frontend. See also [Build configurations](#build-configurations)
+
+```zsh
+ionic serve --configuration=development # default
+ionic serve --configuration=production
+```
+
 ## Openapi
 
 ### Generating type definitions
@@ -57,4 +66,30 @@ The production build can be served locally to test wether it compiled successful
 
 ```zsh
 npx http-server --port=8100 --proxy http://localhost:8100\?  www/browser
+```
+
+### Build configurations
+
+The frontend build has 2 configurations:
+
+- production (default)
+    - Uses http://raspberrypi.local as backend URL
+- development
+    - Uses http://localhost:8080 as backend URL
+
+#### Production
+
+The production build configuration is the default. Hence the two commands are equivalent:
+
+```zsh
+ionic build --configuration=production
+ionic build # equivalent to above
+```
+
+#### Development
+
+Development builds can be made using the following command:
+
+```zsh
+ionic build --configuration=development
 ```
