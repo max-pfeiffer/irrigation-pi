@@ -2,9 +2,8 @@
 
 import click
 
-from manage.utils import (
-    BACKEND_PATH,
-    VIRTUAL_ENVIRONMENT_PATH,
+from irrigation_pi.constants import BACKEND_PATH, VIRTUAL_ENVIRONMENT_PATH
+from irrigation_pi.utils import (
     activate_virtual_environment,
     run_subprocess,
 )

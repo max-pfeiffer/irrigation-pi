@@ -2,7 +2,7 @@
 
 import click
 
-from manage.utils import (
+from irrigation_pi.utils import (
     run_subprocess,
 )
 

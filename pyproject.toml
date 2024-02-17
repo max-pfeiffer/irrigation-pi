@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "manage"
-version = "0.1.0"
+name = "irrigation-pi"
+version = "0.2.2"
 description = ""
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 license = "MIT"
@@ -12,30 +12,30 @@ alembic = "1.13.1"
 APScheduler = "3.10.4"
 asyncer = "0.0.4"
 click = "8.1.7"
-fastapi = "0.109.0"
+fastapi = "0.109.2"
 furl = "2.1.3"
-pre-commit = "3.6.0"
-pydantic-settings = "2.1.0"
-ruff = "0.2.0"
+pydantic-settings = "2.2.1"
 semver = "3.0.2"
-sqlalchemy = "2.0.25"
-sqlmodel = "0.0.14"
+sqlalchemy = "2.0.27"
+sqlmodel = "0.0.16"
 toml = "0.10.2"
-uvicorn = {version = "0.27.0.post1", extras = ["standard"]}
+uvicorn = {version = "0.27.1", extras = ["standard"]}
 
-gpiozero = "2.0"
+gpiozero = "2.0.1"
 pigpio = "1.78"
 "RPi.GPIO" = {version = "0.7.1", markers= "sys_platform == 'linux'"}
 
 [tool.poetry.group.dev.dependencies]
-coverage = "7.4.1"
-pytest = "7.4.4"
-pytest-asyncio = "0.23.4"
+coverage = "7.4.2"
+pre-commit = "3.6.2"
+pytest = "8.0.1"
+pytest-asyncio = "0.23.5"
 pytest-cov = "4.1.0"
-httpx = "0.26.0"
+httpx = "0.27.0"
+ruff = "0.2.2"
 
 [tool.poetry.scripts]
-manage = 'manage:cli'
+irrigation-pi = 'irrigation_pi:cli'
 
 [tool.ruff]
 exclude = [".venv", "backend/migrations", "frontend"]
@@ -59,7 +59,8 @@ convention = "pep257"
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
 testpaths = [
-    "tests",
+    "irrigation_pi/tests",
+    "backend/tests"
 ]
 
 [build-system]
