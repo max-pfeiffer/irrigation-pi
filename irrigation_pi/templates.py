@@ -54,3 +54,12 @@ server {
 }
 
 """)
+
+APPLICATION_CONFIGURATION_TEMPLATE: Template = Template("""[backend]
+# Possible options are: rpi_gpio, pigpio, native
+pin_factory_type = "rpi_gpio"
+
+# Possible options are: waveshare_rpi_relay_board
+adapter_type = "waveshare_rpi_relay_board"
+
+""")

@@ -13,6 +13,8 @@ VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / ".venv"
 BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
 FRONTEND_PATH: Path = PROJECT_ROOT_PATH / "frontend"
 
+APPLICATION_CONFIGURATION_PATH: Path = PROJECT_ROOT_PATH / "config.toml"
+
 NGINX_CONFIG_PATH: Path = Path("/etc/nginx/sites-available/irrigation-pi")
 NGINX_CONFIG_ACTIVATION_PATH: Path = Path("/etc/nginx/sites-enabled/irrigation-pi")
 NGINX_DEFAULT_CONFIG_ACTIVATION_PATH: Path = Path("/etc/nginx/sites-enabled/default")

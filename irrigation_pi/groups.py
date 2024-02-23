@@ -1,8 +1,13 @@
 """Command groups."""
+import os
+import subprocess
+import sys
+
 import click
 
 from irrigation_pi.export import backend_api_specs
 from irrigation_pi.install import (
+    install_application_configuration,
     install_database,
     install_debian_packages,
     install_nginx_configuration,
@@ -10,10 +15,21 @@ from irrigation_pi.install import (
 )
 from irrigation_pi.run import backend, frontend
 from irrigation_pi.uninstall import (
+    uninstall_application_configuration,
+    uninstall_database,
     uninstall_nginx_configuration,
     uninstall_systemd_configuration,
 )
-from irrigation_pi.update import update_poetry
+
+
+def become_root():
+    """Re-run the cli command with root privileges.
+
+    :return:
+    """
+    if os.geteuid() != 0:
+        subprocess.call(['sudo', *sys.argv])
+        sys.exit()
 
 
 @click.group()
@@ -22,13 +38,14 @@ def install():
 
     :return:
     """
-    pass
+    become_root()
 
 
 install.add_command(install_debian_packages)
+install.add_command(install_application_configuration)
+install.add_command(install_database)
 install.add_command(install_systemd_configuration)
 install.add_command(install_nginx_configuration)
-install.add_command(install_database)
 
 
 @click.group()
@@ -37,23 +54,13 @@ def uninstall():
 
     :return:
     """
-    pass
+    become_root()
 
 
+uninstall.add_command(uninstall_application_configuration)
+uninstall.add_command(uninstall_database)
 uninstall.add_command(uninstall_nginx_configuration)
 uninstall.add_command(uninstall_systemd_configuration)
-
-
-@click.group()
-def update():
-    """Update sub command group.
-
-    :return:
-    """
-    pass
-
-
-update.add_command(update_poetry)
 
 
 @click.group()
