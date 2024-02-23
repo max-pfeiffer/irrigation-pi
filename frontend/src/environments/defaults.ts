@@ -3,6 +3,6 @@ import { Environment } from './environment.models';
 export const defaults: Environment = {
   production: false,
   api: {
-    host: 'http://localhost:8000',
+    host: 'http://localhost:8000/api',
   },
 };
