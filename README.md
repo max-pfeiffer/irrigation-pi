@@ -14,14 +14,44 @@ Contributions for other boards are warmly welcome.
 
 ## Features
 * Add schedules for switching the relays
-* Relays are switched automatically according to the schedules
-* [FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) with self documenting REST API written in Python
-* [Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript
+* Relays are switched automatically according to schedule configuration
+* Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
+* REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
 
-## Todos
-The application is currently under heavy development. Current tasks/features are still to do:
-* generate and handle static files from frontend application
-* automate installation on Raspberry Pi
+![ui_schedule_list.png](ui_schedule_list.png)   ![ui_schedule_detail.png](ui_schedule_detail.png)
+
+## Installation on Raspberry Pi
+The installation on your Raspberry Pi is quickly done within minutes.
+
+Open a shell on your Raspberry Pi and [install Poetry](https://python-poetry.org/docs/#installation):
+```shell
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+Configure poetry to install virtual environments in project folders:
+```shell
+poetry config virtualenvs.in-project true
+```
+
+Go to the directory where you want to install the application. Pull the repository:
+```shell
+git pull https://github.com/max-pfeiffer/irrigation-pi.git
+```
+
+In project root install Python package dependencies with Poetry and create a virtual environment:
+```shell
+cd irrigation-pi
+poetry install
+```
+
+Activate the virtual environment. Then install application dependencies and configuration files for irrigation-pi
+application, nginx and systemd using the management CLI:
+```shell
+source .venv/bin/activate
+irrigation-pi install all
+```
+The application is available on http://raspberrypi.local/ afterwards. The API can also be used directly
+on http://raspberrypi.local/api.
 
 
 ## Installation for Development
@@ -44,20 +74,24 @@ After creating the virtual environment you are able to use the project's managem
 Activate virtual environment, then install the [SQLite](https://www.sqlite.org/) database:
 ```shell
 source .venv/bin/activate
-manage install database
+irrigation-pi install database
 ```
 
 Start the backend application:
 ```shell
-manage run backend
+irrigation-pi run backend
 ```
-The backend application is running afterwards and is accessible on: http://0.0.0.0:8000 
+The backend application is running afterwards and is accessible on: http://0.0.0.0:8000/api 
 
 After environment and development setup for [frontend application](frontend/README.md), you can start the frontend application in another terminal:
 ```shell
-manage run frontend
+irrigation-pi run frontend
 ```
 The frontend application is running afterwards and is accessible on: http://0.0.0.0:8100
 
-## Installation on Raspberry Pi
-Coming soon.
+## Roadmap
+Following features are on our todo list:
+* Make host name for Raspberry Pi installation configurable
+* Validate schedules to avoid collisions
+* View for live relay switching
+* View for Raspberry Pi system information
