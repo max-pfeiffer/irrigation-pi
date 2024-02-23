@@ -1,6 +1,7 @@
 """Uninstall commands."""
 
 import click
+from click import Context
 
 from irrigation_pi.constants import (
     APPLICATION_CONFIGURATION_PATH,
@@ -12,6 +13,19 @@ from irrigation_pi.constants import (
 from irrigation_pi.utils import (
     run_subprocess,
 )
+
+
+@click.command(name="all")
+@click.pass_context
+def uninstall_all(ctx: Context):
+    """Uninstall everything necessary to run the application on Raspberry Pi.
+
+    :return:
+    """
+    ctx.forward(uninstall_application_configuration)
+    ctx.forward(uninstall_database)
+    ctx.forward(uninstall_systemd_configuration)
+    ctx.forward(uninstall_nginx_configuration)
 
 
 @click.command(name="config")
