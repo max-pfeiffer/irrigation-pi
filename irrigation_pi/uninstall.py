@@ -1,11 +1,10 @@
 """Uninstall commands."""
-from pathlib import Path
 
 import click
 
 from irrigation_pi.constants import (
     APPLICATION_CONFIGURATION_PATH,
-    BACKEND_PATH,
+    DATABASE_PATH,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
@@ -32,8 +31,7 @@ def uninstall_database():
     :return:
     """
     click.echo("Uninstalling database...")
-    database_path: Path = BACKEND_PATH / "sqlite_db" / "backend.db"
-    database_path.unlink(missing_ok=True)
+    DATABASE_PATH.unlink(missing_ok=True)
 
 
 @click.command(name="systemd-config")

@@ -23,7 +23,7 @@ from irrigation_pi.uninstall import (
 
 
 def become_root():
-    """Re-run the cli command with root privileges.
+    """Re-run the cli command with superuser privileges.
 
     :return:
     """
