@@ -1,12 +1,15 @@
 """Install commands."""
 from pathlib import Path
+from shutil import chown
 
 import click
 
 from irrigation_pi.constants import (
     APPLICATION_CONFIGURATION_PATH,
     APPLICATION_USER,
+    APPLICATION_USER_GROUP,
     BACKEND_PATH,
+    DATABASE_PATH,
     DEBIAN_PACKAGES,
     HOST,
     NGINX_CONFIG_ACTIVATION_PATH,
@@ -59,6 +62,7 @@ def install_database():
     click.echo("Installing database...")
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
+    chown(DATABASE_PATH, APPLICATION_USER, APPLICATION_USER_GROUP)
 
 
 @click.command(name="systemd-config")
