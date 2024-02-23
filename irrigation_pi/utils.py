@@ -7,7 +7,11 @@ from typing import Optional
 
 import click
 
-from irrigation_pi.templates import NGINX_SITE_TEMPLATE, SYSTEMD_SERVICE_TEMPLATE
+from irrigation_pi.templates import (
+    APPLICATION_CONFIGURATION_TEMPLATE,
+    NGINX_SITE_TEMPLATE,
+    SYSTEMD_SERVICE_TEMPLATE,
+)
 
 
 def run_subprocess(
@@ -98,3 +102,11 @@ def create_systemd_config(
         }
     )
     return config
+
+
+def create_application_configuration():
+    """Generate irrigation-pi application configuration.
+
+    :return:
+    """
+    return APPLICATION_CONFIGURATION_TEMPLATE.substitute({})

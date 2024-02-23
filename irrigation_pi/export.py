@@ -15,6 +15,7 @@ def backend_api_specs():
 
     :return:
     """
+    click.echo("Exporting backend API specification...")
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         ["python", "-m", "utilities.export_api_specification"],

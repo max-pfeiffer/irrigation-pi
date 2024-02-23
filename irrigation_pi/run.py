@@ -19,6 +19,7 @@ def backend():
 
     :return:
     """
+    click.echo("Running backend application...")
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         [
@@ -42,6 +43,7 @@ def frontend():
 
     :return:
     """
+    click.echo("Running frontend application...")
     run_subprocess(
         [
             "ionic",

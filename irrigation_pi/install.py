@@ -4,6 +4,7 @@ from pathlib import Path
 import click
 
 from irrigation_pi.constants import (
+    APPLICATION_CONFIGURATION_PATH,
     APPLICATION_USER,
     BACKEND_PATH,
     DEBIAN_PACKAGES,
@@ -17,6 +18,7 @@ from irrigation_pi.constants import (
 )
 from irrigation_pi.utils import (
     activate_virtual_environment,
+    create_application_configuration,
     create_nginx_config,
     create_systemd_config,
     run_subprocess,
@@ -29,9 +31,34 @@ def install_debian_packages():
 
     :return:
     """
+    click.echo("Installing debian packages...")
     run_subprocess(
         ["sudo", "apt", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
     )
+
+
+@click.command(name="config")
+def install_application_configuration():
+    """Install irrigation-pi application configuration.
+
+    :return:
+    """
+    click.echo("Installing irrigation-pi application configuration...")
+    config: str = create_application_configuration()
+
+    with open(APPLICATION_CONFIGURATION_PATH, "w") as file:
+        file.write(config)
+
+
+@click.command(name="database")
+def install_database():
+    """Install backend database.
+
+    :return:
+    """
+    click.echo("Installing database...")
+    env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
+    run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
 
 
 @click.command(name="systemd-config")
@@ -48,6 +75,7 @@ def install_systemd_configuration():
 
     :return:
     """
+    click.echo("Installing Systemd configuration...")
     systemd_config: str = create_systemd_config(
         APPLICATION_USER, VIRTUAL_ENVIRONMENT_PATH, BACKEND_PATH
     )
@@ -71,6 +99,7 @@ def install_nginx_configuration():
     :return:
     """
     # Create nginx config
+    click.echo("Installing nginx configuration...")
     server_root_path: Path = (
         Path(__file__).parent.parent.resolve() / "frontend" / "www" / "browser"
     )
@@ -87,13 +116,3 @@ def install_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
-
-
-@click.command(name="database")
-def install_database():
-    """Install backend database.
-
-    :return:
-    """
-    env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
-    run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
