@@ -3,6 +3,7 @@ from pathlib import Path
 from shutil import chown
 
 import click
+from click import Context
 
 from irrigation_pi.constants import (
     APPLICATION_CONFIGURATION_PATH,
@@ -26,6 +27,20 @@ from irrigation_pi.utils import (
     create_systemd_config,
     run_subprocess,
 )
+
+
+@click.command(name="all")
+@click.pass_context
+def install_all(ctx: Context):
+    """Install everything necessary to run the application on Raspberry Pi.
+
+    :return:
+    """
+    ctx.forward(install_debian_packages)
+    ctx.forward(install_application_configuration)
+    ctx.forward(install_database)
+    ctx.forward(install_systemd_configuration)
+    ctx.forward(install_nginx_configuration)
 
 
 @click.command(name="debian-packages")

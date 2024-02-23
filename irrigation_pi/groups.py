@@ -7,6 +7,7 @@ import click
 
 from irrigation_pi.export import backend_api_specs
 from irrigation_pi.install import (
+    install_all,
     install_application_configuration,
     install_database,
     install_debian_packages,
@@ -15,6 +16,7 @@ from irrigation_pi.install import (
 )
 from irrigation_pi.run import backend, frontend
 from irrigation_pi.uninstall import (
+    uninstall_all,
     uninstall_application_configuration,
     uninstall_database,
     uninstall_nginx_configuration,
@@ -41,6 +43,7 @@ def install():
     become_root()
 
 
+install.add_command(install_all)
 install.add_command(install_debian_packages)
 install.add_command(install_application_configuration)
 install.add_command(install_database)
@@ -57,6 +60,7 @@ def uninstall():
     become_root()
 
 
+uninstall.add_command(uninstall_all)
 uninstall.add_command(uninstall_application_configuration)
 uninstall.add_command(uninstall_database)
 uninstall.add_command(uninstall_nginx_configuration)
