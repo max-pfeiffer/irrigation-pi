@@ -2,10 +2,12 @@
 
 import click
 
-from manage.utils import (
+from irrigation_pi.constants import (
     BACKEND_PATH,
     FRONTEND_PATH,
     VIRTUAL_ENVIRONMENT_PATH,
+)
+from irrigation_pi.utils import (
     activate_virtual_environment,
     run_subprocess,
 )
@@ -17,6 +19,7 @@ def backend():
 
     :return:
     """
+    click.echo("Running backend application...")
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         [
@@ -40,6 +43,7 @@ def frontend():
 
     :return:
     """
+    click.echo("Running frontend application...")
     run_subprocess(
         [
             "ionic",

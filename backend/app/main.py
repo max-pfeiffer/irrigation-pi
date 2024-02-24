@@ -31,11 +31,12 @@ app = FastAPI(
     description=application_settings.description,
     version=application_settings.version,
     lifespan=lifespan,
+    root_path="/api"
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:8100"],
+    allow_origins=["http://localhost", "http://localhost:8100", "http://raspberrypi.local"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -50,7 +51,7 @@ def redirect_to_autodocs(request: Request) -> RedirectResponse:
     :return: RedirectResponse
     """
     furl_item: furl = furl(request.base_url)
-    furl_item.path /= app.docs_url
+    furl_item.path /= app.docs_url.lstrip("/")
     return RedirectResponse(
         furl_item.url, status_code=status.HTTP_301_MOVED_PERMANENTLY
     )

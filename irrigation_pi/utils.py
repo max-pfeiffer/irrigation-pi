@@ -7,10 +7,11 @@ from typing import Optional
 
 import click
 
-PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
-VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / ".venv"
-BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
-FRONTEND_PATH: Path = PROJECT_ROOT_PATH / "frontend"
+from irrigation_pi.templates import (
+    APPLICATION_CONFIGURATION_TEMPLATE,
+    NGINX_SITE_TEMPLATE,
+    SYSTEMD_SERVICE_TEMPLATE,
+)
 
 
 def run_subprocess(
@@ -63,3 +64,49 @@ def activate_virtual_environment(virtual_environment_path: Path) -> dict:
     environment_variables["POETRY_VIRTUALENVS_IN_PROJECT"] = "true"
 
     return environment_variables
+
+
+def create_nginx_config(host: str, port: str, server_root: Path) -> str:
+    """Create nginx configuration.
+
+    For Angular specifics see: https://angular.io/guide/deployment#fallback-configuration-examples
+
+    :param host:
+    :param port:
+    :param server_root:
+    :return:
+    """
+    config: str = NGINX_SITE_TEMPLATE.substitute(
+        {"host": host, "port": port, "server_root": str(server_root)}
+    )
+    return config
+
+
+def create_systemd_config(
+    user: str, virtual_environment_path: Path, backend_path: Path
+) -> str:
+    """Generate systemd service configuration file.
+
+    :param user:
+    :param virtual_environment_path:
+    :param backend_path:
+    :return:
+    """
+    virtual_environment_binary_path: Path = virtual_environment_path / "bin"
+
+    config: str = SYSTEMD_SERVICE_TEMPLATE.substitute(
+        {
+            "user": user,
+            "virtual_environment_binary_path": str(virtual_environment_binary_path),
+            "backend_path": str(backend_path),
+        }
+    )
+    return config
+
+
+def create_application_configuration():
+    """Generate irrigation-pi application configuration.
+
+    :return:
+    """
+    return APPLICATION_CONFIGURATION_TEMPLATE.substitute({})

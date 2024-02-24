@@ -2,9 +2,8 @@
 
 import click
 
-from manage.utils import (
-    BACKEND_PATH,
-    VIRTUAL_ENVIRONMENT_PATH,
+from irrigation_pi.constants import BACKEND_PATH, VIRTUAL_ENVIRONMENT_PATH
+from irrigation_pi.utils import (
     activate_virtual_environment,
     run_subprocess,
 )
@@ -16,6 +15,7 @@ def backend_api_specs():
 
     :return:
     """
+    click.echo("Exporting backend API specification...")
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(
         ["python", "-m", "utilities.export_api_specification"],
