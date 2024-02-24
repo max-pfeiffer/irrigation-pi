@@ -6,7 +6,7 @@
 # Irrigation Pi
 This web application turns your [Raspberry Pi](https://www.raspberrypi.com/) into an irrigation system.
 
-There are several relay HATs vom various manufactures available for the [Raspberry Pi](https://www.raspberrypi.com/).
+There are several relay HATs from various manufactures available for the [Raspberry Pi](https://www.raspberrypi.com/).
 This application currently supports the following boards:
 * [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) (3 relays)
 
@@ -21,7 +21,12 @@ Contributions for other boards are warmly welcome.
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
 
 ## Installation on Raspberry Pi
-The installation on your Raspberry Pi is quickly done within minutes.
+Installation on your Raspberry Pi is **easy**! It is quickly done within minutes.
+
+Requirements:
+* Raspbian GNU/Linux v11+
+* git v2.30+
+* Python v3.9+
 
 Open a shell on your Raspberry Pi and clone this repository:
 ```shell
@@ -49,48 +54,30 @@ password.
 The application is available on http://raspberrypi.local/ afterwards. The API can also be used directly
 on http://raspberrypi.local/api.
 
-
-## Installation for Development
-This installation section is meant for software engineers which like to do contributions to the project.
-If you are an end user who just wants to install Irrigation-Pi on your Raspberry Pi, you can ignore this section. 
-
-[Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
-```shell
-curl -sSL https://install.python-poetry.org | python3 -
-```
-
-Configure poetry to install virtual environments in project folders:
-```shell
-poetry config virtualenvs.in-project true
-```
-
-In project root install Python package dependencies with Poetry and create a virtual environment:
-```shell
-poetry install
-```
-
-After creating the virtual environment you are able to use the project's management CLI.
-Activate virtual environment, then install the [SQLite](https://www.sqlite.org/) database:
-```shell
-source .venv/bin/activate
-irrigation-pi install database
-```
-
-Start the backend application:
-```shell
-irrigation-pi run backend
-```
-The backend application is running afterwards and is accessible on: http://0.0.0.0:8000/api 
-
-After environment and development setup for [frontend application](frontend/README.md), you can start the frontend application in another terminal:
-```shell
-irrigation-pi run frontend
-```
-The frontend application is running afterwards and is accessible on: http://0.0.0.0:8100
-
 ## Roadmap
 Following features are on our todo list:
-* Make host name for Raspberry Pi installation configurable
 * Validate schedules to avoid collisions
 * View for live relay switching
 * View for Raspberry Pi system information
+* Make host name for Raspberry Pi installation configurable
+* SSL for web application
+
+## Why another irrigation controller software for the Raspberry Pi?
+First of all I was searching GitHub and the web for ready to use solutions. And I found a couple.
+Some of them did not match my use case: I just want a simple and easy to use application for watering plants on my
+balcony and in my garden. I have no need for watering zones, sensors or other complications. These things need a lot of
+effort to set up and maintain. Not only software configuration but also the hardware, wiring, pipes etc.
+And I am a lazy person and a lazy gardener. :smiley: I like to keep things simple and work less.
+
+Also, a lot of these projects on GitHub did grow out of hand for the maintainers and are now outdated or simply do not
+work anymore. Often they leverage big ass frameworks, databases like MongoDB or depend on Docker. All this I do not
+want to run on my good old Raspberry Pi 3 with little computing power. And no, I do not want to buy a Raspberry Pi 5
+for 120 Euro plus for simple use cases like watering my plants on the balcony when a device for 30 Euro can do the job.
+
+Also, I want to use my Irrigation-Pi in my garden where I only have solar power from a battery. Here I have an island
+solution and the need for very little power consumption. The latest Raspberry Pi hardware versions suck a lot more
+energy than the old boards.
+
+This project aims to just use what comes with Raspbian OS pre-installed with very little other dependencies.
+Also, installation, updates or maintenance should be fully automated. I do want to mess around on my Pi with config and
+software updates. And because I am lazy. :smiley:
