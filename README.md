@@ -12,13 +12,13 @@ This application currently supports the following boards:
 
 Contributions for other boards are warmly welcome.
 
+![ui_schedule_list.png](ui_schedule_list.png)   ![ui_schedule_detail.png](ui_schedule_detail.png)
+
 ## Features
 * Add schedules for switching the relays
 * Relays are switched automatically according to schedule configuration
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
-
-![ui_schedule_list.png](ui_schedule_list.png)   ![ui_schedule_detail.png](ui_schedule_detail.png)
 
 ## Installation on Raspberry Pi
 The installation on your Raspberry Pi is quickly done within minutes.
@@ -50,6 +50,9 @@ application, nginx and systemd using the management CLI:
 source .venv/bin/activate
 irrigation-pi install all
 ```
+The management CLI requires superuser privileges for installation. If you encounter a password challenge, please enter your user's
+password.
+
 The application is available on http://raspberrypi.local/ afterwards. The API can also be used directly
 on http://raspberrypi.local/api.
 
