@@ -23,29 +23,22 @@ Contributions for other boards are warmly welcome.
 ## Installation on Raspberry Pi
 The installation on your Raspberry Pi is quickly done within minutes.
 
-Open a shell on your Raspberry Pi and [install Poetry](https://python-poetry.org/docs/#installation):
+Open a shell on your Raspberry Pi and clone this repository:
 ```shell
-curl -sSL https://install.python-poetry.org | python3 -
+git clone https://github.com/max-pfeiffer/irrigation-pi.git
 ```
 
-Configure poetry to install virtual environments in project folders:
-```shell
-poetry config virtualenvs.in-project true
-```
-
-Go to the directory where you want to install the application. Pull the repository:
-```shell
-git pull https://github.com/max-pfeiffer/irrigation-pi.git
-```
-
-In project root install Python package dependencies with Poetry and create a virtual environment:
+The go to project directory and run a script to install Poetry and Python package dependencies:
 ```shell
 cd irrigation-pi
-poetry install
+./install_poetry.sh
 ```
+Depending on your Raspberry Pi's computing power and your network connection this might take a while.
+On a Raspberry Pi 2 or 3 you need to be patient. :smiley: If package installation seems to got stuck,
+just exit the script (CTRL-C) and re-run it.
 
-Activate the virtual environment. Then install application dependencies and configuration files for irrigation-pi
-application, nginx and systemd using the management CLI:
+Activate the virtual environment. Then install application dependencies and configuration files (irrigation-pi
+application, nginx and systemd) using the management CLI:
 ```shell
 source .venv/bin/activate
 irrigation-pi install all
@@ -58,6 +51,9 @@ on http://raspberrypi.local/api.
 
 
 ## Installation for Development
+This installation section is meant for software engineers which like to do contributions to the project.
+If you are an end user who just wants to install Irrigation-Pi on your Raspberry Pi, you can ignore this section. 
+
 [Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
 ```shell
 curl -sSL https://install.python-poetry.org | python3 -
