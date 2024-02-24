@@ -6,6 +6,6 @@ export const environment: Environment = {
   production: true,
   api: {
     ...defaults.api,
-    host: 'http://raspberrypi.local',
+    host: 'http://raspberrypi.local/api',
   },
 };
