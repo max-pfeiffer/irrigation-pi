@@ -46,7 +46,7 @@ ionic serve --configuration=production
 ### Generating type definitions
 
 ```zsh
-manage run backend
+irrigation-pi run backend
 openapi typegen http://localhost:8000/openapi.json > frontend/@types/openapi.d.ts
 ```
 
@@ -73,9 +73,9 @@ npx http-server --port=8100 --proxy http://localhost:8100\?  www/browser
 The frontend build has 2 configurations:
 
 - production (default)
-    - Uses http://raspberrypi.local as backend URL
+    - Uses http://raspberrypi.local/api as backend URL
 - development
-    - Uses http://localhost:8080 as backend URL
+    - Uses http://localhost:8000/api as backend URL
 
 #### Production
 
