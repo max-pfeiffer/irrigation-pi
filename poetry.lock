@@ -82,13 +82,13 @@ zookeeper = ["kazoo"]
 
 [[package]]
 name = "asyncer"
-version = "0.0.4"
+version = "0.0.5"
 description = "Asyncer, async and await, focused on developer experience."
 optional = false
 python-versions = ">=3.8,<4.0"
 files = [
-    {file = "asyncer-0.0.4-py3-none-any.whl", hash = "sha256:bc27f6bcea231a78c6fb730dff5977c74b0ee5a6f2ea080e273a03fac17ca3d1"},
-    {file = "asyncer-0.0.4.tar.gz", hash = "sha256:d9400418d4b508e5f3e819809bd3e7b9cd43d99a65c0a5eada14d41583164ca6"},
+    {file = "asyncer-0.0.5-py3-none-any.whl", hash = "sha256:ba06d6de3c750763868dffacf89b18d40b667605b0241d31c2ee43f188e2ab74"},
+    {file = "asyncer-0.0.5.tar.gz", hash = "sha256:2979f3e04cbedfe5cfeb79027dcf7d004fcc4430a0ca0066ae20490f218ec06e"},
 ]
 
 [package.dependencies]
@@ -1575,4 +1575,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "91e5986d910182cdd12766831e6ef7bdeeef9d435957bf2d107aa491fbceca13"
+content-hash = "319f26f80f212386bafab6bcb1c31a580d6f374c8d1b94f6730f13ebb60fafa6"
