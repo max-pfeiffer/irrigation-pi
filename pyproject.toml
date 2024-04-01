@@ -19,7 +19,7 @@ semver = "3.0.2"
 sqlalchemy = "2.0.27"
 sqlmodel = "0.0.16"
 toml = "0.10.2"
-uvicorn = {version = "0.27.1", extras = ["standard"]}
+uvicorn = {version = "0.29.0", extras = ["standard"]}
 
 gpiozero = "2.0.1"
 pigpio = "1.78"
