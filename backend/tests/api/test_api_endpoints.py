@@ -1,4 +1,5 @@
 """Tests for API root."""
+
 import pytest
 from fastapi.testclient import TestClient
 from httpx import Response

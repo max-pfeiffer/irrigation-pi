@@ -1,4 +1,5 @@
 """GPIO Devices."""
+
 from typing import Optional, Union
 
 from gpiozero import DigitalOutputDevice, Factory

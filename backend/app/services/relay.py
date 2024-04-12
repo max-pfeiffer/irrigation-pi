@@ -1,4 +1,5 @@
 """Services for relay switching."""
+
 from app.adapters.base import RelayBoardAdapter
 from app.adapters.gpio_devices import Relay
 

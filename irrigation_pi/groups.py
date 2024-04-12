@@ -1,4 +1,5 @@
 """Command groups."""
+
 import os
 import subprocess
 import sys
@@ -30,7 +31,7 @@ def become_root():
     :return:
     """
     if os.geteuid() != 0:
-        subprocess.call(['sudo', *sys.argv])
+        subprocess.call(["sudo", *sys.argv])
         sys.exit()
 
 

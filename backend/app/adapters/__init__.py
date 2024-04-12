@@ -1,4 +1,5 @@
 """Adapters module."""
+
 from enum import Enum
 
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter

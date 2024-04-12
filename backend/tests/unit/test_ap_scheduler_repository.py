@@ -1,4 +1,5 @@
 """Tests for trigger creation."""
+
 from datetime import time, timezone
 from random import randint
 

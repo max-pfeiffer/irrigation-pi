@@ -29,7 +29,7 @@ jobs:
           poetry install --no-interaction --no-root
       - name: Run pre-commit handlers
         run: |
-          poetry run pre-commit -a
+          poetry run pre-commit run -a
 
   run-tests:
     needs: code-quality    
