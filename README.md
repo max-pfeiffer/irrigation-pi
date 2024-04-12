@@ -12,7 +12,9 @@ This application currently supports the following boards:
 
 Contributions for other boards are warmly welcome.
 
-![ui_schedule_list.png](ui_schedule_list.png)   ![ui_schedule_detail.png](ui_schedule_detail.png)
+![ui_schedule_list.png](images/ui_schedule_list.png)   ![ui_schedule_detail.png](images/ui_schedule_detail.png)
+
+![api_auto_docs.png](images/api_auto_docs.png)
 
 ## Features
 * Add schedules for switching the relays
