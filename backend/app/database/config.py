@@ -1,4 +1,5 @@
 """Database configuration."""
+
 from sqlalchemy import Engine
 from sqlmodel import create_engine
 

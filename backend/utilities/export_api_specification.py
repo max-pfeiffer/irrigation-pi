@@ -1,4 +1,5 @@
 """Script for exporting backend API specification."""
+
 import json
 from pathlib import Path
 

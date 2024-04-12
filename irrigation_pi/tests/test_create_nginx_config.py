@@ -1,4 +1,5 @@
 """Tests for nginx config."""
+
 from pathlib import Path
 
 from irrigation_pi.constants import HOST, PORT

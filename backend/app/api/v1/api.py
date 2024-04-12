@@ -1,4 +1,5 @@
 """API routers for API version 1.0."""
+
 from fastapi import APIRouter
 
 from app.api.v1.endpoints import relay, schedule

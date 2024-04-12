@@ -1,4 +1,5 @@
 """Relay board base class."""
+
 from abc import ABC
 
 

@@ -1,4 +1,5 @@
 """Install commands."""
+
 from pathlib import Path
 from shutil import chown
 

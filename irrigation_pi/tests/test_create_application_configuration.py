@@ -1,4 +1,5 @@
 """Tests for generation application configuration."""
+
 from irrigation_pi.utils import create_application_configuration
 
 
