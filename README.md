@@ -94,7 +94,7 @@ And I am a lazy person and a lazy gardener. :smiley: I like to keep things simpl
 Also, a lot of these projects on GitHub did grow out of hand for the maintainers and are now outdated or simply do not
 work anymore. Often they leverage big ass frameworks, databases like MongoDB or depend on Docker. All this I do not
 want to run on my good old Raspberry Pi 3 with little computing power. And no, I do not want to buy a Raspberry Pi 5
-for 120 Euro plus for simple use cases like watering my plants on the balcony when a device for 30 Euro can do the job.
+for 120 Euro for simple use cases like watering my plants on the balcony when a device for 30 Euro can do the job.
 
 Also, I want to use my Irrigation-Pi in my garden where I only have solar power from a battery. Here I have an island
 solution and the need for very little power consumption. The latest Raspberry Pi hardware versions suck a lot more
