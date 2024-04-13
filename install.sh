@@ -14,3 +14,6 @@ echo "Configure Poetry to create virtual environments in project directories..."
 
 echo "Installing Python packages with Poetry..."
 ~/.local/bin/poetry install --without dev
+
+echo "Installing Debian packages and configure application..."
+~/.local/bin/poetry run irrigation-pi install all
