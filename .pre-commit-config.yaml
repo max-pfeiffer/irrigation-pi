@@ -8,7 +8,9 @@ repos:
       - id: check-added-large-files
         args: ['--maxkb=1024']
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.2.1
+    rev: v0.3.7
     hooks:
       - id: ruff
-        args: ["--fix", "--config", "pyproject.toml", "irrigation_pi", "backend"]
+        args: ["--fix", "--exit-non-zero-on-fix", "--config", "pyproject.toml", "irrigation_pi", "backend"]
+      - id: ruff-format
+        args: ["--config", "pyproject.toml", "irrigation_pi", "backend"]

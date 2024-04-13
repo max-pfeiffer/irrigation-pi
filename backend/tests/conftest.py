@@ -1,4 +1,5 @@
 """Test fixtures."""
+
 from pathlib import Path
 
 import pytest

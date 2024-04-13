@@ -1,4 +1,5 @@
 """API endpoints for Schedule objects."""
+
 from fastapi import APIRouter, Request
 
 from app.api.v1.models import ScheduleCreate, ScheduleResponse, ScheduleUpdate
