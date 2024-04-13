@@ -13,4 +13,4 @@ echo "Configure Poetry to create virtual environments in project directories..."
 bash -c "poetry config virtualenvs.in-project true"
 
 echo "Installing Python packages with Poetry..."
-bash -c "poetry install --without dev"
+~/.local/bin/poetry install --without dev"
