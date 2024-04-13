@@ -1,4 +1,5 @@
 """Constants for irrigation_pi package."""
+
 from pathlib import Path
 
 DEBIAN_PACKAGES: list[str] = [

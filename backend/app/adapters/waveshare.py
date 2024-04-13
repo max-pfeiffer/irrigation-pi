@@ -1,4 +1,5 @@
 """Adapters for Waveshare boards."""
+
 from typing import ClassVar, Optional
 
 from gpiozero import Factory

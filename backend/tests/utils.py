@@ -1,4 +1,5 @@
 """Test utilities."""
+
 from gpiozero import Device
 from gpiozero.exc import BadPinFactory
 

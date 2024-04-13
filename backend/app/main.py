@@ -1,4 +1,5 @@
 """FastAPI application."""
+
 from contextlib import asynccontextmanager
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -31,12 +32,16 @@ app = FastAPI(
     description=application_settings.description,
     version=application_settings.version,
     lifespan=lifespan,
-    root_path="/api"
+    root_path="/api",
 )
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost", "http://localhost:8100", "http://raspberrypi.local"],
+    allow_origins=[
+        "http://localhost",
+        "http://localhost:8100",
+        "http://raspberrypi.local",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
