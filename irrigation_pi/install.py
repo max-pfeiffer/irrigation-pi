@@ -50,7 +50,10 @@ def install_debian_packages():
 
     :return:
     """
-    click.echo("Installing debian packages...")
+    click.echo("Updating Debian package sources...")
+    run_subprocess(["sudo", "apt", "update"])
+
+    click.echo("Installing Debian packages...")
     run_subprocess(
         ["sudo", "apt", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
     )
