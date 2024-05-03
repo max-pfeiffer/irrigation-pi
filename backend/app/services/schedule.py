@@ -5,7 +5,6 @@ from datetime import date, datetime, time, timedelta, timezone
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlmodel import Session
 
-from app.database.config import database_engine
 from app.database.models import Schedule
 from app.repositories import ApSchedulerRepository, ScheduleRepository
 from app.scheduling import Repeat
@@ -38,13 +37,14 @@ def calculate_stop_time(start_time: time, duration: int) -> time:
     return stop_time
 
 
-def service_get_schedule(primary_key: int) -> dict:
+def service_get_schedule(database_session: Session, primary_key: int) -> dict:
     """Service returns a Schedule object.
 
+    :param database_session:
     :param int primary_key: Primary key
     :return ScheduleResponse:
     """
-    with Session(database_engine) as database_session, database_session.begin():
+    with database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.get(primary_key)
         data: dict = schedule.model_dump()
@@ -52,12 +52,12 @@ def service_get_schedule(primary_key: int) -> dict:
     return data
 
 
-def service_get_schedules() -> list[dict]:
+def service_get_schedules(database_session: Session) -> list[dict]:
     """Service returns a list of Schedule objects.
 
     :return list[ScheduleResponse]:
     """
-    with Session(database_engine) as database_session, database_session.begin():
+    with database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedules: list[Schedule] = repo.query()
         data: list[dict] = [item.model_dump() for item in schedules]
@@ -66,6 +66,7 @@ def service_get_schedules() -> list[dict]:
 
 
 def service_create_schedule(
+    database_session: Session,
     scheduler: AsyncIOScheduler,
     start_time: time,
     repeat: Repeat,
@@ -75,6 +76,7 @@ def service_create_schedule(
 ) -> int:
     """Services creates and persists a Schedule object.
 
+    :param database_session:
     :param AsyncIOScheduler scheduler:
     :param time start_time:
     :param Repeat repeat:
@@ -83,7 +85,7 @@ def service_create_schedule(
     :param int relay_position:
     :return:
     """
-    with Session(database_engine) as database_session, database_session.begin():
+    with database_session.begin():
         start_time = set_system_timezone(start_time)
         stop_time: time = calculate_stop_time(start_time, duration)
 
@@ -110,15 +112,18 @@ def service_create_schedule(
     return primary_key
 
 
-def service_update_schedule(scheduler: AsyncIOScheduler, primary_key: int, **kwargs):
+def service_update_schedule(
+    database_session: Session, scheduler: AsyncIOScheduler, primary_key: int, **kwargs
+):
     """Service updates and persists a Schedule object.
 
+    :param database_session:
     :param AsyncIOScheduler scheduler:
     :param int primary_key:
     :param kwargs:
     :return:
     """
-    with Session(database_engine) as database_session, database_session.begin():
+    with database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.get(primary_key)
 
@@ -152,14 +157,17 @@ def service_update_schedule(scheduler: AsyncIOScheduler, primary_key: int, **kwa
         repo.update(primary_key, **data)
 
 
-def service_delete_schedule(scheduler: AsyncIOScheduler, primary_key: int):
+def service_delete_schedule(
+    database_session: Session, scheduler: AsyncIOScheduler, primary_key: int
+):
     """Service deletes a persisted Schedule object.
 
+    :param database_session:
     :param AsyncIOScheduler scheduler:
     :param int primary_key:
     :return:
     """
-    with Session(database_engine) as database_session, database_session.begin():
+    with database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.get(primary_key)
 
