@@ -1,8 +1,9 @@
 """Services for handling persistence of Schedule objects."""
 
-from datetime import date, datetime, time, timedelta, timezone
+from datetime import date, datetime, time, timedelta, timezone, tzinfo
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy.sql.expression import select
 from sqlmodel import Session
 
 from app.database.models import Schedule
@@ -16,7 +17,7 @@ def set_system_timezone(time_input: time):
     :param time_input:
     :return:
     """
-    system_timezone: timezone = datetime.now(timezone.utc).astimezone().tzinfo
+    system_timezone: tzinfo = datetime.now(timezone.utc).astimezone().tzinfo
     time_output = time(
         hour=time_input.hour, minute=time_input.minute, tzinfo=system_timezone
     )
@@ -35,6 +36,38 @@ def calculate_stop_time(start_time: time, duration: int) -> time:
     ) + timedelta(minutes=duration)
     stop_time: time = stop_date_time.timetz()
     return stop_time
+
+
+def active_schedule_exists(
+    database_session: Session,
+    start_time: time,
+    stop_time: time,
+    relay_position: int,
+) -> bool:
+    """Check if an overlapping schedule already exists in database.
+
+    :param database_session:
+    :param start_time:
+    :param stop_time:
+    :param relay_position:
+    :return:
+    """
+    stmt = (
+        select(Schedule)
+        .where((Schedule.active == True) & (Schedule.relay_position == relay_position))  # noqa: E712
+        .where(
+            (
+                Schedule.start_time.between(start_time, stop_time)
+                | Schedule.stop_time.between(start_time, stop_time)
+            )
+            | ((Schedule.start_time <= start_time) & (stop_time <= Schedule.stop_time))
+        )
+    )
+    active_schedules = database_session.execute(stmt).scalars().all()
+    if active_schedules:
+        return True
+    else:
+        return False
 
 
 def service_get_schedule(database_session: Session, primary_key: int) -> dict:
