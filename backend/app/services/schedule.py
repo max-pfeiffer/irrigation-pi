@@ -7,6 +7,7 @@ from sqlalchemy.sql.expression import select
 from sqlmodel import Session
 
 from app.database.models import Schedule
+from app.exceptions import ActiveScheduleExistsError
 from app.repositories import ApSchedulerRepository, ScheduleRepository
 from app.scheduling import Repeat
 
@@ -175,25 +176,30 @@ def service_create_schedule(
         start_time = set_system_timezone(start_time)
         stop_time: time = calculate_stop_time(start_time, duration)
 
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        start_job_id, stop_job_id = ap_repo.create(
-            start_time, stop_time, repeat, relay_position
-        )
+        if active_schedule_exists(
+            database_session, start_time, stop_time, repeat, relay_position
+        ):
+            raise ActiveScheduleExistsError()
+        else:
+            ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+            start_job_id, stop_job_id = ap_repo.create(
+                start_time, stop_time, repeat, relay_position
+            )
 
-        data: dict = {
-            "start_time": start_time,
-            "stop_time": stop_time,
-            "repeat": repeat,
-            "duration": duration,
-            "relay_position": relay_position,
-            "active": active,
-            "start_job_id": start_job_id,
-            "stop_job_id": stop_job_id,
-        }
+            data: dict = {
+                "start_time": start_time,
+                "stop_time": stop_time,
+                "repeat": repeat,
+                "duration": duration,
+                "relay_position": relay_position,
+                "active": active,
+                "start_job_id": start_job_id,
+                "stop_job_id": stop_job_id,
+            }
 
-        repo: ScheduleRepository = ScheduleRepository(database_session)
-        schedule: Schedule = repo.create(**data)
-        primary_key: int = schedule.id
+            repo: ScheduleRepository = ScheduleRepository(database_session)
+            schedule: Schedule = repo.create(**data)
+            primary_key: int = schedule.id
 
     return primary_key
 
@@ -212,35 +218,44 @@ def service_update_schedule(
     with database_session.begin():
         repo: ScheduleRepository = ScheduleRepository(database_session)
         schedule: Schedule = repo.get(primary_key)
-
-        ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
-        for job_id in [schedule.start_job_id, schedule.stop_job_id]:
-            if ap_repo.exists(job_id):
-                ap_repo.delete(job_id)
-
         data: dict = schedule.model_dump()
+
         for key, value in kwargs.items():
             if value is not None:
                 data[key] = value
 
         data["start_time"] = set_system_timezone(data["start_time"])
+        data["stop_time"] = calculate_stop_time(data["start_time"], data["duration"])
 
-        if data["active"]:
-            stop_time: time = calculate_stop_time(data["start_time"], data["duration"])
-            start_job_id, stop_job_id = ap_repo.create(
-                start_time=data["start_time"],
-                stop_time=stop_time,
-                repeat=data["repeat"],
-                relay_position=data["relay_position"],
-            )
-            data["stop_time"] = stop_time
-            data["start_job_id"] = start_job_id
-            data["stop_job_id"] = stop_job_id
+        if active_schedule_exists(
+            database_session,
+            data["start_time"],
+            data["stop_time"],
+            data["repeat"],
+            data["relay_position"],
+        ):
+            raise ActiveScheduleExistsError()
         else:
-            data["start_job_id"] = None
-            data["stop_job_id"] = None
+            ap_repo: ApSchedulerRepository = ApSchedulerRepository(scheduler)
+            for job_id in [schedule.start_job_id, schedule.stop_job_id]:
+                if ap_repo.exists(job_id):
+                    ap_repo.delete(job_id)
 
-        repo.update(primary_key, **data)
+            if data["active"]:
+                start_job_id, stop_job_id = ap_repo.create(
+                    start_time=data["start_time"],
+                    stop_time=data["stop_time"],
+                    repeat=data["repeat"],
+                    relay_position=data["relay_position"],
+                )
+
+                data["start_job_id"] = start_job_id
+                data["stop_job_id"] = stop_job_id
+            else:
+                data["start_job_id"] = None
+                data["stop_job_id"] = None
+
+            repo.update(primary_key, **data)
 
 
 def service_delete_schedule(

@@ -36,7 +36,7 @@ def get_schedules(
     return response
 
 
-@router.post("/")
+@router.post("/", responses={409: {"description": "An active schedule already exists"}})
 def create_schedule(
     request: Request,
     schedule_data: ScheduleCreate,
@@ -49,7 +49,10 @@ def create_schedule(
     return primary_key
 
 
-@router.put("/{primary_key}")
+@router.put(
+    "/{primary_key}",
+    responses={409: {"description": "An active schedule already exists"}},
+)
 def update_schedule(
     request: Request,
     primary_key: int,
