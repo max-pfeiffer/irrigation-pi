@@ -15,7 +15,7 @@ from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 from sqlmodel import Session
 
-from tests.utils import TestSchedules
+from tests.utils import RepeatQueryTestSchedules, TimeQueryTestSchedules
 
 
 @pytest.fixture(scope="package")
@@ -77,17 +77,75 @@ def integration_test_database_session() -> Session:
             database_path.unlink()
 
 
-@pytest.fixture(scope="package")
-def schedules(
+@pytest.fixture(scope="function")
+def time_query_schedules(
     integration_test_database_session: Session,
-) -> TestSchedules:
+) -> TimeQueryTestSchedules:
+    """Schedules for active schedule test.
+
+    :param integration_test_database_session:
+    :return:
+    """
+    repeat: Repeat = Repeat.monday
+    relay_position: int = 1
+    schedule_1: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=8, minute=15)),
+        stop_time=set_system_timezone(time(hour=9, minute=0)),
+        repeat=repeat,
+        duration=45,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_1)
+    schedule_2: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=10, minute=15)),
+        stop_time=set_system_timezone(time(hour=11, minute=0)),
+        repeat=repeat,
+        duration=45,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_2)
+    schedule_3: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=12, minute=15)),
+        stop_time=set_system_timezone(time(hour=13, minute=0)),
+        repeat=repeat,
+        duration=45,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_3)
+    integration_test_database_session.commit()
+
+    yield TimeQueryTestSchedules(
+        repeat=repeat,
+        relay_position=relay_position,
+        schedule_1=schedule_1,
+        schedule_2=schedule_2,
+        schedule_3=schedule_3,
+    )
+
+    integration_test_database_session.delete(schedule_1)
+    integration_test_database_session.delete(schedule_2)
+    integration_test_database_session.delete(schedule_3)
+
+
+@pytest.fixture(scope="function")
+def repeat_query_schedules(
+    integration_test_database_session: Session,
+) -> RepeatQueryTestSchedules:
     """Schedules for active schedule test.
 
     :param integration_test_database_session:
     :return:
     """
     relay_position: int = 1
-
     schedule_every_day: Schedule = Schedule(
         start_time=set_system_timezone(time(hour=1, minute=00)),
         stop_time=set_system_timezone(time(hour=1, minute=30)),
@@ -200,7 +258,7 @@ def schedules(
     integration_test_database_session.add(schedule_sunday)
     integration_test_database_session.commit()
 
-    yield TestSchedules(
+    yield RepeatQueryTestSchedules(
         relay_position=relay_position,
         schedule_every_day=schedule_every_day,
         schedule_weekdays=schedule_weekdays,
@@ -214,4 +272,13 @@ def schedules(
         schedule_sunday=schedule_sunday,
     )
 
-    integration_test_database_session.rollback()
+    integration_test_database_session.delete(schedule_every_day)
+    integration_test_database_session.delete(schedule_weekdays)
+    integration_test_database_session.delete(schedule_weekends)
+    integration_test_database_session.delete(schedule_monday)
+    integration_test_database_session.delete(schedule_tuesday)
+    integration_test_database_session.delete(schedule_wednesday)
+    integration_test_database_session.delete(schedule_thursday)
+    integration_test_database_session.delete(schedule_friday)
+    integration_test_database_session.delete(schedule_saturday)
+    integration_test_database_session.delete(schedule_sunday)

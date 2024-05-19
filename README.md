@@ -12,15 +12,15 @@ This application currently supports the following boards:
 
 Contributions for other boards are warmly welcome.
 
-![ui_schedule_list.png](images/ui_schedule_list.png)   ![ui_schedule_detail.png](images/ui_schedule_detail.png)
-
-![api_auto_docs.png](images/api_auto_docs.png)
-
 ## Features
 * Add schedules for switching the relays
 * Relays are switched automatically according to schedule configuration
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
+
+![ui_schedule_list.png](images/ui_schedule_list.png)   ![ui_schedule_detail.png](images/ui_schedule_detail.png)
+
+![api_auto_docs.png](images/api_auto_docs.png)
 
 ## Installation on Raspberry Pi
 Installation on your Raspberry Pi is **easy**! It is quickly done within minutes.
@@ -76,7 +76,6 @@ found in `/etc/nginx/sites-available/irrigation-pi` on your Raspberry Pi.
 
 ## Roadmap
 Following features are on our todo list:
-* Validate schedules to avoid collisions
 * View for live relay switching
 * View for Raspberry Pi system information
 * Make host name for Raspberry Pi installation configurable
@@ -92,7 +91,7 @@ And I am a lazy person and a lazy gardener. :smiley: I like to keep things simpl
 Also, a lot of these projects on GitHub did grow out of hand for the maintainers and are now outdated or simply do not
 work anymore. Often they leverage big ass frameworks, databases like MongoDB or depend on Docker. All this I do not
 want to run on my good old Raspberry Pi 3 with little computing power. And no, I do not want to buy a Raspberry Pi 5
-for 120 Euro for simple use cases like watering my plants on the balcony when a device for 30 Euro can do the job.
+for 100 Euro for simple use cases like watering my plants on the balcony when a device for 30 Euro can do the job.
 
 Also, I want to use my Irrigation-Pi in my garden where I only have solar power from a battery. Here I have an island
 solution and the need for very little power consumption. The latest Raspberry Pi hardware versions suck a lot more

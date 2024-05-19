@@ -1,10 +1,8 @@
 """Integration tests for schedule service."""
 
 from datetime import time
-from uuid import uuid4
 
 import pytest
-from app.database.models import Schedule
 from app.scheduling import Repeat
 from app.services.schedule import (
     active_schedule_exists,
@@ -13,62 +11,26 @@ from app.services.schedule import (
 )
 from sqlmodel import Session
 
-from tests.utils import RepeatTestData, TestSchedules
+from tests.utils import RepeatQueryTestSchedules, RepeatTestData, TimeQueryTestSchedules
 
 
 def test_active_schedule_exists_time_query(
     integration_test_database_session: Session,
+    time_query_schedules: TimeQueryTestSchedules,
 ) -> None:
     """Test the active_schedule_exists() function.
 
     :param integration_test_database_session:
     :return:
     """
-    repeat = Repeat.monday
-
-    schedule_1: Schedule = Schedule(
-        start_time=set_system_timezone(time(hour=8, minute=15)),
-        stop_time=set_system_timezone(time(hour=9, minute=0)),
-        repeat=repeat,
-        duration=45,
-        relay_position=1,
-        active=True,
-        start_job_id=str(uuid4()),
-        stop_job_id=str(uuid4()),
-    )
-    integration_test_database_session.add(schedule_1)
-    schedule_2: Schedule = Schedule(
-        start_time=set_system_timezone(time(hour=10, minute=15)),
-        stop_time=set_system_timezone(time(hour=11, minute=0)),
-        repeat=repeat,
-        duration=45,
-        relay_position=1,
-        active=True,
-        start_job_id=str(uuid4()),
-        stop_job_id=str(uuid4()),
-    )
-    integration_test_database_session.add(schedule_2)
-    schedule_3: Schedule = Schedule(
-        start_time=set_system_timezone(time(hour=12, minute=15)),
-        stop_time=set_system_timezone(time(hour=13, minute=0)),
-        repeat=repeat,
-        duration=45,
-        relay_position=1,
-        active=True,
-        start_job_id=str(uuid4()),
-        stop_job_id=str(uuid4()),
-    )
-    integration_test_database_session.add(schedule_3)
-    integration_test_database_session.commit()
-
     start_time = set_system_timezone(time(hour=8, minute=00))
     stop_time = calculate_stop_time(start_time, 20)
     schedule_exists = active_schedule_exists(
         integration_test_database_session,
         start_time,
         stop_time,
-        repeat,
-        relay_position=1,
+        time_query_schedules.repeat,
+        time_query_schedules.relay_position,
     )
     assert schedule_exists
 
@@ -78,8 +40,8 @@ def test_active_schedule_exists_time_query(
         integration_test_database_session,
         start_time,
         stop_time,
-        repeat,
-        relay_position=1,
+        time_query_schedules.repeat,
+        time_query_schedules.relay_position,
     )
     assert schedule_exists
 
@@ -89,8 +51,8 @@ def test_active_schedule_exists_time_query(
         integration_test_database_session,
         start_time,
         stop_time,
-        repeat,
-        relay_position=1,
+        time_query_schedules.repeat,
+        time_query_schedules.relay_position,
     )
     assert not schedule_exists
 
@@ -100,8 +62,8 @@ def test_active_schedule_exists_time_query(
         integration_test_database_session,
         start_time,
         stop_time,
-        repeat,
-        relay_position=1,
+        time_query_schedules.repeat,
+        time_query_schedules.relay_position,
     )
     assert schedule_exists
 
@@ -111,8 +73,8 @@ def test_active_schedule_exists_time_query(
         integration_test_database_session,
         start_time,
         stop_time,
-        repeat,
-        relay_position=1,
+        time_query_schedules.repeat,
+        time_query_schedules.relay_position,
     )
     assert schedule_exists
 
@@ -254,7 +216,7 @@ def test_active_schedule_exists_time_query(
 )
 def test_active_schedule_exists_repeat_query(
     integration_test_database_session: Session,
-    schedules: TestSchedules,
+    repeat_query_schedules: RepeatQueryTestSchedules,
     repeat_results: RepeatTestData,
 ) -> None:
     """Test the active_schedule_exists() function.
@@ -264,71 +226,71 @@ def test_active_schedule_exists_repeat_query(
     """
     assert repeat_results.every_day_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_every_day.start_time,
-        schedules.schedule_every_day.stop_time,
+        repeat_query_schedules.schedule_every_day.start_time,
+        repeat_query_schedules.schedule_every_day.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.weekdays_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_weekdays.start_time,
-        schedules.schedule_weekdays.stop_time,
+        repeat_query_schedules.schedule_weekdays.start_time,
+        repeat_query_schedules.schedule_weekdays.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.weekends_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_weekends.start_time,
-        schedules.schedule_weekends.stop_time,
+        repeat_query_schedules.schedule_weekends.start_time,
+        repeat_query_schedules.schedule_weekends.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.monday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_monday.start_time,
-        schedules.schedule_monday.stop_time,
+        repeat_query_schedules.schedule_monday.start_time,
+        repeat_query_schedules.schedule_monday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.tuesday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_tuesday.start_time,
-        schedules.schedule_tuesday.stop_time,
+        repeat_query_schedules.schedule_tuesday.start_time,
+        repeat_query_schedules.schedule_tuesday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.wednesday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_wednesday.start_time,
-        schedules.schedule_wednesday.stop_time,
+        repeat_query_schedules.schedule_wednesday.start_time,
+        repeat_query_schedules.schedule_wednesday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.thursday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_thursday.start_time,
-        schedules.schedule_thursday.stop_time,
+        repeat_query_schedules.schedule_thursday.start_time,
+        repeat_query_schedules.schedule_thursday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.friday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_friday.start_time,
-        schedules.schedule_friday.stop_time,
+        repeat_query_schedules.schedule_friday.start_time,
+        repeat_query_schedules.schedule_friday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.saturday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_saturday.start_time,
-        schedules.schedule_saturday.stop_time,
+        repeat_query_schedules.schedule_saturday.start_time,
+        repeat_query_schedules.schedule_saturday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
     assert repeat_results.sunday_result == active_schedule_exists(
         integration_test_database_session,
-        schedules.schedule_sunday.start_time,
-        schedules.schedule_sunday.stop_time,
+        repeat_query_schedules.schedule_sunday.start_time,
+        repeat_query_schedules.schedule_sunday.stop_time,
         repeat_results.repeat,
-        schedules.relay_position,
+        repeat_query_schedules.relay_position,
     )
