@@ -42,6 +42,7 @@ def active_schedule_exists(
     database_session: Session,
     start_time: time,
     stop_time: time,
+    repeat: Repeat,
     relay_position: int,
 ) -> bool:
     """Check if an overlapping schedule already exists in database.
@@ -49,12 +50,64 @@ def active_schedule_exists(
     :param database_session:
     :param start_time:
     :param stop_time:
+    :param repeat:
     :param relay_position:
     :return:
     """
+    if repeat == repeat.every_day:
+        repeat_query = [
+            repeat.every_day,
+            repeat.weekdays,
+            repeat.weekends,
+            repeat.monday,
+            repeat.tuesday,
+            repeat.wednesday,
+            repeat.thursday,
+            repeat.friday,
+            repeat.saturday,
+            repeat.sunday,
+        ]
+    elif repeat == repeat.weekdays:
+        repeat_query = [
+            repeat.every_day,
+            repeat.weekdays,
+            repeat.monday,
+            repeat.tuesday,
+            repeat.wednesday,
+            repeat.thursday,
+            repeat.friday,
+        ]
+    elif repeat == repeat.weekends:
+        repeat_query = [
+            repeat.every_day,
+            repeat.weekends,
+            repeat.saturday,
+            repeat.sunday,
+        ]
+    elif repeat == repeat.monday:
+        repeat_query = [repeat.every_day, repeat.weekdays, repeat.monday]
+    elif repeat == repeat.tuesday:
+        repeat_query = [repeat.every_day, repeat.weekdays, repeat.tuesday]
+    elif repeat == repeat.wednesday:
+        repeat_query = [repeat.every_day, repeat.weekdays, repeat.wednesday]
+    elif repeat == repeat.thursday:
+        repeat_query = [repeat.every_day, repeat.weekdays, repeat.thursday]
+    elif repeat == repeat.friday:
+        repeat_query = [repeat.every_day, repeat.weekdays, repeat.friday]
+    elif repeat == repeat.saturday:
+        repeat_query = [repeat.every_day, repeat.weekends, repeat.saturday]
+    elif repeat == repeat.sunday:
+        repeat_query = [repeat.every_day, repeat.weekends, repeat.sunday]
+    else:
+        raise ValueError("Invalid repeat value")
+
     stmt = (
         select(Schedule)
-        .where((Schedule.active == True) & (Schedule.relay_position == relay_position))  # noqa: E712
+        .where(
+            (Schedule.active == True)  # noqa: E712
+            & (Schedule.relay_position == relay_position)
+            & Schedule.repeat.in_(repeat_query)
+        )
         .where(
             (
                 Schedule.start_time.between(start_time, stop_time)

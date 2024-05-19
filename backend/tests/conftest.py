@@ -1,14 +1,21 @@
 """Test fixtures."""
 
+from datetime import time
 from pathlib import Path
+from uuid import uuid4
 
 import pytest
 from alembic import command
 from alembic.config import Config
 from app.config import application_settings
+from app.database.models import Schedule
+from app.scheduling import Repeat
+from app.services.schedule import set_system_timezone
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 from sqlmodel import Session
+
+from tests.utils import TestSchedules
 
 
 @pytest.fixture(scope="package")
@@ -68,3 +75,143 @@ def integration_test_database_session() -> Session:
         )
         if database_path.exists():
             database_path.unlink()
+
+
+@pytest.fixture(scope="package")
+def schedules(
+    integration_test_database_session: Session,
+) -> TestSchedules:
+    """Schedules for active schedule test.
+
+    :param integration_test_database_session:
+    :return:
+    """
+    relay_position: int = 1
+
+    schedule_every_day: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=1, minute=00)),
+        stop_time=set_system_timezone(time(hour=1, minute=30)),
+        repeat=Repeat.every_day,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_every_day)
+    schedule_weekdays: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=2, minute=00)),
+        stop_time=set_system_timezone(time(hour=2, minute=30)),
+        repeat=Repeat.weekdays,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_weekdays)
+    schedule_weekends: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=3, minute=00)),
+        stop_time=set_system_timezone(time(hour=3, minute=30)),
+        repeat=Repeat.weekends,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_weekends)
+    schedule_monday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=4, minute=00)),
+        stop_time=set_system_timezone(time(hour=4, minute=30)),
+        repeat=Repeat.monday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_monday)
+    schedule_tuesday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=5, minute=00)),
+        stop_time=set_system_timezone(time(hour=5, minute=30)),
+        repeat=Repeat.tuesday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_tuesday)
+    schedule_wednesday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=6, minute=00)),
+        stop_time=set_system_timezone(time(hour=6, minute=30)),
+        repeat=Repeat.wednesday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_wednesday)
+    schedule_thursday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=7, minute=00)),
+        stop_time=set_system_timezone(time(hour=7, minute=30)),
+        repeat=Repeat.thursday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_thursday)
+    schedule_friday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=8, minute=00)),
+        stop_time=set_system_timezone(time(hour=8, minute=30)),
+        repeat=Repeat.friday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_friday)
+    schedule_saturday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=9, minute=00)),
+        stop_time=set_system_timezone(time(hour=9, minute=30)),
+        repeat=Repeat.saturday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_saturday)
+    schedule_sunday: Schedule = Schedule(
+        start_time=set_system_timezone(time(hour=10, minute=00)),
+        stop_time=set_system_timezone(time(hour=10, minute=30)),
+        repeat=Repeat.sunday,
+        duration=30,
+        relay_position=relay_position,
+        active=True,
+        start_job_id=str(uuid4()),
+        stop_job_id=str(uuid4()),
+    )
+    integration_test_database_session.add(schedule_sunday)
+    integration_test_database_session.commit()
+
+    yield TestSchedules(
+        relay_position=relay_position,
+        schedule_every_day=schedule_every_day,
+        schedule_weekdays=schedule_weekdays,
+        schedule_weekends=schedule_weekends,
+        schedule_monday=schedule_monday,
+        schedule_tuesday=schedule_tuesday,
+        schedule_wednesday=schedule_wednesday,
+        schedule_thursday=schedule_thursday,
+        schedule_friday=schedule_friday,
+        schedule_saturday=schedule_saturday,
+        schedule_sunday=schedule_sunday,
+    )
+
+    integration_test_database_session.rollback()
