@@ -22,7 +22,18 @@ def is_raspberry_pi() -> bool:
 
 
 @dataclass
-class TestSchedules:
+class TimeQueryTestSchedules:
+    """Data class to hold test schedules."""
+
+    repeat: Repeat
+    relay_position: int
+    schedule_1: Schedule
+    schedule_2: Schedule
+    schedule_3: Schedule
+
+
+@dataclass
+class RepeatQueryTestSchedules:
     """Data class to hold test schedules."""
 
     relay_position: int
