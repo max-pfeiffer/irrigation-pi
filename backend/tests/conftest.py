@@ -134,6 +134,7 @@ def time_query_schedules(
     integration_test_database_session.delete(schedule_1)
     integration_test_database_session.delete(schedule_2)
     integration_test_database_session.delete(schedule_3)
+    integration_test_database_session.commit()
 
 
 @pytest.fixture(scope="function")
@@ -282,3 +283,4 @@ def repeat_query_schedules(
     integration_test_database_session.delete(schedule_friday)
     integration_test_database_session.delete(schedule_saturday)
     integration_test_database_session.delete(schedule_sunday)
+    integration_test_database_session.commit()
