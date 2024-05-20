@@ -82,7 +82,7 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
         elif pin_factory_type == "native":
             pin_factory = NativeFactory()
         else:
-            raise Exception("Invalid pin_factory_type in config file")
+            raise ValueError("Invalid pin_factory_type in config file")
     else:
         # This MockFactory is used for development purposes. If application is
         # not run on a Raspberry Pi and the pin hardware with low level drivers
