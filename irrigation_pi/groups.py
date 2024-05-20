@@ -1,4 +1,7 @@
 """Command groups."""
+
+# ruff: noqa: D205, D301, D400
+
 import os
 import subprocess
 import sys
@@ -30,13 +33,14 @@ def become_root():
     :return:
     """
     if os.geteuid() != 0:
-        subprocess.call(['sudo', *sys.argv])
+        subprocess.call(["sudo", *sys.argv])
         sys.exit()
 
 
 @click.group()
 def install():
-    """Install sub command group.
+    """Install commands.
+    \f
 
     :return:
     """
@@ -53,7 +57,8 @@ install.add_command(install_nginx_configuration)
 
 @click.group()
 def uninstall():
-    """Uninstall sub command group.
+    """Uninstall commands.
+    \f
 
     :return:
     """
@@ -69,7 +74,8 @@ uninstall.add_command(uninstall_systemd_configuration)
 
 @click.group()
 def run():
-    """Run sub command group.
+    """Run commands.
+    \f
 
     :return:
     """
@@ -82,7 +88,8 @@ run.add_command(frontend)
 
 @click.group()
 def export():
-    """Update sub command group.
+    """Update commands.
+    \f
 
     :return:
     """

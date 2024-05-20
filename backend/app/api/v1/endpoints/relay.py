@@ -1,4 +1,5 @@
 """API endpoints for Relay objects."""
+
 from fastapi import APIRouter
 
 from app.api.v1.models import Relay, RelayUpdate

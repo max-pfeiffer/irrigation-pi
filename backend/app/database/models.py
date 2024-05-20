@@ -1,4 +1,5 @@
 """Database models."""
+
 from datetime import time
 from typing import Optional
 
