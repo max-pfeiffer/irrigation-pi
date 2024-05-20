@@ -60,3 +60,24 @@ class RelayUpdate(BaseModel):
     """Update schema for Relay object."""
 
     on: bool = Field(description="Indicates if relay is switched on")
+
+
+class RaspberryPiBoardInfo(BaseModel):
+    """Raspberry Pi board information."""
+
+    revision: str
+    model: str
+    pcb_revision: str
+    released: str
+    soc: str
+    manufacturer: str
+    memory: int
+    storage: str
+    usb: int
+    usb3: int
+    ethernet: int
+    eth_speed: int
+    wifi: bool
+    bluetooth: bool
+    csi: int
+    dsi: int
