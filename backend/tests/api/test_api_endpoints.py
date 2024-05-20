@@ -58,6 +58,11 @@ TEST_DATA: list[dict] = [
         "method": "put",
         "data": {"position": 1, "on": True},
     },
+    {
+        "path": "/v1/info",
+        "method": "get",
+        "data": None,
+    },
 ]
 
 
