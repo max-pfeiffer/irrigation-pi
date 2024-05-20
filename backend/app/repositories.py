@@ -1,4 +1,5 @@
 """Repositories for data persistence."""
+
 from datetime import time
 from typing import Optional, Tuple
 
