@@ -12,6 +12,13 @@
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
 
+/*
+Ionic 8 now ships both the light and dark themes built into the project. For added convenience, the light theme is automatically imported via the core.css file. Importing the dark theme is as simple as importing a single CSS file
+*/
+/* @import '@ionic/angular/css/palettes/dark.always.css'; */
+/* @import "@ionic/angular/css/palettes/dark.class.css"; */
+@import '@ionic/angular/css/palettes/dark.system.css';
+
 /* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
