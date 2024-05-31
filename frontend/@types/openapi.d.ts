@@ -24,66 +24,82 @@ declare namespace Components {
         export interface RaspberryPiBoardInfo {
             /**
              * Revision
+             * Raspberry Pi revision
              */
             revision: string;
             /**
              * Model
+             * Raspberry Pi model
              */
             model: string;
             /**
              * Pcb Revision
+             * Printed Circuit Board (PCB) revision
              */
             pcb_revision: string;
             /**
              * Released
+             * Release date
              */
             released: string;
             /**
              * Soc
+             * System On a Chip (SoC)
              */
             soc: string;
             /**
+             * Manufacturer
              * Manufacturer
              */
             manufacturer: string;
             /**
              * Memory
+             * Memory (SDRAM)
              */
             memory: number;
             /**
              * Storage
+             * Storage type
              */
             storage: string;
             /**
              * Usb
+             * Number of USB ports
              */
             usb: number;
             /**
              * Usb3
+             * Number of USB3 ports
              */
             usb3: number;
             /**
              * Ethernet
+             * Number of ethernet ports
              */
             ethernet: number;
             /**
              * Eth Speed
+             * Ethernet speed
              */
             eth_speed: number;
             /**
              * Wifi
+             * Wifi available
              */
             wifi: boolean;
             /**
              * Bluetooth
+             * Bluetooth available
              */
             bluetooth: boolean;
             /**
              * Csi
+             * Number of Camera Serial Interfaces (CSI)
              */
             csi: number;
             /**
              * Dsi
+             * Number of Display Serial Interfaces (DSI)
              */
             dsi: number;
         }
