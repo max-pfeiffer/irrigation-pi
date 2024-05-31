@@ -3,8 +3,6 @@ import type { Components, Paths } from 'frontend/@types/openapi';
 export type ScheduleResponse = Components.Schemas.ScheduleResponse;
 export type ScheduleUpdate = Components.Schemas.ScheduleUpdate;
 export type ScheduleCreate = Components.Schemas.ScheduleCreate;
-export type Relay = Components.Schemas.Relay;
-export type RelayUpdate = Components.Schemas.RelayUpdate;
 export type Repeat = Components.Schemas.Repeat;
 
 export type CreateScheduleRequestBody =
