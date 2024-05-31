@@ -1,17 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular/standalone';
-import { environment } from 'frontend/src/environments/environment';
-import {
-  Observable,
-  catchError,
-  map,
-  of,
-  switchMap,
-  tap,
-  throwError,
-} from 'rxjs';
+import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { AppConfig } from '../../app.models';
+import { BaseApiService } from '../../base/services/base-api.service';
 import {
   CreateScheduleRequestBody,
   CreateScheduleResponse,
@@ -25,14 +16,7 @@ const BASE_PATH = '/v1/schedule';
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleService {
-  public appConfig: AppConfig = null;
-
-  public constructor(
-    public httpClient: HttpClient,
-    public toastController: ToastController
-  ) {}
-
+export class ScheduleService extends BaseApiService {
   public getSchedule(primaryKey: number): Observable<ScheduleResponse> {
     return this.getAppConfig().pipe(
       switchMap((config: AppConfig) => {
@@ -82,12 +66,13 @@ export class ScheduleService {
             tap(() => {
               this.showToast(`Schedule was created sucessfully!`, 'success');
             }),
-            catchError((error) => {
-              this.showToast(
-                `There was an error creating the schedule!`,
-                'danger'
-              );
-              return throwError(() => error);
+            catchError((response: HttpErrorResponse) => {
+              const msg =
+                response.status === 409
+                  ? response.error.detail
+                  : 'There was an error creating the schedule!';
+              this.showToast(msg, 'danger');
+              return throwError(() => response);
             })
           );
       })
@@ -108,12 +93,13 @@ export class ScheduleService {
             tap(() => {
               this.showToast(`Schedule was updated sucessfully!`, 'success');
             }),
-            catchError((error) => {
-              this.showToast(
-                `There was an error updating the schedule!`,
-                'danger'
-              );
-              return throwError(() => error);
+            catchError((response: HttpErrorResponse) => {
+              const msg =
+                response.status === 409
+                  ? response.error.detail
+                  : 'There was an error updating the schedule!';
+              this.showToast(msg, 'danger');
+              return throwError(() => response);
             })
           );
       })
@@ -140,18 +126,6 @@ export class ScheduleService {
     );
   }
 
-  public showToast(message: string, color: string) {
-    this.toastController
-      .create({
-        message,
-        color,
-        duration: 3000,
-        position: 'bottom',
-      })
-      .then((toastElement) => toastElement.present())
-      .catch(() => {});
-  }
-
   public stripSeconds(schedule: ScheduleResponse): ScheduleResponse {
     let match = schedule.start_time.match(/^([0-9]{1,2}):([0-9]{1,2})/);
     return {
@@ -168,15 +142,5 @@ export class ScheduleService {
       ...schedule,
       start_time: match ? `${match[1]}:${match[2]}:00` : schedule.start_time,
     };
-  }
-
-  public getAppConfig(): Observable<AppConfig> {
-    if (this.appConfig) {
-      return of(this.appConfig);
-    } else {
-      return this.httpClient
-        .get<AppConfig>(environment.appConfigUrl)
-        .pipe(tap((config) => (this.appConfig = config)));
-    }
   }
 }
