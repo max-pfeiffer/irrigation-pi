@@ -18,6 +18,76 @@ declare namespace Components {
             detail?: /* ValidationError */ ValidationError[];
         }
         /**
+         * RaspberryPiBoardInfo
+         * Raspberry Pi board information.
+         */
+        export interface RaspberryPiBoardInfo {
+            /**
+             * Revision
+             */
+            revision: string;
+            /**
+             * Model
+             */
+            model: string;
+            /**
+             * Pcb Revision
+             */
+            pcb_revision: string;
+            /**
+             * Released
+             */
+            released: string;
+            /**
+             * Soc
+             */
+            soc: string;
+            /**
+             * Manufacturer
+             */
+            manufacturer: string;
+            /**
+             * Memory
+             */
+            memory: number;
+            /**
+             * Storage
+             */
+            storage: string;
+            /**
+             * Usb
+             */
+            usb: number;
+            /**
+             * Usb3
+             */
+            usb3: number;
+            /**
+             * Ethernet
+             */
+            ethernet: number;
+            /**
+             * Eth Speed
+             */
+            eth_speed: number;
+            /**
+             * Wifi
+             */
+            wifi: boolean;
+            /**
+             * Bluetooth
+             */
+            bluetooth: boolean;
+            /**
+             * Csi
+             */
+            csi: number;
+            /**
+             * Dsi
+             */
+            dsi: number;
+        }
+        /**
          * Relay
          * Response schema for Relay object.
          */
@@ -197,6 +267,8 @@ declare namespace Paths {
              * Response Create Schedule V1 Schedule  Post
              */
             export type $200 = number;
+            export interface $409 {
+            }
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
@@ -213,6 +285,15 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = any;
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+        }
+    }
+    namespace GetBoardInfoV1InfoGet {
+        namespace Responses {
+            export type $200 = /**
+             * RaspberryPiBoardInfo
+             * Raspberry Pi board information.
+             */
+            Components.Schemas.RaspberryPiBoardInfo;
         }
     }
     namespace GetRelayV1RelayPositionGet {
@@ -314,6 +395,8 @@ declare namespace Paths {
         Components.Schemas.ScheduleUpdate;
         namespace Responses {
             export type $200 = any;
+            export interface $409 {
+            }
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
@@ -409,6 +492,18 @@ export interface OperationMethods {
     data?: Paths.UpdateRelayV1RelayPositionPut.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateRelayV1RelayPositionPut.Responses.$200>
+  /**
+   * get_board_info_v1_info__get - Get Board Info
+   * 
+   * Get Raspberry Pi board information.
+   * 
+   * :return:
+   */
+  'get_board_info_v1_info__get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -508,6 +603,20 @@ export interface PathsDictionary {
       data?: Paths.UpdateRelayV1RelayPositionPut.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateRelayV1RelayPositionPut.Responses.$200>
+  }
+  ['/v1/info/']: {
+    /**
+     * get_board_info_v1_info__get - Get Board Info
+     * 
+     * Get Raspberry Pi board information.
+     * 
+     * :return:
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
   }
 }
 
