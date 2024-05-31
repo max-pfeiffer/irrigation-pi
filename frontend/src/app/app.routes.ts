@@ -32,4 +32,11 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./relay/pages/list/relay-list.page').then((m) => m.RelayListPage),
   },
+  {
+    path: 'info',
+    loadComponent: () =>
+      import('./info/pages/board-info/board-info.page').then(
+        (m) => m.BoardInfoPage
+      ),
+  },
 ];

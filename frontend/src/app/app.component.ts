@@ -16,6 +16,8 @@ import {
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
+  informationOutline,
+  informationSharp,
   timerOutline,
   timerSharp,
   toggleOutline,
@@ -48,6 +50,7 @@ export class AppComponent {
   public appPages = [
     { title: 'Schedules', url: '/schedules', icon: 'timer' },
     { title: 'Relays', url: '/relays', icon: 'toggle' },
+    { title: 'Info', url: '/info', icon: 'information' },
   ];
 
   public constructor() {
@@ -56,6 +59,8 @@ export class AppComponent {
       timerSharp,
       toggleOutline,
       toggleSharp,
+      informationOutline,
+      informationSharp,
     });
   }
 }
