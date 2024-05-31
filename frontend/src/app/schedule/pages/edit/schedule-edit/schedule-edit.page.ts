@@ -185,7 +185,7 @@ export class ScheduleEditPage implements OnInit {
   }
 
   public async openStartTimePicker() {
-    const picker: HTMLIonPickerElement = await this.pickerCtrl.create({
+    const picker: HTMLIonPickerLegacyElement = await this.pickerCtrl.create({
       columns: [
         {
           name: 'hour',
