@@ -1,0 +1,19 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Board Info</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-list>
+    @for(field of fields; track field.key) {
+    <ion-item>
+      <ion-label>{{field.key}}</ion-label>
+      <ion-label class="ion-text-right">{{field.value}}</ion-label>
+    </ion-item>
+    }
+  </ion-list>
+</ion-content>

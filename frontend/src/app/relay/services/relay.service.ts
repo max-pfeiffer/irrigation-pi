@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, switchMap, tap, throwError } from 'rxjs';
 import { AppConfig } from '../../app.models';
 import { BaseApiService } from '../../base/services/base-api.service';
-import { Relay, RelayUpdate } from '../../schedule/models/scheduler.models';
+import { Relay, RelayUpdate } from '../models/relay.models';
 
 const BASE_PATH = '/v1/relay';
 

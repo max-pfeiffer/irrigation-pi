@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonItem, IonToggle } from '@ionic/angular/standalone';
-import { Relay } from 'frontend/src/app/schedule/models/scheduler.models';
 import { finalize } from 'rxjs';
+import { Relay } from '../../models/relay.models';
 import { RelayService } from '../../services/relay.service';
 
 @Component({

@@ -14,8 +14,8 @@ import {
   IonToolbar,
   ViewDidEnter,
 } from '@ionic/angular/standalone';
-import { Relay } from 'frontend/src/app/schedule/models/scheduler.models';
 import { RelayTileComponent } from '../../components/tile/relay-tile.component';
+import { Relay } from '../../models/relay.models';
 import { RelayService } from '../../services/relay.service';
 
 @Component({
