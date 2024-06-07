@@ -206,7 +206,7 @@ def service_create_schedule(
 
 def service_update_schedule(
     database_session: Session, scheduler: AsyncIOScheduler, primary_key: int, **kwargs
-):
+) -> None:
     """Service updates and persists a Schedule object.
 
     :param database_session:
@@ -227,7 +227,7 @@ def service_update_schedule(
         data["start_time"] = set_system_timezone(data["start_time"])
         data["stop_time"] = calculate_stop_time(data["start_time"], data["duration"])
 
-        if active_schedule_exists(
+        if data["active"] and active_schedule_exists(
             database_session,
             data["start_time"],
             data["stop_time"],
@@ -260,7 +260,7 @@ def service_update_schedule(
 
 def service_delete_schedule(
     database_session: Session, scheduler: AsyncIOScheduler, primary_key: int
-):
+) -> None:
     """Service deletes a persisted Schedule object.
 
     :param database_session:
