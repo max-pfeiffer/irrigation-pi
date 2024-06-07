@@ -23,7 +23,7 @@ import {
 import { addIcons } from 'ionicons';
 import { addOutline } from 'ionicons/icons';
 import { finalize } from 'rxjs';
-import { ScheduleTileComponent } from '../../components/tile/schedule-tile/schedule-tile.component';
+import { ScheduleTileComponent } from '../../components/tile/schedule-tile.component';
 import { ScheduleResponse } from '../../models/scheduler.models';
 import { ScheduleService } from '../../services/schedule.service';
 

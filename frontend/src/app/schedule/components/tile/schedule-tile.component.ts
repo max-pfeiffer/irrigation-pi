@@ -22,9 +22,9 @@ import {
 import { addIcons } from 'ionicons';
 import { trash } from 'ionicons/icons';
 import { finalize } from 'rxjs';
-import { ScheduleResponse } from '../../../models/scheduler.models';
-import { DisplayStringPipe } from '../../../pipes/display-string.pipe';
-import { ScheduleService } from '../../../services/schedule.service';
+import { ScheduleResponse } from '../../models/scheduler.models';
+import { DisplayStringPipe } from '../../pipes/display-string.pipe';
+import { ScheduleService } from '../../services/schedule.service';
 
 @Component({
   selector: 'app-schedule-tile',

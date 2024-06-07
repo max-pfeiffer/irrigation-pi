@@ -18,6 +18,92 @@ declare namespace Components {
             detail?: /* ValidationError */ ValidationError[];
         }
         /**
+         * RaspberryPiBoardInfo
+         * Raspberry Pi board information.
+         */
+        export interface RaspberryPiBoardInfo {
+            /**
+             * Revision
+             * Raspberry Pi revision
+             */
+            revision: string;
+            /**
+             * Model
+             * Raspberry Pi model
+             */
+            model: string;
+            /**
+             * Pcb Revision
+             * Printed Circuit Board (PCB) revision
+             */
+            pcb_revision: string;
+            /**
+             * Released
+             * Release date
+             */
+            released: string;
+            /**
+             * Soc
+             * System On a Chip (SoC)
+             */
+            soc: string;
+            /**
+             * Manufacturer
+             * Manufacturer
+             */
+            manufacturer: string;
+            /**
+             * Memory
+             * Memory (SDRAM)
+             */
+            memory: number;
+            /**
+             * Storage
+             * Storage type
+             */
+            storage: string;
+            /**
+             * Usb
+             * Number of USB ports
+             */
+            usb: number;
+            /**
+             * Usb3
+             * Number of USB3 ports
+             */
+            usb3: number;
+            /**
+             * Ethernet
+             * Number of ethernet ports
+             */
+            ethernet: number;
+            /**
+             * Eth Speed
+             * Ethernet speed
+             */
+            eth_speed: number;
+            /**
+             * Wifi
+             * Wifi available
+             */
+            wifi: boolean;
+            /**
+             * Bluetooth
+             * Bluetooth available
+             */
+            bluetooth: boolean;
+            /**
+             * Csi
+             * Number of Camera Serial Interfaces (CSI)
+             */
+            csi: number;
+            /**
+             * Dsi
+             * Number of Display Serial Interfaces (DSI)
+             */
+            dsi: number;
+        }
+        /**
          * Relay
          * Response schema for Relay object.
          */
@@ -197,6 +283,8 @@ declare namespace Paths {
              * Response Create Schedule V1 Schedule  Post
              */
             export type $200 = number;
+            export interface $409 {
+            }
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
@@ -213,6 +301,15 @@ declare namespace Paths {
         namespace Responses {
             export type $200 = any;
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+        }
+    }
+    namespace GetBoardInfoV1InfoGet {
+        namespace Responses {
+            export type $200 = /**
+             * RaspberryPiBoardInfo
+             * Raspberry Pi board information.
+             */
+            Components.Schemas.RaspberryPiBoardInfo;
         }
     }
     namespace GetRelayV1RelayPositionGet {
@@ -314,6 +411,8 @@ declare namespace Paths {
         Components.Schemas.ScheduleUpdate;
         namespace Responses {
             export type $200 = any;
+            export interface $409 {
+            }
             export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
         }
     }
@@ -409,6 +508,18 @@ export interface OperationMethods {
     data?: Paths.UpdateRelayV1RelayPositionPut.RequestBody,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.UpdateRelayV1RelayPositionPut.Responses.$200>
+  /**
+   * get_board_info_v1_info__get - Get Board Info
+   * 
+   * Get Raspberry Pi board information.
+   * 
+   * :return:
+   */
+  'get_board_info_v1_info__get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -508,6 +619,20 @@ export interface PathsDictionary {
       data?: Paths.UpdateRelayV1RelayPositionPut.RequestBody,
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.UpdateRelayV1RelayPositionPut.Responses.$200>
+  }
+  ['/v1/info/']: {
+    /**
+     * get_board_info_v1_info__get - Get Board Info
+     * 
+     * Get Raspberry Pi board information.
+     * 
+     * :return:
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
   }
 }
 
