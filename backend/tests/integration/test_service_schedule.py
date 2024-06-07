@@ -7,8 +7,14 @@ from app.scheduling import Repeat
 from app.services.schedule import (
     active_schedule_exists,
     calculate_stop_time,
+    service_create_schedule,
+    service_delete_schedule,
+    service_get_schedule,
+    service_update_schedule,
     set_system_timezone,
 )
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy.exc import NoResultFound
 from sqlmodel import Session
 
 from tests.utils import RepeatQueryTestSchedules, RepeatTestData, TimeQueryTestSchedules
@@ -294,3 +300,73 @@ def test_active_schedule_exists_repeat_query(
         repeat_results.repeat,
         repeat_query_schedules.relay_position,
     )
+
+
+def test_schedule_update_toggle_active_schedule(
+    integration_test_database_session: Session, async_scheduler: AsyncIOScheduler
+) -> None:
+    """Test toggling the active flag for a schedule, active schedule use case.
+
+    :param integration_test_database_session:
+    :param async_scheduler:
+    :return:
+    """
+    primary_key: int = service_create_schedule(
+        integration_test_database_session,
+        async_scheduler,
+        time(hour=10, minute=15),
+        Repeat.monday,
+        10,
+        True,
+        1,
+    )
+    assert primary_key
+
+    service_update_schedule(
+        integration_test_database_session, async_scheduler, primary_key, active=False
+    )
+    schedule_data: dict = service_get_schedule(
+        integration_test_database_session, primary_key
+    )
+    assert schedule_data
+
+    service_delete_schedule(
+        integration_test_database_session, async_scheduler, primary_key
+    )
+    with pytest.raises(NoResultFound):
+        service_get_schedule(integration_test_database_session, primary_key)
+
+
+def test_schedule_update_toggle_inactive_schedule(
+    integration_test_database_session: Session, async_scheduler: AsyncIOScheduler
+) -> None:
+    """Test toggling the active flag for a schedule, inactive schedule use case.
+
+    :param integration_test_database_session:
+    :param async_scheduler:
+    :return:
+    """
+    primary_key: int = service_create_schedule(
+        integration_test_database_session,
+        async_scheduler,
+        time(hour=10, minute=15),
+        Repeat.monday,
+        10,
+        False,
+        1,
+    )
+    assert primary_key
+
+    service_update_schedule(
+        integration_test_database_session, async_scheduler, primary_key, active=True
+    )
+    schedule_data: dict = service_get_schedule(
+        integration_test_database_session, primary_key
+    )
+    assert schedule_data
+
+    service_delete_schedule(
+        integration_test_database_session, async_scheduler, primary_key
+    )
+    with pytest.raises(NoResultFound):
+        service_get_schedule(integration_test_database_session, primary_key)

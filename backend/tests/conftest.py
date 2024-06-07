@@ -11,6 +11,7 @@ from app.config import application_settings
 from app.database.models import Schedule
 from app.scheduling import Repeat
 from app.services.schedule import set_system_timezone
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 from sqlmodel import Session
@@ -284,3 +285,15 @@ def repeat_query_schedules(
     integration_test_database_session.delete(schedule_saturday)
     integration_test_database_session.delete(schedule_sunday)
     integration_test_database_session.commit()
+
+
+@pytest.fixture(scope="function")
+def async_scheduler() -> AsyncIOScheduler:
+    """Provide AsyncIOScheduler as fixture.
+
+    :return:
+    """
+    scheduler: AsyncIOScheduler = AsyncIOScheduler()
+    scheduler.start()
+    yield scheduler
+    scheduler.shutdown()
