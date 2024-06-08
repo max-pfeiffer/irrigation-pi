@@ -12,6 +12,7 @@ def restart_uvicorn() -> None:
     :return:
     """
     click.echo("Restarting Uvicorn server...")
+    run_subprocess(["sudo", "systemctl", "stop", "irrigation-pi"])
     run_subprocess(["sudo", "systemctl", "start", "irrigation-pi"])
 
 
