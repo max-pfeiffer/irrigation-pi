@@ -7,6 +7,7 @@ import subprocess
 import sys
 
 import click
+from restart import restart_nginx, restart_uvicorn
 
 from irrigation_pi.export import backend_api_specs
 from irrigation_pi.install import (
@@ -84,6 +85,20 @@ def run():
 
 run.add_command(backend)
 run.add_command(frontend)
+
+
+@click.group()
+def restart():
+    """Restart commands.
+    \f
+
+    :return:
+    """
+    pass
+
+
+restart.add_command(restart_uvicorn)
+restart.add_command(restart_nginx)
 
 
 @click.group()
