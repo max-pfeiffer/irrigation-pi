@@ -15,7 +15,14 @@ import {
   IonSplitPane,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
-import { timerOutline, timerSharp } from 'ionicons/icons';
+import {
+  informationOutline,
+  informationSharp,
+  timerOutline,
+  timerSharp,
+  toggleOutline,
+  toggleSharp,
+} from 'ionicons/icons';
 
 @Component({
   selector: 'app-root',
@@ -40,12 +47,20 @@ import { timerOutline, timerSharp } from 'ionicons/icons';
   ],
 })
 export class AppComponent {
-  public appPages = [{ title: 'Schedules', url: '/schedules', icon: 'timer' }];
+  public appPages = [
+    { title: 'Schedules', url: '/schedules', icon: 'timer' },
+    { title: 'Relays', url: '/relays', icon: 'toggle' },
+    { title: 'Info', url: '/info', icon: 'information' },
+  ];
 
   public constructor() {
     addIcons({
       timerOutline,
       timerSharp,
+      toggleOutline,
+      toggleSharp,
+      informationOutline,
+      informationSharp,
     });
   }
 }

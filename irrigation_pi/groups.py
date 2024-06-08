@@ -17,6 +17,7 @@ from irrigation_pi.install import (
     install_nginx_configuration,
     install_systemd_configuration,
 )
+from irrigation_pi.restart import restart_nginx, restart_uvicorn
 from irrigation_pi.run import backend, frontend
 from irrigation_pi.uninstall import (
     uninstall_all,
@@ -84,6 +85,20 @@ def run():
 
 run.add_command(backend)
 run.add_command(frontend)
+
+
+@click.group()
+def restart():
+    """Restart commands.
+    \f
+
+    :return:
+    """
+    pass
+
+
+restart.add_command(restart_uvicorn)
+restart.add_command(restart_nginx)
 
 
 @click.group()
