@@ -1,7 +1,8 @@
 """Restart commands."""
 
 import click
-from utils import run_subprocess
+
+from irrigation_pi.utils import run_subprocess
 
 
 @click.command(name="uvicorn")
