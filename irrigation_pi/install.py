@@ -139,3 +139,31 @@ def install_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+
+@click.command(name="wifi-hotspot")
+def install_wifi_hotspot():
+    """Install Wi-Fi hotspot.
+
+    :return:
+    """
+    click.echo("Installing Wi-Fi hotspot...")
+
+    # Enable NetworkManager
+    run_subprocess(["sudo", "systemctl", "enable", "NetworkManager"])
+
+    # Configure Wi-Fi hotspot with NetworkManager
+    run_subprocess(
+        [
+            "sudo",
+            "nmcli",
+            "wifi",
+            "hotspot",
+            "ifname",
+            "<Device>",
+            "ssid",
+            "IrrigationPi",
+            "password",
+            "password",
+        ]
+    )
