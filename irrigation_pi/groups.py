@@ -7,7 +7,6 @@ import subprocess
 import sys
 
 import click
-from restart import restart_nginx, restart_uvicorn
 
 from irrigation_pi.export import backend_api_specs
 from irrigation_pi.install import (
@@ -18,6 +17,7 @@ from irrigation_pi.install import (
     install_nginx_configuration,
     install_systemd_configuration,
 )
+from irrigation_pi.restart import restart_nginx, restart_uvicorn
 from irrigation_pi.run import backend, frontend
 from irrigation_pi.uninstall import (
     uninstall_all,
