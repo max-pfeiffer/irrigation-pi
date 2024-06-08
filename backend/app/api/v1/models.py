@@ -60,3 +60,24 @@ class RelayUpdate(BaseModel):
     """Update schema for Relay object."""
 
     on: bool = Field(description="Indicates if relay is switched on")
+
+
+class RaspberryPiBoardInfo(BaseModel):
+    """Raspberry Pi board information."""
+
+    revision: str = Field(description="Raspberry Pi revision")
+    model: str = Field(description="Raspberry Pi model")
+    pcb_revision: str = Field(description="Printed Circuit Board (PCB) revision")
+    released: str = Field(description="Release date")
+    soc: str = Field(description="System On a Chip (SoC)")
+    manufacturer: str = Field(description="Manufacturer")
+    memory: int = Field(description="Memory (SDRAM)")
+    storage: str = Field(description="Storage type")
+    usb: int = Field(description="Number of USB ports")
+    usb3: int = Field(description="Number of USB3 ports")
+    ethernet: int = Field(description="Number of ethernet ports")
+    eth_speed: int = Field(description="Ethernet speed")
+    wifi: bool = Field(description="Wifi available")
+    bluetooth: bool = Field(description="Bluetooth available")
+    csi: int = Field(description="Number of Camera Serial Interfaces (CSI)")
+    dsi: int = Field(description="Number of Display Serial Interfaces (DSI)")

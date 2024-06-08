@@ -41,6 +41,10 @@ class WaveshareRpiRelayBoardAdapter(RelayBoardAdapter):
             ]
         self.relays: list[Relay] = relays
 
+    def get_pin_factory(self) -> Factory:
+        """Return the pin factory."""
+        return self.pin_factory
+
     def get_relay(self, relay_position: int) -> Relay:
         """Return the relay object at the desired position."""
         if relay_position not in self.relay_position_mapping.keys():

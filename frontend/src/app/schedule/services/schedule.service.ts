@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastController } from '@ionic/angular/standalone';
-import { environment } from 'frontend/src/environments/environment';
-import { Observable, catchError, map, tap, throwError } from 'rxjs';
+import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
+import { AppConfig } from '../../app.models';
+import { BaseApiService } from '../../base/services/base-api.service';
 import {
   CreateScheduleRequestBody,
   CreateScheduleResponse,
@@ -16,33 +16,39 @@ const BASE_PATH = '/v1/schedule';
 @Injectable({
   providedIn: 'root',
 })
-export class ScheduleService {
-  public constructor(
-    public httpClient: HttpClient,
-    public toastController: ToastController
-  ) {}
-
+export class ScheduleService extends BaseApiService {
   public getSchedule(primaryKey: number): Observable<ScheduleResponse> {
-    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
-    return this.httpClient.get<ScheduleResponse>(url.toString()).pipe(
-      map((schedule) => this.stripSeconds(schedule)),
-      catchError((error) => {
-        this.showToast(`There was an error retrieving the schedule!`, 'danger');
-        return throwError(() => error);
+    return this.getAppConfig().pipe(
+      switchMap((config: AppConfig) => {
+        const url = new URL(`${config.api.host}${BASE_PATH}/${primaryKey}`);
+        return this.httpClient.get<ScheduleResponse>(url.toString()).pipe(
+          map((schedule) => this.stripSeconds(schedule)),
+          catchError((error) => {
+            this.showToast(
+              `There was an error retrieving the schedule!`,
+              'danger'
+            );
+            return throwError(() => error);
+          })
+        );
       })
     );
   }
 
   public getSchedules(): Observable<ScheduleResponse[]> {
-    const url = new URL(`${environment.api.host}${BASE_PATH}/`);
-    return this.httpClient.get<ScheduleResponse[]>(url.toString()).pipe(
-      map((schedules) => schedules.map((s) => this.stripSeconds(s))),
-      catchError((error) => {
-        this.showToast(
-          `There was an error getting the list of schedules!`,
-          'danger'
+    return this.getAppConfig().pipe(
+      switchMap((config: AppConfig) => {
+        const url = new URL(`${config.api.host}${BASE_PATH}/`);
+        return this.httpClient.get<ScheduleResponse[]>(url.toString()).pipe(
+          map((schedules) => schedules.map((s) => this.stripSeconds(s))),
+          catchError((error) => {
+            this.showToast(
+              `There was an error getting the list of schedules!`,
+              'danger'
+            );
+            return throwError(() => error);
+          })
         );
-        return throwError(() => error);
       })
     );
   }
@@ -50,61 +56,74 @@ export class ScheduleService {
   public createSchedule(
     schedule: CreateScheduleRequestBody
   ): Observable<CreateScheduleResponse> {
-    const scheduleWithSeconds = this.addSeconds(schedule);
-    const url = new URL(`${environment.api.host}${BASE_PATH}/`);
-    return this.httpClient
-      .post<CreateScheduleResponse>(url.toString(), scheduleWithSeconds)
-      .pipe(
-        tap(() => {
-          this.showToast(`Schedule was created sucessfully!`, 'success');
-        }),
-        catchError((error) => {
-          this.showToast(`There was an error creating the schedule!`, 'danger');
-          return throwError(() => error);
-        })
-      );
+    return this.getAppConfig().pipe(
+      switchMap((config: AppConfig) => {
+        const scheduleWithSeconds = this.addSeconds(schedule);
+        const url = new URL(`${config.api.host}${BASE_PATH}/`);
+        return this.httpClient
+          .post<CreateScheduleResponse>(url.toString(), scheduleWithSeconds)
+          .pipe(
+            tap(() => {
+              this.showToast(`Schedule was created sucessfully!`, 'success');
+            }),
+            catchError((response: HttpErrorResponse) => {
+              const msg =
+                response.status === 409
+                  ? response.error.detail
+                  : 'There was an error creating the schedule!';
+              this.showToast(msg, 'danger');
+              return throwError(() => response);
+            })
+          );
+      })
+    );
   }
 
   public updateSchedule(
     primaryKey: number,
     schedule: ScheduleUpdate
   ): Observable<void> {
-    const scheduleWithSeconds = this.addSeconds(schedule);
-    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
-    return this.httpClient.put<void>(url.toString(), scheduleWithSeconds).pipe(
-      tap(() => {
-        this.showToast(`Schedule was updated sucessfully!`, 'success');
-      }),
-      catchError((error) => {
-        this.showToast(`There was an error updating the schedule!`, 'danger');
-        return throwError(() => error);
+    return this.getAppConfig().pipe(
+      switchMap((config: AppConfig) => {
+        const scheduleWithSeconds = this.addSeconds(schedule);
+        const url = new URL(`${config.api.host}${BASE_PATH}/${primaryKey}`);
+        return this.httpClient
+          .put<void>(url.toString(), scheduleWithSeconds)
+          .pipe(
+            tap(() => {
+              this.showToast(`Schedule was updated sucessfully!`, 'success');
+            }),
+            catchError((response: HttpErrorResponse) => {
+              const msg =
+                response.status === 409
+                  ? response.error.detail
+                  : 'There was an error updating the schedule!';
+              this.showToast(msg, 'danger');
+              return throwError(() => response);
+            })
+          );
       })
     );
   }
 
   public deleteSchedule(primaryKey: number): Observable<void> {
-    const url = new URL(`${environment.api.host}${BASE_PATH}/${primaryKey}`);
-    return this.httpClient.delete<void>(url.toString()).pipe(
-      tap(() => {
-        this.showToast(`Schedule was deleted sucessfully!`, 'success');
-      }),
-      catchError((error) => {
-        this.showToast(`There was an error deleting the schedule!`, 'danger');
-        return throwError(() => error);
+    return this.getAppConfig().pipe(
+      switchMap((config: AppConfig) => {
+        const url = new URL(`${config.api.host}${BASE_PATH}/${primaryKey}`);
+        return this.httpClient.delete<void>(url.toString()).pipe(
+          tap(() => {
+            this.showToast(`Schedule was deleted sucessfully!`, 'success');
+          }),
+          catchError((error) => {
+            this.showToast(
+              `There was an error deleting the schedule!`,
+              'danger'
+            );
+            return throwError(() => error);
+          })
+        );
       })
     );
-  }
-
-  public showToast(message: string, color: string) {
-    this.toastController
-      .create({
-        message,
-        color,
-        duration: 3000,
-        position: 'bottom',
-      })
-      .then((toastElement) => toastElement.present())
-      .catch(() => {});
   }
 
   public stripSeconds(schedule: ScheduleResponse): ScheduleResponse {
