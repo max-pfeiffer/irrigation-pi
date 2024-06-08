@@ -15,12 +15,13 @@ Contributions for other boards are warmly welcome.
 ## Features
 * Add schedules for switching the relays
 * Relays are switched automatically according to schedule configuration
+* Live relay switching
+* Display Raspberry Pi system information
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
 
-Following features are on our todo list:
-* View for live relay switching
-* View for Raspberry Pi system information
+The following features are on our todo list:
+* Set up a Wi-Fi access point on Raspberry Pi
 * Make host name for Raspberry Pi installation configurable
 * SSL for web application
 
@@ -97,7 +98,7 @@ found in `/etc/nginx/sites-available/irrigation-pi` on your Raspberry Pi.
 Irrigation Pi comes with its own management CLI. With the CLI you can perform installation and configuration tasks
 for the application and servers. Use the `--help` option to find out more about commands and usage.
 ```shell
-$ irrigation-pi --help
+raspberrypi: $ irrigation-pi --help
 Usage: irrigation-pi [OPTIONS] COMMAND [ARGS]...
 
   Irrigation Pi command line interface (CLI).
@@ -113,6 +114,7 @@ Options:
 Commands:
   export     Update commands.
   install    Install commands.
+  restart    Restart commands.
   run        Run commands.
   uninstall  Uninstall commands.
 ```
