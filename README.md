@@ -33,13 +33,14 @@ The following features are on our todo list:
 Installation on your Raspberry Pi is **easy**! It is quickly done within minutes.
 
 Requirements:
-* Raspbian GNU/Linux v11+
-* git v2.30+
-* Python v3.9+
+* Raspbian GNU/Linux v12+ (Debian Bookworm)
+* git v2.39+
+* Python v3.11+
 
-Open a shell on your Raspberry Pi and clone this repository:
+Open a shell on your Raspberry Pi and clone this repository in /srv directory:
 ```shell
-git clone https://github.com/max-pfeiffer/irrigation-pi.git
+cd /srv
+sudo git clone https://github.com/max-pfeiffer/irrigation-pi.git
 ```
 
 Then go to project directory and run the installer script. This script installs Poetry and Python package dependencies.
@@ -47,7 +48,7 @@ It also installs Debian package dependencies. Then it configures Irrigation-Pi a
 Uvicorn application server.
 ```shell
 cd irrigation-pi
-./install.sh
+sudo ./install.sh
 ```
 Depending on your Raspberry Pi's computing power and your network connection this might take a while.
 On a Raspberry Pi 2 or 3 you need to be patient. :smiley: If package installation seems to got stuck,
@@ -64,13 +65,14 @@ All servers are configured to be fired up automatically after the Raspberry was 
 ## Update
 Change to your Irrigation Pi installation directory (where you pulled the repository). Then execute the update script: 
 ```shell
-./update.sh
+cd /srv/irrigation-pi
+sudo ./update.sh
 ```
 The update script is available since v1.1.0. If you are missing it, you are running some older version. Then you need 
 to pull the latest changes from GitHub yourself like so:
 ```shell
-git checkout main
-git pull
+sudo git checkout main
+sudo git pull
 ```
 Afterwards just run the update script.
 
