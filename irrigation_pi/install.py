@@ -151,6 +151,7 @@ def install_nginx_configuration():
 @click.option("--ssid", default="Irrigation-Pi", help="SSID of Wi-Fi Hotspot.")
 @click.option(
     "--password",
+    required=True,
     help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
 )
 @click.option(
