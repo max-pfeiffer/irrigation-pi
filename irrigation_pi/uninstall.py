@@ -9,6 +9,7 @@ from irrigation_pi.constants import (
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
+    WIFI_HOTSPOT_CONNECTION_NAME,
 )
 from irrigation_pi.utils import (
     run_subprocess,
@@ -80,3 +81,19 @@ def uninstall_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+
+@click.command(name="wifi-hotspot")
+def uninstall_wifi_hotspot():
+    """Uninstall Wi-Fi hotspot using NetworkManager.
+
+    For more details see: https://networkmanager.dev/docs/api/latest/
+
+    :return:
+    """
+    click.echo("Uninstalling Wi-Fi hotspot...")
+
+    # Delete Wi-Fi hotspot with NetworkManager
+    run_subprocess(
+        ["sudo", "nmcli", "connection", "delete", WIFI_HOTSPOT_CONNECTION_NAME]
+    )

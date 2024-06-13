@@ -20,6 +20,7 @@ from irrigation_pi.constants import (
     PORT,
     SYSTEMD_CONFIG_PATH,
     VIRTUAL_ENVIRONMENT_PATH,
+    WIFI_HOTSPOT_CONNECTION_NAME,
 )
 from irrigation_pi.utils import (
     activate_virtual_environment,
@@ -142,28 +143,56 @@ def install_nginx_configuration():
 
 
 @click.command(name="wifi-hotspot")
-def install_wifi_hotspot():
-    """Install Wi-Fi hotspot.
+@click.option("--ssid", default="Irrigation-Pi", help="SSID of Wi-Fi Hotspot.")
+@click.password_option(
+    "--password",
+    required=True,
+    help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
+)
+@click.option(
+    "--autoconnect",
+    default="on",
+    type=click.Choice(["on", "off"], case_sensitive=False),
+    help="Wi-Fi Hotspot autoconnect.",
+)
+@click.option(
+    "--autoconnect-priority", default="100", help="Wi-Fi Hotspot autoconnect-priority."
+)
+def install_wifi_hotspot(
+    ssid: str, password: str, autoconnect: str, autoconnect_priority: str
+):
+    """Install Wi-Fi hotspot using NetworkManager.
+
+    For more details see: https://networkmanager.dev/docs/api/latest/
 
     :return:
     """
     click.echo("Installing Wi-Fi hotspot...")
-
-    # Enable NetworkManager
-    run_subprocess(["sudo", "systemctl", "enable", "NetworkManager"])
 
     # Configure Wi-Fi hotspot with NetworkManager
     run_subprocess(
         [
             "sudo",
             "nmcli",
+            "connection",
+            "add",
+            "con-name",
+            WIFI_HOTSPOT_CONNECTION_NAME,
+            "type",
             "wifi",
-            "hotspot",
-            "ifname",
-            "<Device>",
-            "ssid",
-            "IrrigationPi",
-            "password",
-            "password",
+            "wifi.mode",
+            "ap",
+            "wifi.ssid",
+            ssid,
+            "wifi-sec.key-mgmt",
+            "wpa-psk",
+            "wifi-sec.psk",
+            password,
+            "ipv4.method",
+            "shared",
+            "connection.autoconnect",
+            autoconnect,
+            "connection.autoconnect-priority",
+            autoconnect_priority,
         ]
     )

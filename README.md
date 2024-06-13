@@ -116,6 +116,10 @@ Commands:
   run        Run commands.
   uninstall  Uninstall commands.
 ```
+For instance, you can install and run a Wi-Fi hotspot with it:
+```shell
+$ sudo irrigation-pi install wifi-hotspot --password
+```
 
 ## Why another irrigation controller software for the Raspberry Pi?
 First of all I was searching GitHub and the web for ready to use solutions. And I found a couple.
