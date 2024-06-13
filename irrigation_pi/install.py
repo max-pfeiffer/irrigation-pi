@@ -149,8 +149,7 @@ def install_nginx_configuration():
     help="Name of the 802-11-wireless interface, i.e. wlan0.",
 )
 @click.option("--ssid", default="Irrigation-Pi", help="SSID of Wi-Fi Hotspot.")
-@click.option(
-    "--password",
+@click.password_option(
     required=True,
     help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
 )
@@ -206,9 +205,4 @@ def install_wifi_hotspot(
             "connection.autoconnect-priority",
             autoconnect_priority,
         ]
-    )
-
-    # Show password and QR code
-    run_subprocess(
-        ["sudo", "nmcli", "device", "wifi", "show-password", "ifname", interface_name]
     )

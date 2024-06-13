@@ -118,7 +118,7 @@ Commands:
 ```
 For instance, you can install and run a Wi-Fi hotspot with it:
 ```shell
-$ sudo irrigation-pi install wifi-hotspot --password
+$ sudo irrigation-pi install wifi-hotspot
 ```
 
 ## Why another irrigation controller software for the Raspberry Pi?
