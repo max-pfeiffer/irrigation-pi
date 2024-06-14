@@ -1,5 +1,7 @@
 """Restart commands."""
 
+# ruff: noqa: D205, D301, D400
+
 import click
 
 from irrigation_pi.utils import run_subprocess
@@ -8,7 +10,7 @@ from irrigation_pi.utils import run_subprocess
 @click.command(name="uvicorn")
 def restart_uvicorn() -> None:
     """Restart Uvicorn server.
-
+    \f
     :return:
     """
     click.echo("Restarting Uvicorn server...")
@@ -19,7 +21,7 @@ def restart_uvicorn() -> None:
 @click.command(name="nginx")
 def restart_nginx() -> None:
     """Restart nginx server.
-
+    \f
     :return:
     """
     click.echo("Restarting nginx server...")

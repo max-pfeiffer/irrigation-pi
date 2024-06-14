@@ -1,5 +1,7 @@
 """Install commands."""
 
+# ruff: noqa: D205, D301, D400
+
 from pathlib import Path
 from shutil import chown
 
@@ -35,7 +37,7 @@ from irrigation_pi.utils import (
 @click.pass_context
 def install_all(ctx: Context):
     """Install everything necessary to run the application on Raspberry Pi.
-
+    \f
     :return:
     """
     ctx.forward(install_debian_packages)
@@ -48,7 +50,7 @@ def install_all(ctx: Context):
 @click.command(name="debian-packages")
 def install_debian_packages():
     """Install Debian packages.
-
+    \f
     :return:
     """
     click.echo("Updating Debian package sources...")
@@ -63,7 +65,7 @@ def install_debian_packages():
 @click.command(name="config")
 def install_application_configuration():
     """Install irrigation-pi application configuration.
-
+    \f
     :return:
     """
     click.echo("Installing irrigation-pi application configuration...")
@@ -76,7 +78,7 @@ def install_application_configuration():
 @click.command(name="database")
 def install_database():
     """Install backend database.
-
+    \f
     :return:
     """
     click.echo("Installing database...")
@@ -96,7 +98,7 @@ def install_systemd_configuration():
     https://systemd.io/
     https://wiki.debian.org/systemd
     https://wiki.debian.org/systemd/Services
-
+    \f
     :return:
     """
     click.echo("Installing Systemd configuration...")
@@ -119,7 +121,7 @@ def install_nginx_configuration():
     """Install nginx configuration.
 
     See: https://nginx.org/en/docs/
-
+    \f
     :return:
     """
     # Create nginx config
@@ -172,7 +174,7 @@ def install_wifi_hotspot(
     """Install Wi-Fi hotspot using NetworkManager.
 
     For more details see: https://networkmanager.dev/docs/api/latest/
-
+    \f
     :return:
     """
     click.echo("Installing Wi-Fi hotspot...")
