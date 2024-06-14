@@ -1,5 +1,7 @@
 """Uninstall commands."""
 
+# ruff: noqa: D205, D301, D400
+
 import click
 from click import Context
 
@@ -9,6 +11,7 @@ from irrigation_pi.constants import (
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
+    WIFI_HOTSPOT_CONNECTION_NAME,
 )
 from irrigation_pi.utils import (
     run_subprocess,
@@ -19,7 +22,7 @@ from irrigation_pi.utils import (
 @click.pass_context
 def uninstall_all(ctx: Context):
     """Uninstall everything necessary to run the application on Raspberry Pi.
-
+    \f
     :return:
     """
     ctx.forward(uninstall_application_configuration)
@@ -31,7 +34,7 @@ def uninstall_all(ctx: Context):
 @click.command(name="config")
 def uninstall_application_configuration():
     """Uninstall irrigation-pi application configuration.
-
+    \f
     :return:
     """
     click.echo("Uninstalling irrigation-pi application configuration...")
@@ -41,7 +44,7 @@ def uninstall_application_configuration():
 @click.command(name="database")
 def uninstall_database():
     """Uninstall database.
-
+    \f
     :return:
     """
     click.echo("Uninstalling database...")
@@ -51,7 +54,7 @@ def uninstall_database():
 @click.command(name="systemd-config")
 def uninstall_systemd_configuration():
     """Uninstall systemd config.
-
+    \f
     :return:
     """
     click.echo("Uninstalling systemd configuration...")
@@ -68,7 +71,7 @@ def uninstall_systemd_configuration():
 @click.command(name="nginx-config")
 def uninstall_nginx_configuration():
     """Uninstall nginx configuration.
-
+    \f
     :return:
     """
     click.echo("Uninstalling nginx configuration...")
@@ -80,3 +83,19 @@ def uninstall_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+
+@click.command(name="wifi-hotspot")
+def uninstall_wifi_hotspot():
+    """Uninstall Wi-Fi hotspot using NetworkManager.
+
+    For more details see: https://networkmanager.dev/docs/api/latest/
+    \f
+    :return:
+    """
+    click.echo("Uninstalling Wi-Fi hotspot...")
+
+    # Delete Wi-Fi hotspot with NetworkManager
+    run_subprocess(
+        ["sudo", "nmcli", "connection", "delete", WIFI_HOTSPOT_CONNECTION_NAME]
+    )
