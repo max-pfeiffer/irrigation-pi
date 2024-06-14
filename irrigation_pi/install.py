@@ -1,5 +1,7 @@
 """Install commands."""
 
+# ruff: noqa: D205, D301, D400
+
 from pathlib import Path
 from shutil import chown
 
@@ -20,6 +22,7 @@ from irrigation_pi.constants import (
     PORT,
     SYSTEMD_CONFIG_PATH,
     VIRTUAL_ENVIRONMENT_PATH,
+    WIFI_HOTSPOT_CONNECTION_NAME,
 )
 from irrigation_pi.utils import (
     activate_virtual_environment,
@@ -34,7 +37,7 @@ from irrigation_pi.utils import (
 @click.pass_context
 def install_all(ctx: Context):
     """Install everything necessary to run the application on Raspberry Pi.
-
+    \f
     :return:
     """
     ctx.forward(install_debian_packages)
@@ -47,7 +50,7 @@ def install_all(ctx: Context):
 @click.command(name="debian-packages")
 def install_debian_packages():
     """Install Debian packages.
-
+    \f
     :return:
     """
     click.echo("Updating Debian package sources...")
@@ -62,7 +65,7 @@ def install_debian_packages():
 @click.command(name="config")
 def install_application_configuration():
     """Install irrigation-pi application configuration.
-
+    \f
     :return:
     """
     click.echo("Installing irrigation-pi application configuration...")
@@ -75,7 +78,7 @@ def install_application_configuration():
 @click.command(name="database")
 def install_database():
     """Install backend database.
-
+    \f
     :return:
     """
     click.echo("Installing database...")
@@ -95,7 +98,7 @@ def install_systemd_configuration():
     https://systemd.io/
     https://wiki.debian.org/systemd
     https://wiki.debian.org/systemd/Services
-
+    \f
     :return:
     """
     click.echo("Installing Systemd configuration...")
@@ -118,7 +121,7 @@ def install_nginx_configuration():
     """Install nginx configuration.
 
     See: https://nginx.org/en/docs/
-
+    \f
     :return:
     """
     # Create nginx config
@@ -139,3 +142,69 @@ def install_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+
+@click.command(name="wifi-hotspot")
+@click.option(
+    "--interface-name",
+    default="wlan0",
+    help="Name of the 802-11-wireless interface, i.e. wlan0.",
+)
+@click.option("--ssid", default="Irrigation-Pi", help="SSID of Wi-Fi Hotspot.")
+@click.password_option(
+    required=True,
+    help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
+)
+@click.option(
+    "--autoconnect",
+    default="on",
+    type=click.Choice(["on", "off"], case_sensitive=False),
+    help="Wi-Fi Hotspot autoconnect.",
+)
+@click.option(
+    "--autoconnect-priority", default="100", help="Wi-Fi Hotspot autoconnect-priority."
+)
+def install_wifi_hotspot(
+    interface_name: str,
+    ssid: str,
+    password: str,
+    autoconnect: str,
+    autoconnect_priority: str,
+):
+    """Install Wi-Fi hotspot using NetworkManager.
+
+    For more details see: https://networkmanager.dev/docs/api/latest/
+    \f
+    :return:
+    """
+    click.echo("Installing Wi-Fi hotspot...")
+
+    # Configure Wi-Fi hotspot with NetworkManager
+    run_subprocess(
+        [
+            "sudo",
+            "nmcli",
+            "connection",
+            "add",
+            "con-name",
+            WIFI_HOTSPOT_CONNECTION_NAME,
+            "type",
+            "wifi",
+            "ifname",
+            interface_name,
+            "wifi.mode",
+            "ap",
+            "wifi.ssid",
+            ssid,
+            "wifi-sec.key-mgmt",
+            "wpa-psk",
+            "wifi-sec.psk",
+            password,
+            "ipv4.method",
+            "shared",
+            "connection.autoconnect",
+            autoconnect,
+            "connection.autoconnect-priority",
+            autoconnect_priority,
+        ]
+    )

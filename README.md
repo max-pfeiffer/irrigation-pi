@@ -99,8 +99,11 @@ found in `/etc/nginx/sites-available/irrigation-pi` on your Raspberry Pi.
 ## Management CLI
 Irrigation Pi comes with its own management CLI. With the CLI you can perform installation and configuration tasks
 for the application and servers. Use the `--help` option to find out more about commands and usage.
+You need to go to installation directory and activate the virtual Python environment before running the CLI.
 ```shell
-raspberrypi: $ irrigation-pi --help
+$ cd /srv/irrigation-pi
+$ source .venv/bin/activate
+$ irrigation-pi --help
 Usage: irrigation-pi [OPTIONS] COMMAND [ARGS]...
 
   Irrigation Pi command line interface (CLI).
@@ -120,7 +123,30 @@ Commands:
   run        Run commands.
   uninstall  Uninstall commands.
 ```
+For instance, you can install and run a Wi-Fi hotspot with it. This is particularly useful when you run the
+Raspberry Pi in your garden as an island solution:
+```shell
+$ sudo irrigation-pi install wifi-hotspot
+```
+Afterwards you can login on SSID Irrigation-Pi. Use `--help` to display more configuration options:   
+```shell
+$ irrigation-pi install wifi-hotspot --help
+Usage: irrigation-pi install wifi-hotspot [OPTIONS]
 
+  Install Wi-Fi hotspot using NetworkManager.
+
+  For more details see: https://networkmanager.dev/docs/api/latest/
+
+Options:
+  --interface-name TEXT        Name of the 802-11-wireless interface, i.e.
+                               wlan0.
+  --ssid TEXT                  SSID of Wi-Fi Hotspot.
+  --password TEXT              Password for Wi-Fi Hotspot, minimum length 8
+                               characters.  [required]
+  --autoconnect [on|off]       Wi-Fi Hotspot autoconnect.
+  --autoconnect-priority TEXT  Wi-Fi Hotspot autoconnect-priority.
+  --help                       Show this message and exit.
+```
 ## Why another irrigation controller software for the Raspberry Pi?
 First of all I was searching GitHub and the web for ready to use solutions. And I found a couple.
 Some of them did not match my use case: I just want a simple and easy to use application for watering plants on my
