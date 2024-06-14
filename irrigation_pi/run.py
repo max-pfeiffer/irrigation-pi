@@ -1,5 +1,7 @@
 """Export commands."""
 
+# ruff: noqa: D205, D301, D400
+
 import click
 
 from irrigation_pi.constants import (
@@ -16,7 +18,7 @@ from irrigation_pi.utils import (
 @click.command()
 def backend():
     """Run backend application.
-
+    \f
     :return:
     """
     click.echo("Running backend application...")
@@ -40,7 +42,7 @@ def backend():
 @click.command()
 def frontend():
     """Run frontend application.
-
+    \f
     :return:
     """
     click.echo("Running frontend application...")
