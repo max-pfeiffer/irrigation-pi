@@ -46,22 +46,26 @@ class ApplicationSettings(BaseSettings):
         return f"/v{version.major}"
 
     @computed_field
-    def ip_addresses(self) -> list[str]:
+    def allowed_origins(self) -> list[str]:
         """Return all IP v4 addresses of this host.
 
         :return:
         """
+        origins: list[str] = [
+            "http://localhost",
+            "http://localhost:8100",
+            "http://raspberrypi.local",
+        ]
         if_data: dict[str, Any] = net_if_addrs()
-        ip_adresses: list[str] = []
         for interface in if_data.values():
-            ip_adresses.extend(
+            origins.extend(
                 [
-                    interface_type.address
+                    f"http://{interface_type.address}"
                     for interface_type in interface
                     if (interface_type.family == AddressFamily.AF_INET)
                 ]
             )
-        return ip_adresses
+        return origins
 
 
 application_settings = ApplicationSettings()
