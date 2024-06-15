@@ -37,11 +37,13 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost",
-        "http://localhost:8100",
-        "http://raspberrypi.local",
-    ],
+    allow_origins=application_settings.ip_addresses.extend(
+        [
+            "http://localhost",
+            "http://localhost:8100",
+            "http://raspberrypi.local",
+        ]
+    ),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
