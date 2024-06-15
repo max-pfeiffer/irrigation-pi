@@ -67,18 +67,17 @@ def activate_virtual_environment(virtual_environment_path: Path) -> dict:
     return environment_variables
 
 
-def create_nginx_config(host: str, port: str, server_root: Path) -> str:
+def create_nginx_config(port: str, server_root: Path) -> str:
     """Create nginx configuration.
 
     For Angular specifics see: https://angular.io/guide/deployment#fallback-configuration-examples
 
-    :param host:
     :param port:
     :param server_root:
     :return:
     """
     config: str = NGINX_SITE_TEMPLATE.substitute(
-        {"host": host, "port": port, "server_root": str(server_root)}
+        {"port": port, "server_root": str(server_root)}
     )
     return config
 
