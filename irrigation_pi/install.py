@@ -15,7 +15,6 @@ from irrigation_pi.constants import (
     BACKEND_PATH,
     DATABASE_PATH,
     DEBIAN_PACKAGES,
-    HOST,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     NGINX_DEFAULT_CONFIG_ACTIVATION_PATH,
@@ -129,7 +128,7 @@ def install_nginx_configuration():
     server_root_path: Path = (
         Path(__file__).parent.parent.resolve() / "frontend" / "www" / "browser"
     )
-    nginx_config: str = create_nginx_config(HOST, PORT, server_root_path)
+    nginx_config: str = create_nginx_config(PORT, server_root_path)
 
     with open(NGINX_CONFIG_PATH, "w") as file:
         file.write(nginx_config)
@@ -208,3 +207,7 @@ def install_wifi_hotspot(
             autoconnect_priority,
         ]
     )
+
+    click.echo("Restarting Uvicorn server...")
+    run_subprocess(["sudo", "systemctl", "stop", "irrigation-pi"])
+    run_subprocess(["sudo", "systemctl", "start", "irrigation-pi"])

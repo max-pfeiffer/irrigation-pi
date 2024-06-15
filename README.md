@@ -17,11 +17,11 @@ Contributions for other boards are warmly welcome.
 * Relays are switched automatically according to schedule configuration
 * Live relay switching
 * Display Raspberry Pi system information
+* Set up a Wi-Fi access point on Raspberry Pi
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
 
 The following features are on our todo list:
-* Set up a Wi-Fi access point on Raspberry Pi
 * Make host name for Raspberry Pi installation configurable
 * SSL for web application
 
