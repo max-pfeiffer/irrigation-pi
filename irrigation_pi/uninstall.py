@@ -1,13 +1,15 @@
 """Uninstall commands."""
 
-# ruff: noqa: D205, D301, D400
+from configparser import ConfigParser
 
+# ruff: noqa: D205, D301, D400
 import click
 from click import Context
 
 from irrigation_pi.constants import (
     APPLICATION_CONFIGURATION_PATH,
     DATABASE_PATH,
+    NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
@@ -29,6 +31,7 @@ def uninstall_all(ctx: Context):
     ctx.forward(uninstall_database)
     ctx.forward(uninstall_systemd_configuration)
     ctx.forward(uninstall_nginx_configuration)
+    ctx.forward(uninstall_systemd_resolved)
 
 
 @click.command(name="config")
@@ -85,6 +88,29 @@ def uninstall_nginx_configuration():
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
 
 
+@click.command(name="systemd-resolved")
+def uninstall_systemd_resolved():
+    """Uninstall systemd-resolved as Network Name Resolution manager.
+
+    For more details see: https://www.freedesktop.org/software/systemd/man/latest/systemd-resolved.html
+
+    \f
+    :return:
+    """
+    # Remove DNS processing mode in NetworkManager config
+    click.echo("Remove DNS processing mode from NetworkManager config...")
+    networkmanager_config = ConfigParser()
+    networkmanager_config.read(NETWORKMANAGER_CONFIG_FILE)
+    networkmanager_config.remove_option("main", "dns")
+
+    with open(NETWORKMANAGER_CONFIG_FILE, "w") as file:
+        networkmanager_config.write(file, space_around_delimiters=False)
+
+    # Remove Debian package
+    click.echo("Removing systemd-resolved Debian package...")
+    run_subprocess(["sudo", "apt", "purge", "systemd-resolved", "-y"])
+
+
 @click.command(name="wifi-hotspot")
 def uninstall_wifi_hotspot():
     """Uninstall Wi-Fi hotspot using NetworkManager.
@@ -93,9 +119,8 @@ def uninstall_wifi_hotspot():
     \f
     :return:
     """
-    click.echo("Uninstalling Wi-Fi hotspot...")
-
     # Delete Wi-Fi hotspot with NetworkManager
+    click.echo("Uninstalling Wi-Fi hotspot...")
     run_subprocess(
         ["sudo", "nmcli", "connection", "delete", WIFI_HOTSPOT_CONNECTION_NAME]
     )

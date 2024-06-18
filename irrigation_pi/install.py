@@ -2,6 +2,7 @@
 
 # ruff: noqa: D205, D301, D400
 
+from configparser import ConfigParser
 from pathlib import Path
 from shutil import chown
 
@@ -15,6 +16,7 @@ from irrigation_pi.constants import (
     BACKEND_PATH,
     DATABASE_PATH,
     DEBIAN_PACKAGES,
+    NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     NGINX_DEFAULT_CONFIG_ACTIVATION_PATH,
@@ -44,6 +46,7 @@ def install_all(ctx: Context):
     ctx.forward(install_database)
     ctx.forward(install_systemd_configuration)
     ctx.forward(install_nginx_configuration)
+    ctx.forward(install_systemd_resolved)
 
 
 @click.command(name="debian-packages")
@@ -143,13 +146,44 @@ def install_nginx_configuration():
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
 
 
+@click.command(name="systemd-resolved")
+def install_systemd_resolved():
+    """Install systemd-resolved as Network Name Resolution manager.
+
+    For more details see: https://www.freedesktop.org/software/systemd/man/latest/systemd-resolved.html
+
+    \f
+    :return:
+    """
+    # Install systemd-resolved
+    click.echo("Updating Debian package sources...")
+    run_subprocess(["sudo", "apt", "update"])
+
+    click.echo("Installing systemd-resolved Debian package...")
+    run_subprocess(
+        ["sudo", "apt", "install", "systemd-resolved", "--no-install-recommends", "-y"]
+    )
+
+    # Configure DNS processing mode of NetworkManager
+    click.echo("Configuring NetworkManager to use systemd-resolved...")
+    networkmanager_config = ConfigParser()
+    networkmanager_config.read(NETWORKMANAGER_CONFIG_FILE)
+    networkmanager_config["main"]["dns"] = "systemd-resolved"
+
+    with open(NETWORKMANAGER_CONFIG_FILE, "w") as file:
+        networkmanager_config.write(file, space_around_delimiters=False)
+
+
 @click.command(name="wifi-hotspot")
 @click.option(
     "--interface-name",
     default="wlan0",
+    show_default=True,
     help="Name of the 802-11-wireless interface, i.e. wlan0.",
 )
-@click.option("--ssid", default="Irrigation-Pi", help="SSID of Wi-Fi Hotspot.")
+@click.option(
+    "--ssid", default="Irrigation-Pi", show_default=True, help="SSID of Wi-Fi Hotspot."
+)
 @click.password_option(
     required=True,
     help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
@@ -157,56 +191,74 @@ def install_nginx_configuration():
 @click.option(
     "--autoconnect",
     default="on",
+    show_default=True,
     type=click.Choice(["on", "off"], case_sensitive=False),
     help="Wi-Fi Hotspot autoconnect.",
 )
 @click.option(
-    "--autoconnect-priority", default="100", help="Wi-Fi Hotspot autoconnect-priority."
+    "--autoconnect-priority",
+    default="100",
+    show_default=True,
+    help="Wi-Fi Hotspot autoconnect-priority.",
 )
+@click.option("--enable-wpa2", is_flag=True, help="Enable WPA2.")
 def install_wifi_hotspot(
     interface_name: str,
     ssid: str,
     password: str,
     autoconnect: str,
     autoconnect_priority: str,
+    enable_wpa2: bool,
 ):
     """Install Wi-Fi hotspot using NetworkManager.
 
+    By default, only WPA1 is enabled as Wi-Fi security because older Raspberry Pi
+    devices and drivers do not support WPA2.
     For more details see: https://networkmanager.dev/docs/api/latest/
+
     \f
     :return:
     """
-    click.echo("Installing Wi-Fi hotspot...")
-
     # Configure Wi-Fi hotspot with NetworkManager
-    run_subprocess(
-        [
-            "sudo",
-            "nmcli",
-            "connection",
-            "add",
-            "con-name",
-            WIFI_HOTSPOT_CONNECTION_NAME,
-            "type",
-            "wifi",
-            "ifname",
-            interface_name,
-            "wifi.mode",
-            "ap",
-            "wifi.ssid",
-            ssid,
-            "wifi-sec.key-mgmt",
-            "wpa-psk",
-            "wifi-sec.psk",
-            password,
-            "ipv4.method",
-            "shared",
-            "connection.autoconnect",
-            autoconnect,
-            "connection.autoconnect-priority",
-            autoconnect_priority,
-        ]
-    )
+    click.echo("Installing Wi-Fi hotspot...")
+    install_commands = [
+        "sudo",
+        "nmcli",
+        "connection",
+        "add",
+        "con-name",
+        WIFI_HOTSPOT_CONNECTION_NAME,
+        "type",
+        "wifi",
+        "ifname",
+        interface_name,
+        "wifi.mode",
+        "ap",
+        "wifi.ssid",
+        ssid,
+        "wifi-sec.key-mgmt",
+        "wpa-psk",
+        "wifi-sec.psk",
+        password,
+        "ipv4.method",
+        "shared",
+        "connection.autoconnect",
+        autoconnect,
+        "connection.autoconnect-priority",
+        autoconnect_priority,
+    ]
+    if enable_wpa2:
+        install_commands.extend(
+            [
+                "wifi-sec.proto",
+                "rsn",
+                "wifi-sec.pairwise",
+                "ccmp",
+                "wifi-sec.group",
+                "ccmp",
+            ]
+        )
+    run_subprocess(install_commands)
 
     click.echo("Restarting Uvicorn server...")
     run_subprocess(["sudo", "systemctl", "stop", "irrigation-pi"])
