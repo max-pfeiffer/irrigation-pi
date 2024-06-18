@@ -6,5 +6,10 @@ git pull
 echo "Installing Python packages with Poetry..."
 poetry install --sync --without dev
 
+echo "Restarting Uvicorn server..."
 poetry run irrigation-pi restart uvicorn
+
+echo "Restarting nginx server..."
 poetry run irrigation-pi restart nginx
+
+echo "Irrigation Pi application was updated and is now available on http://raspberrypi.local"
