@@ -2,6 +2,7 @@
 
 # ruff: noqa: D205, D301, D400
 
+from configparser import ConfigParser
 from pathlib import Path
 from shutil import chown
 
@@ -15,6 +16,7 @@ from irrigation_pi.constants import (
     BACKEND_PATH,
     DATABASE_PATH,
     DEBIAN_PACKAGES,
+    NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
     NGINX_DEFAULT_CONFIG_ACTIVATION_PATH,
@@ -143,6 +145,34 @@ def install_nginx_configuration():
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
 
 
+@click.command(name="systemd-resolved")
+def install_systemd_resolved():
+    """Install systemd-resolved as Network Name Resolution manager.
+
+    For more details see: https://www.freedesktop.org/software/systemd/man/latest/systemd-resolved.html
+
+    \f
+    :return:
+    """
+    # Install systemd-resolved
+    click.echo("Updating Debian package sources...")
+    run_subprocess(["sudo", "apt", "update"])
+
+    click.echo("Installing systemd-resolved Debian package...")
+    run_subprocess(
+        ["sudo", "apt", "install", "systemd-resolved", "--no-install-recommends", "-y"]
+    )
+
+    # Configure DNS processing mode of NetworkManager
+    click.echo("Configuring NetworkManager to use systemd-resolved...")
+    networkmanager_config = ConfigParser()
+    networkmanager_config.read(NETWORKMANAGER_CONFIG_FILE)
+    networkmanager_config["main"]["dns"] = "systemd-resolved"
+
+    with open(NETWORKMANAGER_CONFIG_FILE, "w") as file:
+        networkmanager_config.write(file, space_around_delimiters=False)
+
+
 @click.command(name="wifi-hotspot")
 @click.option(
     "--interface-name",
@@ -173,12 +203,12 @@ def install_wifi_hotspot(
     """Install Wi-Fi hotspot using NetworkManager.
 
     For more details see: https://networkmanager.dev/docs/api/latest/
+
     \f
     :return:
     """
-    click.echo("Installing Wi-Fi hotspot...")
-
     # Configure Wi-Fi hotspot with NetworkManager
+    click.echo("Installing Wi-Fi hotspot...")
     run_subprocess(
         [
             "sudo",

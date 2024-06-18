@@ -29,4 +29,5 @@ APPLICATION_USER_GROUP: str = PROJECT_ROOT_PATH.group()
 HOST: str = "raspberrypi.local"
 PORT: str = "80"
 
+NETWORKMANAGER_CONFIG_FILE: Path = Path("/etc/NetworkManager/NetworkManager.conf")
 WIFI_HOTSPOT_CONNECTION_NAME: str = "Irrigation-Pi"
