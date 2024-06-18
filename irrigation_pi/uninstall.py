@@ -31,6 +31,7 @@ def uninstall_all(ctx: Context):
     ctx.forward(uninstall_database)
     ctx.forward(uninstall_systemd_configuration)
     ctx.forward(uninstall_nginx_configuration)
+    ctx.forward(uninstall_systemd_resolved)
 
 
 @click.command(name="config")
