@@ -17,11 +17,13 @@ Contributions for other boards are warmly welcome.
 * Relays are switched automatically according to schedule configuration
 * Live relay switching
 * Display Raspberry Pi system information
+* Set up a Wi-Fi hotspot on your Raspberry Pi (with CLI)* 
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
+* Application is available on http://raspberrypi.local/ with all network configurations (including Wi-Fi hotspot) and all devices
+  (please be aware that [multicast DNS is supported since Android 10](https://source.android.com/docs/core/ota/modular-system/dns-resolver#mdns-local-resolution))
 
 The following features are on our todo list:
-* Set up a Wi-Fi access point on Raspberry Pi
 * Make host name for Raspberry Pi installation configurable
 * SSL for web application
 
@@ -128,23 +130,30 @@ Raspberry Pi in your garden as an island solution:
 ```shell
 $ sudo irrigation-pi install wifi-hotspot
 ```
-Afterwards you can login on SSID Irrigation-Pi. Use `--help` to display more configuration options:   
+Afterwards you can login on SSID `Irrigation-Pi`. Use `--help` to display more configuration options:   
 ```shell
 $ irrigation-pi install wifi-hotspot --help
+Executing this command requires sudo privileges. If you encounter a password challenge, please enter your user's password. 
+
 Usage: irrigation-pi install wifi-hotspot [OPTIONS]
 
   Install Wi-Fi hotspot using NetworkManager.
 
-  For more details see: https://networkmanager.dev/docs/api/latest/
+  By default, only WPA1 is enabled as Wi-Fi security because older Raspberry
+  Pi devices and drivers do not support WPA2. For more details see:
+  https://networkmanager.dev/docs/api/latest/
 
 Options:
   --interface-name TEXT        Name of the 802-11-wireless interface, i.e.
-                               wlan0.
-  --ssid TEXT                  SSID of Wi-Fi Hotspot.
+                               wlan0.  [default: wlan0]
+  --ssid TEXT                  SSID of Wi-Fi Hotspot.  [default: Irrigation-
+                               Pi]
   --password TEXT              Password for Wi-Fi Hotspot, minimum length 8
                                characters.  [required]
-  --autoconnect [on|off]       Wi-Fi Hotspot autoconnect.
-  --autoconnect-priority TEXT  Wi-Fi Hotspot autoconnect-priority.
+  --autoconnect [on|off]       Wi-Fi Hotspot autoconnect.  [default: on]
+  --autoconnect-priority TEXT  Wi-Fi Hotspot autoconnect-priority.  [default:
+                               100]
+  --enable-wpa2                Enable WPA2.
   --help                       Show this message and exit.
 ```
 ## Why another irrigation controller software for the Raspberry Pi?

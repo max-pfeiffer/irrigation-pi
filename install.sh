@@ -17,3 +17,5 @@ echo "Installing Python packages with Poetry..."
 
 echo "Installing Debian packages and configure application..."
 ~/.local/bin/poetry run irrigation-pi install all
+
+echo "Irrigation Pi application is now available on http://raspberrypi.local"

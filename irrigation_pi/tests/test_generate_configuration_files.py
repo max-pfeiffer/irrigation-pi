@@ -5,7 +5,6 @@ from pathlib import Path
 from irrigation_pi.constants import (
     APPLICATION_USER,
     BACKEND_PATH,
-    HOST,
     PORT,
     VIRTUAL_ENVIRONMENT_PATH,
 )
@@ -33,9 +32,8 @@ def test_create_nginx_config():
     server_root_path: Path = (
         Path(__file__).parent.parent.resolve() / "frontend" / "www" / "browser"
     )
-    nginx_config: str = create_nginx_config(HOST, PORT, server_root_path)
+    nginx_config: str = create_nginx_config(PORT, server_root_path)
 
-    assert str(HOST) in nginx_config
     assert str(PORT) in nginx_config
     assert str(server_root_path) in nginx_config
 
