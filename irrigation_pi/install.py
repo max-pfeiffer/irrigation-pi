@@ -186,6 +186,8 @@ def install_systemd_resolved():
 )
 @click.password_option(
     required=True,
+    prompt="Please enter the password you would like to configure "
+    "for the Wi-Fi Hotspot",
     help="Password for Wi-Fi Hotspot, minimum length 8 characters.",
 )
 @click.option(
@@ -260,6 +262,7 @@ def install_wifi_hotspot(
         )
     run_subprocess(install_commands)
 
+    # Restart Uvicorn server
     click.echo("Restarting Uvicorn server...")
     run_subprocess(["sudo", "systemctl", "stop", "irrigation-pi"])
     run_subprocess(["sudo", "systemctl", "start", "irrigation-pi"])
