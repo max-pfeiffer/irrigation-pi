@@ -130,8 +130,7 @@ Raspberry Pi in your garden as an island solution:
 ```shell
 $ sudo irrigation-pi install wifi-hotspot
 ```
-Afterwards just scan the QR code with your mobile to connect to the Wi-Fi hotspot. Or login on SSID `Irrigation-Pi` manually.
-Use `--help` to display more configuration options:   
+Afterwards you can login on SSID `Irrigation-Pi`. Use `--help` to display more configuration options:   
 ```shell
 $ irrigation-pi install wifi-hotspot --help
 Executing this command requires sudo privileges. If you encounter a password challenge, please enter your user's password. 
