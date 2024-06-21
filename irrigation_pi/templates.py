@@ -32,8 +32,8 @@ upstream uvicorn {
 
 
 server {
-    listen $port;
-    server_name $host;
+    listen $port default_server;
+    server_name _;
     root $server_root;
     index index.html;
 

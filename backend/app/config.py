@@ -1,12 +1,14 @@
 """Application configuration."""
 
 from pathlib import Path
-from typing import Optional
+from socket import AddressFamily
+from typing import Any, Optional
 
 import semver
 import toml
 from gpiozero.pins.mock import MockFactory
 from gpiozero.pins.native import NativeFactory
+from psutil import net_if_addrs
 from pydantic import computed_field
 from pydantic_settings import BaseSettings
 
@@ -43,6 +45,28 @@ class ApplicationSettings(BaseSettings):
         version = semver.Version.parse(self.version)
         return f"/v{version.major}"
 
+    @computed_field
+    def allowed_origins(self) -> list[str]:
+        """Return all IP v4 addresses of this host.
+
+        :return:
+        """
+        origins: list[str] = [
+            "http://localhost",
+            "http://localhost:8100",
+            "http://raspberrypi.local",
+        ]
+        if_data: dict[str, Any] = net_if_addrs()
+        for interface in if_data.values():
+            origins.extend(
+                [
+                    f"http://{interface_type.address}"
+                    for interface_type in interface
+                    if (interface_type.family == AddressFamily.AF_INET)
+                ]
+            )
+        return origins
+
 
 application_settings = ApplicationSettings()
 
@@ -71,21 +95,22 @@ def get_relay_board_adapter() -> WaveshareRpiRelayBoardAdapter:
     if config:
         pin_factory_type: str = config["backend"]["pin_factory_type"]
 
-        if pin_factory_type == "rpi_gpio":
-            from gpiozero.pins.rpigpio import RPiGPIOFactory
+        match pin_factory_type:
+            case "rpi_gpio":
+                from gpiozero.pins.rpigpio import RPiGPIOFactory
 
-            pin_factory = RPiGPIOFactory()
-        elif pin_factory_type == "pigpio":
-            from gpiozero.pins.pigpio import PiGPIOFactory
+                pin_factory = RPiGPIOFactory()
+            case "pigpio":
+                from gpiozero.pins.pigpio import PiGPIOFactory
 
-            pin_factory = PiGPIOFactory()
-        elif pin_factory_type == "native":
-            pin_factory = NativeFactory()
-        else:
-            raise ValueError("Invalid pin_factory_type in config file")
+                pin_factory = PiGPIOFactory()
+            case "native":
+                pin_factory = NativeFactory()
+            case _:
+                raise ValueError("Invalid pin_factory_type in config file")
     else:
         # This MockFactory is used for development purposes. If application is
-        # not run on a Raspberry Pi and the pin hardware with low level drivers
+        # not run on a Raspberry Pi and the pin hardware with low-level drivers
         # is available, the instantiation of any other pin factory will fail.
         pin_factory = MockFactory()
     adapter = WaveshareRpiRelayBoardAdapter(pin_factory=pin_factory)
