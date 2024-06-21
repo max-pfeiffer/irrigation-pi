@@ -269,5 +269,5 @@ def install_wifi_hotspot(
 
     # Show QR code for Wifi-Hotspot
     run_subprocess(
-        ["sudo", "nmcli", "device", "show-password", "ifname", interface_name]
+        ["sudo", "nmcli", "device", "wifi", "show-password", "ifname", interface_name]
     )
