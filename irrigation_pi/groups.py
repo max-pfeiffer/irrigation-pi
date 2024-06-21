@@ -38,6 +38,10 @@ def become_root():
     :return:
     """
     if os.geteuid() != 0:
+        click.echo(
+            "Executing this command requires sudo privileges. If you "
+            "encounter a password challenge, please enter your user's password. \n"
+        )
         subprocess.call(["sudo", *sys.argv])
         sys.exit()
 
