@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-alembic = "1.13.1"
+alembic = "1.13.2"
 APScheduler = "3.10.4"
 asyncer = "0.0.7"
 click = "8.1.7"
