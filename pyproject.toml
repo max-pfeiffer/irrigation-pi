@@ -28,7 +28,7 @@ pigpio = "1.78"
 
 [tool.poetry.group.dev.dependencies]
 coverage = "7.6.10"
-pre-commit = "3.7.1"
+pre-commit = "4.2.0"
 pytest = "8.3.4"
 pytest-asyncio = "0.24.0"
 pytest-cov = "6.0.0"
