@@ -295,14 +295,14 @@ typing = ["typing-extensions (>=4.8) ; python_version < \"3.11\""]
 
 [[package]]
 name = "furl"
-version = "2.1.3"
+version = "2.1.4"
 description = "URL manipulation made simple."
 optional = false
 python-versions = "*"
 groups = ["main"]
 files = [
-    {file = "furl-2.1.3-py2.py3-none-any.whl", hash = "sha256:9ab425062c4217f9802508e45feb4a83e54324273ac4b202f1850363309666c0"},
-    {file = "furl-2.1.3.tar.gz", hash = "sha256:5a6188fe2666c484a12159c18be97a1977a71d632ef5bb867ef15f54af39cc4e"},
+    {file = "furl-2.1.4-py2.py3-none-any.whl", hash = "sha256:da34d0b34e53ffe2d2e6851a7085a05d96922b5b578620a37377ff1dbeeb11c8"},
+    {file = "furl-2.1.4.tar.gz", hash = "sha256:877657501266c929269739fb5f5980534a41abd6bbabcb367c136d1d3b2a6015"},
 ]
 
 [package.dependencies]
@@ -1600,4 +1600,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "29660106fecdf1d0fc7d90bf52fcf5a668f575341cf6196d867b06fa91329411"
+content-hash = "c0a63ee996e43631be9d7c6dcaa2c3270e48b97929e73e6168d058d453590f23"
