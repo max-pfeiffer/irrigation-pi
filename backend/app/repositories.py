@@ -1,7 +1,7 @@
 """Repositories for data persistence."""
 
 from datetime import time
-from typing import Optional, Tuple
+from typing import Optional
 
 from apscheduler.job import Job
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -169,7 +169,7 @@ class ApSchedulerRepository:
 
     def create(
         self, start_time: time, stop_time: time, repeat: Repeat, relay_position: int
-    ) -> Tuple[str, str]:
+    ) -> tuple[str, str]:
         """Add a trigger to the scheduler.
 
         :param time start_time:
