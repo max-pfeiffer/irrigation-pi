@@ -156,6 +156,11 @@ Options:
   --enable-wpa2                Enable WPA2.
   --help                       Show this message and exit.
 ```
+
+## Options for enclosures
+For the Raspberry Pi 3 and the [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) I found these options for 3D printables:
+* [Raspberry Pi WaveShare Relay case](https://www.printables.com/model/29682-raspberry-pi-waveshare-relay-case)
+
 ## Why another irrigation controller software for the Raspberry Pi?
 First of all I was searching GitHub and the web for ready to use solutions. And I found a couple.
 Some of them did not match my use case: I just want a simple and easy to use application for watering plants on my
