@@ -8,19 +8,19 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-alembic = "1.16.1"
+alembic = "1.18.4"
 APScheduler = "3.10.4"
-asyncer = "0.0.8"
-click = "8.2.1"
+asyncer = "0.0.13"
+click = "8.3.1"
 fastapi-slim = "0.115.12"
 furl = "2.1.4"
-psutil = "7.0.0"
-pydantic-settings = "2.9.1"
+psutil = "7.2.2"
+pydantic-settings = "2.12.0"
 semver = "3.0.4"
-sqlalchemy = "2.0.41"
-sqlmodel = "0.0.24"
+sqlalchemy = "2.0.46"
+sqlmodel = "0.0.33"
 toml = "0.10.2"
-uvicorn = {version = "0.34.3", extras = ["standard"]}
+uvicorn = {version = "0.40.0", extras = ["standard"]}
 
 gpiozero = "2.0.1"
 pigpio = "1.78"
