@@ -8,32 +8,32 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
-alembic = "1.16.1"
+alembic = "1.18.4"
 APScheduler = "3.10.4"
-asyncer = "0.0.8"
-click = "8.2.1"
-fastapi-slim = "0.115.12"
+asyncer = "0.0.13"
+click = "8.3.1"
+fastapi = "0.128.8"
 furl = "2.1.4"
-psutil = "7.0.0"
-pydantic-settings = "2.9.1"
+psutil = "7.2.2"
+pydantic-settings = "2.12.0"
 semver = "3.0.4"
-sqlalchemy = "2.0.41"
-sqlmodel = "0.0.24"
+sqlalchemy = "2.0.46"
+sqlmodel = "0.0.33"
 toml = "0.10.2"
-uvicorn = {version = "0.34.3", extras = ["standard"]}
+uvicorn = {version = "0.40.0", extras = ["standard"]}
 
 gpiozero = "2.0.1"
 pigpio = "1.78"
 "RPi.GPIO" = {version = "0.7.1", markers= "sys_platform == 'linux'"}
 
 [tool.poetry.group.dev.dependencies]
-coverage = "7.10.1"
-pre-commit = "4.2.0"
-pytest = "8.4.0"
-pytest-asyncio = "1.0.0"
-pytest-cov = "6.1.1"
+coverage = "7.13.4"
+pre-commit = "4.5.1"
+pytest = "9.0.2"
+pytest-asyncio = "1.3.0"
+pytest-cov = "7.0.0"
 httpx = "0.28.1"
-ruff = "0.11.13"
+ruff = "0.15.0"
 
 [tool.poetry.scripts]
 irrigation-pi = 'irrigation_pi:cli'
