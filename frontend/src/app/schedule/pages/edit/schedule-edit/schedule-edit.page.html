@@ -18,12 +18,11 @@
             >{{ addEditForm?.controls?.['start_time']?.value }}</ion-label
           >
         </ion-item>
-        <div
-          *ngIf="addEditForm.controls?.['start_time']?.errors"
-          class="error-msg ion-padding-start ion-padding-end"
-        >
+        @if (addEditForm.controls?.['start_time']?.errors) {
+        <div class="error-msg ion-padding-start ion-padding-end">
           Start time has wrong format.
         </div>
+        }
 
         <!-- Duration -->
         <ion-item>
@@ -35,12 +34,11 @@
             formControlName="duration"
           ></ion-input>
         </ion-item>
-        <div
-          *ngIf="addEditForm.controls?.['duration']?.errors"
-          class="error-msg ion-padding-start ion-padding-end"
-        >
+        @if (addEditForm.controls?.['duration']?.errors) {
+        <div class="error-msg ion-padding-start ion-padding-end">
           Please enter a positive integer.
         </div>
+        }
 
         <!-- Repeat -->
         <ion-item (click)="openRepeatPicker()">
@@ -61,12 +59,11 @@
             formControlName="relay_position"
           ></ion-input>
         </ion-item>
-        <div
-          *ngIf="addEditForm.controls?.['relay_position']?.errors"
-          class="error-msg ion-padding-start ion-padding-end"
-        >
+        @if (addEditForm.controls?.['relay_position']?.errors) {
+        <div class="error-msg ion-padding-start ion-padding-end">
           Please enter a positive integer.
         </div>
+        }
 
         <!-- Active -->
         <ion-item>
