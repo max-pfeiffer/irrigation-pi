@@ -60,7 +60,7 @@ def install_debian_packages():
 
     click.echo("Installing Debian packages...")
     run_subprocess(
-        ["sudo", "apt", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
+        ["sudo", "apt-get", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
     )
 
 

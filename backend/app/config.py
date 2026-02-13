@@ -1,7 +1,7 @@
 """Application configuration."""
 
 from pathlib import Path
-from socket import AddressFamily
+from socket import AddressFamily, gethostname
 from typing import Any, Optional
 
 import semver
@@ -54,8 +54,13 @@ class ApplicationSettings(BaseSettings):
         origins: list[str] = [
             "http://localhost",
             "http://localhost:8100",
-            "http://raspberrypi.local",
         ]
+
+        # Add the systems host name as the Avahi daemon is using it
+        hostname = gethostname()
+        origins.extend(f"http://{hostname}.local")
+
+        # Add IP addresses of all local network interfaces
         if_data: dict[str, Any] = net_if_addrs()
         for interface in if_data.values():
             origins.extend(

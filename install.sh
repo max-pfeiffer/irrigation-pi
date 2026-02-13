@@ -2,7 +2,7 @@
 echo "Installing Poetry..."
 curl -sSL https://install.python-poetry.org | python3 -
 
-POETRY_PATH_CONFIG='export PATH="/home/admin/.local/bin:$PATH"'
+POETRY_PATH_CONFIG='export PATH="/home/admin/:.local/bin:$PATH"'
 BASHRC_POETRY_PATH_CONFIG=$(tail -n 1 ~/.bashrc)
 
 if [ "$POETRY_PATH_CONFIG" != "$BASHRC_POETRY_PATH_CONFIG" ]; then
