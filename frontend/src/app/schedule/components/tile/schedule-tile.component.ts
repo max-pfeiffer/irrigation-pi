@@ -1,11 +1,10 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  inject,
+  input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -30,10 +29,8 @@ import { ScheduleService } from '../../services/schedule.service';
   selector: 'app-schedule-tile',
   templateUrl: './schedule-tile.component.html',
   styleUrls: ['./schedule-tile.component.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     FormsModule,
     RouterLink,
     DisplayStringPipe,
@@ -46,33 +43,31 @@ import { ScheduleService } from '../../services/schedule.service';
   ],
 })
 export class ScheduleTileComponent {
-  @Input()
-  public schedule: ScheduleResponse;
+  public scheduleService = inject(ScheduleService);
+  public cdr = inject(ChangeDetectorRef);
+  public alertController = inject(AlertController);
+  public navController = inject(NavController);
+  public route = inject(ActivatedRoute);
 
-  @Output()
-  public refreshList = new EventEmitter<void>();
+  public schedule = input<ScheduleResponse>();
 
-  public constructor(
-    public scheduleService: ScheduleService,
-    public cdr: ChangeDetectorRef,
-    public alertController: AlertController,
-    public navController: NavController,
-    public route: ActivatedRoute
-  ) {
+  public refreshList = output();
+
+  public constructor() {
     addIcons({
       trash,
     });
   }
 
   public toggleActive(): void {
-    let { id, ...payload } = this.schedule;
-    payload = { ...payload, active: !this.schedule.active };
+    let { id, ...payload } = this.schedule();
+    payload = { ...payload, active: !this.schedule().active };
     this.scheduleService
       .updateSchedule(id, payload)
       .pipe(
         finalize(() => {
           this.refreshList.emit();
-        })
+        }),
       )
       .subscribe();
   }
@@ -87,11 +82,11 @@ export class ScheduleTileComponent {
           role: 'destructive',
           handler: () => {
             this.scheduleService
-              .deleteSchedule(this.schedule.id)
+              .deleteSchedule(this.schedule().id)
               .pipe(
                 finalize(() => {
                   this.refreshList.emit();
-                })
+                }),
               )
               .subscribe();
           },

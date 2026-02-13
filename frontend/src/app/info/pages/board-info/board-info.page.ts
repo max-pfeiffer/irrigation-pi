@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  inject,
+  signal,
 } from '@angular/core';
 import {
   IonButtons,
@@ -26,10 +26,8 @@ import { InfoService } from '../../services/info.service';
   selector: 'app-board-info-list',
   templateUrl: './board-info.page.html',
   styleUrls: ['./board-info.page.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     IonHeader,
     IonToolbar,
     IonButtons,
@@ -42,9 +40,9 @@ import { InfoService } from '../../services/info.service';
   ],
 })
 export class BoardInfoPage implements ViewDidEnter {
-  public fields: { key: string; value: string }[] = [];
+  public infoService = inject(InfoService);
 
-  constructor(public infoService: InfoService, public cdr: ChangeDetectorRef) {}
+  public fields = signal<{ key: string; value: string }[]>([]);
 
   public ionViewDidEnter(): void {
     this.loadInfo();
@@ -54,10 +52,12 @@ export class BoardInfoPage implements ViewDidEnter {
     this.infoService.getInfo().subscribe((boardInfo: RaspberryPiBoardInfo) => {
       const _fields = [];
       for (const [key, value] of Object.entries(boardInfo)) {
-        _fields.push({ key: BoardInfoDisplayMapping[key], value });
+        _fields.push({
+          key: BoardInfoDisplayMapping[key],
+          value: value as string,
+        });
       }
-      this.fields = _fields;
-      this.cdr.detectChanges();
+      this.fields.set(_fields);
     });
   }
 }

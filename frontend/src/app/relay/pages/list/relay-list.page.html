@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    @for (relay of relays; track relay.position) {
+    @for (relay of relays(); track relay.position) {
     <app-relay-tile
       [relay]="relay"
       (refreshList)="refreshList()"

@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  inject,
   OnInit,
 } from '@angular/core';
 import {
@@ -32,10 +32,10 @@ import {
 } from '@ionic/angular/standalone';
 import { Observable, of, switchMap } from 'rxjs';
 import {
+  createSchedule,
   Repeat,
   ScheduleCreate,
   ScheduleUpdate,
-  createSchedule,
 } from '../../../models/scheduler.models';
 import { DisplayStringPipe } from '../../../pipes/display-string.pipe';
 import { ScheduleService } from '../../../services/schedule.service';
@@ -44,10 +44,8 @@ import { ScheduleService } from '../../../services/schedule.service';
   selector: 'app-schedule-edit',
   templateUrl: './schedule-edit.page.html',
   styleUrls: ['./schedule-edit.page.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     DisplayStringPipe,
     IonHeader,
@@ -66,6 +64,13 @@ import { ScheduleService } from '../../../services/schedule.service';
   ],
 })
 export class ScheduleEditPage implements OnInit {
+  public activatedRoute = inject(ActivatedRoute);
+  public scheduleService = inject(ScheduleService);
+  public cdr = inject(ChangeDetectorRef);
+  public pickerCtrl = inject(PickerController);
+  public toastController = inject(ToastController);
+  public navController = inject(NavController);
+
   public id: number | null = null;
   public addEditForm: FormGroup;
   public repeatOptions: { text: string; value: string }[];
@@ -89,14 +94,7 @@ export class ScheduleEditPage implements OnInit {
   ];
   public displayStringPipe: DisplayStringPipe;
 
-  public constructor(
-    public activatedRoute: ActivatedRoute,
-    public scheduleService: ScheduleService,
-    public cdr: ChangeDetectorRef,
-    public pickerCtrl: PickerController,
-    public toastController: ToastController,
-    public navController: NavController
-  ) {
+  public constructor() {
     this.displayStringPipe = new DisplayStringPipe();
     this.repeatOptions = this.repeatValues.map((value) => {
       return {
@@ -141,13 +139,13 @@ export class ScheduleEditPage implements OnInit {
 
   public ngOnInit(): void {
     this.id = parseInt(
-      this.activatedRoute.snapshot.paramMap.get('id') as string
+      this.activatedRoute.snapshot.paramMap.get('id') as string,
     );
     of(createSchedule())
       .pipe(
         switchMap((s) =>
-          this.id ? this.scheduleService.getSchedule(this.id) : of(s)
-        )
+          this.id ? this.scheduleService.getSchedule(this.id) : of(s),
+        ),
       )
       .subscribe((schedule: ScheduleCreate | ScheduleUpdate) => {
         this.addEditForm.patchValue(schedule);
@@ -179,7 +177,7 @@ export class ScheduleEditPage implements OnInit {
     (await picker.getColumn('repeat')).selectedIndex = this.repeatOptions
       .map(({ value }) => value)
       .findIndex(
-        (value) => value === this.addEditForm?.controls?.['repeat']?.value
+        (value) => value === this.addEditForm?.controls?.['repeat']?.value,
       );
     await picker.present();
   }
@@ -213,7 +211,7 @@ export class ScheduleEditPage implements OnInit {
       ],
     });
     const match = this.addEditForm?.controls?.['start_time']?.value?.match(
-      /^([0-9]{1,2}):([0-9]{1,2})/
+      /^([0-9]{1,2}):([0-9]{1,2})/,
     );
     if (match) {
       (await picker.getColumn('hour')).selectedIndex = parseInt(match[1]);
@@ -229,7 +227,7 @@ export class ScheduleEditPage implements OnInit {
       if (this.id) {
         action = this.scheduleService.updateSchedule(
           this.id,
-          this.addEditForm.value
+          this.addEditForm.value,
         );
       } else {
         action = this.scheduleService.createSchedule(this.addEditForm.value);

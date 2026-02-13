@@ -4,16 +4,16 @@
 
 Install Nodejs using [nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
-### Install Nodejs version 20 using nvm
+### Install Nodejs version 22 using nvm
 
 ```shell
-nvm install --lts=iron
+nvm install --lts=jod
 ```
 
-### Activate Nodejs v20 and install global packages
+### Activate Nodejs v22 and install global packages
 
 ```zsh
-nvm use lts/iron
+nvm use lts/jod
 npm install -g npm@latest @ionic/cli@latest @angular/cli@latest openapicmd@latest
 ```
 
@@ -28,7 +28,7 @@ cd frontend && npm clean-install
 ### Start fronted development server
 
 ```zsh
-nvm use lts/iron
+nvm use lts/jod
 cd frontend && ionic serve
 ```
 
@@ -55,7 +55,7 @@ openapi typegen http://localhost:8000/openapi.json > frontend/@types/openapi.d.t
 ### Build production frontend application
 
 ```zsh
-nvm use lts/iron
+nvm use lts/jod
 cd frontend && ionic build
 ```
 The frontend application is compiled to static HTML and JavaScript files into the `fronted/www/browser` directory. It can be served using a web server.

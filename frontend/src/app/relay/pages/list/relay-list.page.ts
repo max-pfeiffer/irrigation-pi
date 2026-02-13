@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  inject,
+  signal,
 } from '@angular/core';
 import {
   IonButtons,
@@ -22,10 +22,8 @@ import { RelayService } from '../../services/relay.service';
   selector: 'app-relay-list',
   templateUrl: './relay-list.page.html',
   styleUrls: ['./relay-list.page.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     IonHeader,
     IonToolbar,
     IonButtons,
@@ -37,12 +35,9 @@ import { RelayService } from '../../services/relay.service';
   ],
 })
 export class RelayListPage implements ViewDidEnter {
-  public relays: Relay[] = [];
+  public relayService = inject(RelayService);
 
-  constructor(
-    public relayService: RelayService,
-    public cdr: ChangeDetectorRef
-  ) {}
+  public relays = signal<Relay[]>([]);
 
   public ionViewDidEnter(): void {
     this.refreshList();
@@ -51,8 +46,7 @@ export class RelayListPage implements ViewDidEnter {
   public refreshList(): void {
     this.relayService.getRelays().subscribe({
       next: (_relays: Relay[]) => {
-        this.relays = _relays;
-        this.cdr.detectChanges();
+        this.relays.set(_relays);
       },
     });
   }

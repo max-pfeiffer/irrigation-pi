@@ -1,8 +1,8 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
+  inject,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -13,7 +13,6 @@ import {
   IonHeader,
   IonIcon,
   IonList,
-  IonListHeader,
   IonMenuButton,
   IonTitle,
   IonToolbar,
@@ -31,10 +30,8 @@ import { ScheduleService } from '../../services/schedule.service';
   selector: 'app-schedule-list',
   templateUrl: './schedule-list.page.html',
   styleUrls: ['./schedule-list.page.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     ScheduleTileComponent,
     IonHeader,
     IonToolbar,
@@ -44,21 +41,19 @@ import { ScheduleService } from '../../services/schedule.service';
     IonButton,
     IonIcon,
     IonContent,
-    IonListHeader,
     IonList,
   ],
 })
 export class ScheduleListPage implements ViewDidEnter {
+  public schedulerService = inject(ScheduleService);
+  public navController = inject(NavController);
+  public route = inject(ActivatedRoute);
+
   @ViewChild('scheduleList')
   public scheduleList: IonList;
-  public schedules: ScheduleResponse[] = [];
+  public schedules = signal<ScheduleResponse[]>([]);
 
-  constructor(
-    public schedulerService: ScheduleService,
-    public cdr: ChangeDetectorRef,
-    public navController: NavController,
-    public route: ActivatedRoute
-  ) {
+  constructor() {
     addIcons({
       addOutline,
     });
@@ -72,12 +67,11 @@ export class ScheduleListPage implements ViewDidEnter {
     this.schedulerService
       .getSchedules()
       .pipe(
-        finalize(() => this.scheduleList.closeSlidingItems().catch(() => {}))
+        finalize(() => this.scheduleList.closeSlidingItems().catch(() => {})),
       )
       .subscribe({
         next: (_schedules: ScheduleResponse[]) => {
-          this.schedules = _schedules;
-          this.cdr.detectChanges();
+          this.schedules.set(_schedules);
         },
       });
   }
