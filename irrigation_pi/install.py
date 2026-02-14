@@ -58,7 +58,7 @@ def install_debian_packages():
     :return:
     """
     click.echo("Updating Debian package sources...")
-    run_subprocess(["sudo", "apt", "update"])
+    run_subprocess(["sudo", "apt-get", "update"])
 
     click.echo("Installing Debian packages...")
     run_subprocess(
@@ -170,11 +170,18 @@ def install_systemd_resolved():
     """
     # Install systemd-resolved
     click.echo("Updating Debian package sources...")
-    run_subprocess(["sudo", "apt", "update"])
+    run_subprocess(["sudo", "apt-get", "update"])
 
     click.echo("Installing systemd-resolved Debian package...")
     run_subprocess(
-        ["sudo", "apt", "install", "systemd-resolved", "--no-install-recommends", "-y"]
+        [
+            "sudo",
+            "apt-get",
+            "install",
+            "systemd-resolved",
+            "--no-install-recommends",
+            "-y",
+        ]
     )
 
     # Configure DNS processing mode of NetworkManager
