@@ -3,6 +3,8 @@
 from pathlib import Path
 
 DEBIAN_PACKAGES: list[str] = [
+    "python3.13-dev",  # Needed when using the Debian13 lite version
+    # to build the rpi-gpio Python package.
     "python3-gpiozero",
     "python3-pigpio",
     "python3-rpi.gpio",
