@@ -12,4 +12,5 @@ poetry run irrigation-pi restart uvicorn
 echo "Restarting nginx server..."
 poetry run irrigation-pi restart nginx
 
-echo "Irrigation Pi application was updated and is now available on http://raspberrypi.local"
+HOSTNAME=$(hostname)
+echo "Irrigation Pi application was updated and is now available on http://$HOSTNAME.local"
