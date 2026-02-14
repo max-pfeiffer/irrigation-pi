@@ -1,7 +1,8 @@
 [![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![codecov](https://codecov.io/gh/max-pfeiffer/irrigation-pi/graph/badge.svg?token=Tk9STeqlPn)](https://codecov.io/gh/max-pfeiffer/irrigation-pi)
-![pipeline workflow](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/pipeline.yml/badge.svg)
+[![Code Quality](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/code-quality.yaml)
+[![Tests](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/tests.yaml/badge.svg)](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/tests.yaml)
 
 # Irrigation Pi
 This web application turns your [Raspberry Pi](https://www.raspberrypi.com/) into an irrigation system.
