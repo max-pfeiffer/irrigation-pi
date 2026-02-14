@@ -112,7 +112,7 @@ def create_application_configuration():
     return APPLICATION_CONFIGURATION_TEMPLATE.substitute({})
 
 
-def configure_frontend_hostname() -> dict[str, dict[str, str]]:
+def create_frontend_hostname_configuration() -> dict[str, dict[str, str]]:
     """Confire the hostname for the frontend application.
 
     The hostname is loaded dynamically from that file location

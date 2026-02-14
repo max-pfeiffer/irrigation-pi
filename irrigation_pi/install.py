@@ -28,8 +28,8 @@ from irrigation_pi.constants import (
 )
 from irrigation_pi.utils import (
     activate_virtual_environment,
-    configure_frontend_hostname,
     create_application_configuration,
+    create_frontend_hostname_configuration,
     create_nginx_config,
     create_systemd_config,
     run_subprocess,
@@ -137,7 +137,7 @@ def install_nginx_configuration():
     """
     # Create frontend hostname configuration file
     with open(FRONTEND_PATH_HOSTNAME_CONFIGURATION_PATH, "w") as file:
-        json.dump(configure_frontend_hostname(), file)
+        json.dump(create_frontend_hostname_configuration(), file)
 
     # Create nginx config
     click.echo("Installing nginx configuration...")
