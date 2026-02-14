@@ -1,13 +1,11 @@
 """Services for Raspberry Pi board information."""
 
-from typing import Union
-
 from gpiozero import Factory, PiBoardInfo
 
 from app.adapters.base import RelayBoardAdapter
 
 
-def service_get_board_info(adapter: RelayBoardAdapter) -> dict[str, Union[str, int]]:
+def service_get_board_info(adapter: RelayBoardAdapter) -> dict[str, str | int]:
     """Service for producing Raspberry Pi board information.
 
     :param adapter:
@@ -15,7 +13,7 @@ def service_get_board_info(adapter: RelayBoardAdapter) -> dict[str, Union[str, i
     """
     pin_factory: Factory = adapter.get_pin_factory()
     board_info: PiBoardInfo = pin_factory.board_info
-    data: dict[str, Union[str, int]] = {
+    data: dict[str, str | int] = {
         "revision": board_info.revision,
         "model": board_info.model,
         "pcb_revision": board_info.pcb_revision,

@@ -3,8 +3,8 @@
 import os
 import sys
 from pathlib import Path
+from socket import gethostname
 from subprocess import PIPE, Popen
-from typing import Optional
 
 import click
 
@@ -16,7 +16,7 @@ from irrigation_pi.templates import (
 
 
 def run_subprocess(
-    command: list[str], cwd: Optional[Path] = None, env: Optional[dict] = None
+    command: list[str], cwd: Path | None = None, env: dict | None = None
 ):
     """Execute command with Popen and prints it's output.
 
@@ -110,3 +110,17 @@ def create_application_configuration():
     :return:
     """
     return APPLICATION_CONFIGURATION_TEMPLATE.substitute({})
+
+
+def configure_frontend_hostname() -> dict[str, dict[str, str]]:
+    """Confire the hostname for the frontend application.
+
+    The hostname is loaded dynamically from that file location
+    upon every request.
+
+    :return:
+    """
+    hostname: str = gethostname()
+    url: str = f"http://{hostname}.local/api"
+    config: dict[str, dict[str, str]] = {"api": {"host": url}}
+    return config

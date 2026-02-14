@@ -1,6 +1,6 @@
 """Application Exceptions."""
 
-from typing import Annotated, Any, Optional
+from typing import Annotated, Any
 
 from fastapi import HTTPException
 from typing_extensions import Doc
@@ -21,7 +21,7 @@ class ActiveScheduleExistsError(HTTPException):
             ),
         ] = None,
         headers: Annotated[
-            Optional[dict[str, str]],
+            dict[str, str] | None,
             Doc(
                 """
                 Any headers to send to the client in the response.

@@ -2,10 +2,11 @@
 
 from dataclasses import dataclass
 
-from app.database.models import Schedule
-from app.scheduling import Repeat
 from gpiozero import Device
 from gpiozero.exc import BadPinFactory
+
+from app.database.models import Schedule
+from app.scheduling import Repeat
 
 
 def is_raspberry_pi() -> bool:

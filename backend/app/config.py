@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from socket import AddressFamily, gethostname
-from typing import Any, Optional
+from typing import Any
 
 import semver
 import toml
@@ -76,7 +76,7 @@ class ApplicationSettings(BaseSettings):
 application_settings = ApplicationSettings()
 
 
-def load_application_configuration() -> Optional[dict]:
+def load_application_configuration() -> dict | None:
     """Load application configuration from toml file.
 
     :return:

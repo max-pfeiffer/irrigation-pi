@@ -4,10 +4,10 @@ import asyncio
 import time
 
 import pytest
-from app.adapters import WaveshareRpiRelayBoardAdapter
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
+from app.adapters import WaveshareRpiRelayBoardAdapter
 from tests.utils import is_raspberry_pi
 
 

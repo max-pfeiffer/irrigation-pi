@@ -1,9 +1,9 @@
 """Tests for service board info."""
 
-from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
-from app.services.board_info import service_get_board_info
 from gpiozero.pins.mock import MockFactory
 
+from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
+from app.services.board_info import service_get_board_info
 from tests.fake_objects import FakeRelay
 
 

@@ -1,7 +1,6 @@
 """API models."""
 
 from datetime import time
-from typing import Union
 
 from pydantic import BaseModel, Field, PositiveInt
 
@@ -32,19 +31,19 @@ class ScheduleCreate(BaseModel):
 class ScheduleUpdate(BaseModel):
     """Update schema for schedule."""
 
-    start_time: Union[time, None] = Field(
+    start_time: time | None = Field(
         default=None, description="Start time of the schedule"
     )
-    duration: Union[PositiveInt, None] = Field(
+    duration: PositiveInt | None = Field(
         default=None, description="Duration in minutes"
     )
-    repeat: Union[Repeat, None] = Field(
+    repeat: Repeat | None = Field(
         default=None, description="Specifies how the schedule is repeated"
     )
-    active: Union[bool, None] = Field(
+    active: bool | None = Field(
         default=None, description="Whether the schedule is active"
     )
-    relay_position: Union[PositiveInt, None] = Field(
+    relay_position: PositiveInt | None = Field(
         default=None, description="Position of the relay"
     )
 

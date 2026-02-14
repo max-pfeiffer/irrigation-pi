@@ -1,7 +1,5 @@
 """API endpoint for Raspberry Pi board information."""
 
-from typing import Union
-
 from fastapi import APIRouter
 
 from app.api.v1.models import RaspberryPiBoardInfo
@@ -17,5 +15,5 @@ def get_board_info() -> RaspberryPiBoardInfo:
 
     :return:
     """
-    data: dict[str, Union[str, int]] = service_get_board_info(relayBoardAdapter)
+    data: dict[str, str | int] = service_get_board_info(relayBoardAdapter)
     return RaspberryPiBoardInfo(**data)
