@@ -13,6 +13,9 @@ PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()
 VIRTUAL_ENVIRONMENT_PATH: Path = PROJECT_ROOT_PATH / ".venv"
 BACKEND_PATH: Path = PROJECT_ROOT_PATH / "backend"
 FRONTEND_PATH: Path = PROJECT_ROOT_PATH / "frontend"
+FRONTEND_PATH_HOSTNAME_CONFIGURATION_PATH: Path = (
+    FRONTEND_PATH / "www" / "browser" / "assets" / "config" / "appConfig.prod.json"
+)
 DATABASE_PATH: Path = BACKEND_PATH / "sqlite_db" / "backend.db"
 
 APPLICATION_CONFIGURATION_PATH: Path = PROJECT_ROOT_PATH / "config.toml"

@@ -1,6 +1,6 @@
 """Adapters for Waveshare boards."""
 
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 from gpiozero import Factory
 
@@ -24,8 +24,8 @@ class WaveshareRpiRelayBoardAdapter(RelayBoardAdapter):
 
     def __init__(
         self,
-        pin_factory: Optional[Factory] = None,
-        relays: Optional[list[Relay]] = None,
+        pin_factory: Factory | None = None,
+        relays: list[Relay] | None = None,
     ):
         """Initialize object.
 

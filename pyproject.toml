@@ -33,12 +33,12 @@ pytest = "9.0.2"
 pytest-asyncio = "1.3.0"
 pytest-cov = "7.0.0"
 httpx = "0.28.1"
-ruff = "0.15.0"
 
 [tool.poetry.scripts]
 irrigation-pi = 'irrigation_pi:cli'
 
 [tool.ruff]
+src = ["irrigation_pi", "backend"]
 exclude = [".venv", "backend/migrations", "frontend"]
 
 [tool.ruff.lint]

@@ -1,7 +1,7 @@
 """Install commands."""
 
 # ruff: noqa: D205, D301, D400
-
+import json
 from configparser import ConfigParser
 from pathlib import Path
 from shutil import chown
@@ -16,6 +16,7 @@ from irrigation_pi.constants import (
     BACKEND_PATH,
     DATABASE_PATH,
     DEBIAN_PACKAGES,
+    FRONTEND_PATH_HOSTNAME_CONFIGURATION_PATH,
     NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
@@ -28,6 +29,7 @@ from irrigation_pi.constants import (
 from irrigation_pi.utils import (
     activate_virtual_environment,
     create_application_configuration,
+    create_frontend_hostname_configuration,
     create_nginx_config,
     create_systemd_config,
     run_subprocess,
@@ -60,7 +62,14 @@ def install_debian_packages():
 
     click.echo("Installing Debian packages...")
     run_subprocess(
-        ["sudo", "apt", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
+        [
+            "sudo",
+            "apt-get",
+            "install",
+            *DEBIAN_PACKAGES,
+            "--no-install-recommends",
+            "-y",
+        ]
     )
 
 
@@ -126,6 +135,10 @@ def install_nginx_configuration():
     \f
     :return:
     """
+    # Create frontend hostname configuration file
+    with open(FRONTEND_PATH_HOSTNAME_CONFIGURATION_PATH, "w") as file:
+        json.dump(create_frontend_hostname_configuration(), file)
+
     # Create nginx config
     click.echo("Installing nginx configuration...")
     server_root_path: Path = (

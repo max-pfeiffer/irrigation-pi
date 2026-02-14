@@ -4,11 +4,12 @@ from datetime import time, timezone
 from random import randint
 
 import pytest
+from apscheduler.job import Job
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+
 from app.adapters import RelayBoardType
 from app.repositories import ApSchedulerRepository
 from app.scheduling import Repeat
-from apscheduler.job import Job
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 
 @pytest.mark.parametrize("repeat", Repeat)

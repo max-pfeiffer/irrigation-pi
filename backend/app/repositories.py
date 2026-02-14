@@ -1,7 +1,6 @@
 """Repositories for data persistence."""
 
 from datetime import time
-from typing import Optional
 
 from apscheduler.job import Job
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
@@ -161,7 +160,7 @@ class ApSchedulerRepository:
         :param primary_key:
         :return:
         """
-        result: Optional[Job] = self.scheduler.get_job(primary_key)
+        result: Job | None = self.scheduler.get_job(primary_key)
         if result is None:
             return False
         else:

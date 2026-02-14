@@ -1,0 +1,30 @@
+name: Tests
+
+on:
+  pull_request:
+    paths:
+      - .github/**
+      - backend/**
+      - irrigation_pi/**
+      - poetry.lock
+
+jobs:
+  tests:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v6
+      - name: Set up Python environment
+        uses: ./.github/actions/setup-environment
+      - name: Install dependencies
+        run: |
+          poetry install --with dev --no-interaction --no-root
+      - name: Run all tests with pytest
+        run: |
+          poetry run pytest --cov --cov-report=xml:coverage_report.xml
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: coverage_report.xml
+          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}

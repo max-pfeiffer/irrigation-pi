@@ -3,6 +3,10 @@
 from datetime import time
 
 import pytest
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
+from sqlalchemy.exc import NoResultFound
+from sqlmodel import Session
+
 from app.scheduling import Repeat
 from app.services.schedule import (
     active_schedule_exists,
@@ -13,10 +17,6 @@ from app.services.schedule import (
     service_update_schedule,
     set_system_timezone,
 )
-from apscheduler.schedulers.asyncio import AsyncIOScheduler
-from sqlalchemy.exc import NoResultFound
-from sqlmodel import Session
-
 from tests.utils import RepeatQueryTestSchedules, RepeatTestData, TimeQueryTestSchedules
 
 

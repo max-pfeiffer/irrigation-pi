@@ -1,6 +1,6 @@
 """A management CLI inspired by Django's manage.py command."""
 
-# ruff: noqa: D205, D301, D400
+# ruff: noqa: D301
 
 import click
 

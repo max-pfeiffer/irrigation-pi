@@ -1,9 +1,9 @@
 """Tests for the Waveshare board adapter."""
 
 import pytest
-from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 from gpiozero.pins.mock import MockFactory
 
+from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 from tests.fake_objects import FakeRelay
 
 

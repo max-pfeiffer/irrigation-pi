@@ -7,15 +7,15 @@ from uuid import uuid4
 import pytest
 from alembic import command
 from alembic.config import Config
-from app.config import application_settings
-from app.database.models import Schedule
-from app.scheduling import Repeat
-from app.services.schedule import set_system_timezone
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from fastapi.testclient import TestClient
 from pytest import MonkeyPatch
 from sqlmodel import Session
 
+from app.config import application_settings
+from app.database.models import Schedule
+from app.scheduling import Repeat
+from app.services.schedule import set_system_timezone
 from tests.utils import RepeatQueryTestSchedules, TimeQueryTestSchedules
 
 
