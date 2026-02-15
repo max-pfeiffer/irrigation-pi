@@ -10,7 +10,7 @@ from irrigation_pi.utils import create_frontend_hostname_configuration
 
 @click.command(name="hostname")
 def frontend_hostname():
-    """Configure hostname for frontend application.
+    """Configure current systems hostname for frontend application.
 
     :return:
     """
