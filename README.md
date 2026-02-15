@@ -21,7 +21,7 @@ Contributions for other boards are warmly welcome.
 * Set up a Wi-Fi hotspot on your Raspberry Pi (with CLI)* 
 * Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
-* Application is available on http://raspberrypi.local/ with all network configurations (including Wi-Fi hotspot) and all devices
+* Application is available on http://yourhostname.local/ with all network configurations (including Wi-Fi hotspot) and all devices
   (please be aware that [multicast DNS is supported since Android 10](https://source.android.com/docs/core/ota/modular-system/dns-resolver#mdns-local-resolution))
 
 The following features are on our todo list:
@@ -40,9 +40,9 @@ Requirements:
 * git v2.39+
 * Python v3.11+
 
-There is currently a [bug in Raspbian GNU/Linux v13+ (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a
-Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29). If you need to set up a Wi-Fi Hotspot
-just flash the older Raspbian GNU/Linux v12+ (Debian Bookworm) on your device. 
+There is currently a [bug in Raspbian GNU/Linux v13 (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a
+Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29).
+If you need to set up a Wi-Fi Hotspot flash the older Raspbian GNU/Linux v12 (Debian Bookworm) to your device. 
 
 Open a shell on your Raspberry Pi and clone this repository in /srv directory:
 ```shell
@@ -64,8 +64,8 @@ just exit the script (CTRL-C) and re-run it.
 The management CLI requires superuser privileges for installation. If you encounter a password challenge, please enter your user's
 password.
 
-The application is available on http://raspberrypi.local/ afterwards. The API can also be used directly
-on http://raspberrypi.local/api.
+The application is available on the hostname you configured for device afterwards, for instance http://yourhostname.local/.
+The API can also be used directly on http://yourhostname.local/api.
 
 All servers are configured to be fired up automatically after the Raspberry was switched on.
 
