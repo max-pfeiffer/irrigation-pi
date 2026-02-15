@@ -128,15 +128,27 @@ def create_frontend_hostname_configuration() -> dict[str, dict[str, str]]:
 
 
 def debian_packages() -> list[str]:
-    """List of debian packages."""
-    packages = [
+    """List of debian packages.
+
+    :return:
+    """
+    debian_version: str = freedesktop_os_release()["VERSION_ID"]
+
+    packages: list[str] = [
         "python3-gpiozero",
         "python3-pigpio",
         "python3-rpi.gpio",
         "nginx",
     ]
-    if freedesktop_os_release()["VERSION_ID"] == "13":
-        # Needed when using the Debian13 lite version
-        # to build the rpi-gpio Python package.
-        packages.append("python3.13-dev")
+
+    # Needed when using the Debian lite version
+    # to build the rpi-gpio Python package.
+    match debian_version:
+        case "12":
+            packages.append("python3.11-dev")
+        case "13":
+            packages.append("python3.13-dev")
+        case _:
+            pass
+
     return packages
