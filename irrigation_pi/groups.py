@@ -8,6 +8,7 @@ import sys
 
 import click
 
+from irrigation_pi.configure import frontend_hostname
 from irrigation_pi.export import backend_api_specs
 from irrigation_pi.install import (
     install_all,
@@ -124,3 +125,16 @@ def export():
 
 
 export.add_command(backend_api_specs)
+
+
+@click.group()
+def configure():
+    """Configure commands.
+    \f
+
+    :return:
+    """
+    pass
+
+
+configure.add_command(frontend_hostname)
