@@ -40,6 +40,10 @@ Requirements:
 * git v2.39+
 * Python v3.11+
 
+There is currently a [bug in Raspbian GNU/Linux v13+ (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a
+Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29). If you need to set up a Wi-Fi Hotspot
+just flash the older Raspbian GNU/Linux v12+ (Debian Bookworm) on your device. 
+
 Open a shell on your Raspberry Pi and clone this repository in /srv directory:
 ```shell
 cd /srv
@@ -74,6 +78,7 @@ sudo ./update.sh
 The update script is available since v1.1.0. If you are missing it, you are running some older version. Then you need 
 to pull the latest changes from GitHub yourself like so:
 ```shell
+cd /srv/irrigation-pi
 sudo git checkout main
 sudo git pull
 ```
@@ -126,12 +131,13 @@ Commands:
   run        Run commands.
   uninstall  Uninstall commands.
 ```
-For instance, you can install and run a Wi-Fi hotspot with it. This is particularly useful when you run the
-Raspberry Pi in your garden as an island solution:
+For instance, you can install and run a Wi-Fi hotspot with it. Please be aware of the 
+[bug in Raspbian GNU/Linux v13+ (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29).
+This is particularly useful when you run the Raspberry Pi in your garden as an island solution:
 ```shell
-$ sudo irrigation-pi install wifi-hotspot
+$ irrigation-pi install wifi-hotspot
 ```
-Afterwards you can login on SSID `Irrigation-Pi`. Use `--help` to display more configuration options:   
+Afterwards you can log in on SSID `Irrigation-Pi`. Use `--help` to display more configuration options:   
 ```shell
 $ irrigation-pi install wifi-hotspot --help
 Executing this command requires sudo privileges. If you encounter a password challenge, please enter your user's password. 
