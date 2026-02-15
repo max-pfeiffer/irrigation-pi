@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 echo "Pulling latest main branch from GitHub..."
 git checkout main
 git pull
