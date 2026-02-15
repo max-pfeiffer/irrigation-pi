@@ -25,7 +25,6 @@ Contributions for other boards are warmly welcome.
   (please be aware that [multicast DNS is supported since Android 10](https://source.android.com/docs/core/ota/modular-system/dns-resolver#mdns-local-resolution))
 
 The following features are on our todo list:
-* Make host name for Raspberry Pi installation configurable
 * SSL for web application
 
 ![ui_schedule_list.png](images/ui_schedule_list.png)   ![ui_schedule_detail.png](images/ui_schedule_detail.png)
