@@ -125,18 +125,21 @@ Options:
   --help  Show this message and exit.
 
 Commands:
+  configure  Configure commands.
   export     Update commands.
   install    Install commands.
   restart    Restart commands.
   run        Run commands.
   uninstall  Uninstall commands.
 ```
-For instance, you can install and run a Wi-Fi hotspot with it. Please be aware of the 
-[bug in Raspbian GNU/Linux v13+ (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29).
+For instance, you can install and run a Wi-Fi hotspot with it.
 This is particularly useful when you run the Raspberry Pi in your garden as an island solution:
 ```shell
 $ irrigation-pi install wifi-hotspot
 ```
+Please be aware of the 
+[bug in Raspbian GNU/Linux v13+ (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29).
+
 Afterwards you can log in on SSID `Irrigation-Pi`. Use `--help` to display more configuration options:   
 ```shell
 $ irrigation-pi install wifi-hotspot --help
