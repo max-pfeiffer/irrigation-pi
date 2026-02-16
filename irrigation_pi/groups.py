@@ -134,7 +134,7 @@ def configure():
 
     :return:
     """
-    pass
+    become_root()
 
 
 configure.add_command(frontend_hostname)
