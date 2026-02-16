@@ -18,8 +18,8 @@ Contributions for other boards are warmly welcome.
 * Relays are switched automatically according to schedule configuration
 * Live relay switching
 * Display Raspberry Pi system information
-* Set up a Wi-Fi hotspot on your Raspberry Pi (with CLI)* 
-* Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in Typescript)
+* Set up a Wi-Fi hotspot on your Raspberry Pi (with CLI)
+* Mobile friendly web interface ([Angular](https://angular.io/) [frontend application](frontend/README.md) written in TypeScript)
 * REST API ([FastAPI](https://fastapi.tiangolo.com/) [backend application](backend/README.md) written in Python)
 * Application is available on http://yourhostname.local/ with all network configurations (including Wi-Fi hotspot) and all devices
   (please be aware that [multicast DNS is supported since Android 10](https://source.android.com/docs/core/ota/modular-system/dns-resolver#mdns-local-resolution))
@@ -41,7 +41,7 @@ Requirements:
 
 There is currently a [bug in Raspbian GNU/Linux v13 (Debian Trixie) which affects setting up a Wi-Fi Hotspot on a
 Raspberry Pi 3](https://github.com/raspberrypi/trixie-feedback/issues/29).
-If you need to set up a Wi-Fi Hotspot flash the older Raspbian GNU/Linux v12 (Debian Bookworm) to your device. 
+If you want to set up a Wi-Fi Hotspot, flash the older Raspbian GNU/Linux v12 (Debian Bookworm) to your device. 
 
 Open a shell on your Raspberry Pi and clone this repository in /srv directory:
 ```shell
@@ -132,7 +132,8 @@ Commands:
   uninstall  Uninstall commands.
 ```
 For instance, you can install and run a Wi-Fi hotspot with it.
-This is particularly useful when you run the Raspberry Pi in your garden as an island solution:
+This is particularly useful when you run the Raspberry Pi in your garden as an island solution. You can use your mobile
+phone to connect to the hotspot and access the Irrigation-Pi application with your phone's browser:
 ```shell
 $ irrigation-pi install wifi-hotspot
 ```
