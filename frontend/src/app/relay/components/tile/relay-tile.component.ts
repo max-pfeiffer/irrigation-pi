@@ -1,10 +1,9 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  Input,
-  Output,
+  inject,
+  input,
+  output,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonItem, IonToggle } from '@ionic/angular/standalone';
@@ -16,28 +15,24 @@ import { RelayService } from '../../services/relay.service';
   selector: 'app-relay-tile',
   templateUrl: './relay-tile.component.html',
   styleUrls: ['./relay-tile.component.scss'],
-  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, FormsModule, IonItem, IonToggle],
+  imports: [FormsModule, IonItem, IonToggle],
 })
 export class RelayTileComponent {
-  @Input()
-  public relay: Relay;
+  public relayService = inject(RelayService);
 
-  @Output()
-  public refreshList = new EventEmitter<void>();
-
-  public constructor(public relayService: RelayService) {}
+  public relay = input<Relay>();
+  public refreshList = output();
 
   public onRelayToggle(event: CustomEvent<{ checked: boolean }>) {
-    let { position, ...payload } = this.relay;
+    let { position, ...payload } = this.relay();
     payload = { ...payload, on: event.detail.checked };
     this.relayService
-      .updateRelay(this.relay.position, payload)
+      .updateRelay(this.relay().position, payload)
       .pipe(
         finalize(() => {
           this.refreshList.emit();
-        })
+        }),
       )
       .subscribe();
   }

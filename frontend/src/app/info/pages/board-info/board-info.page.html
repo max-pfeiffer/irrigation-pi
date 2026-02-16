@@ -9,7 +9,7 @@
 
 <ion-content [fullscreen]="true">
   <ion-list>
-    @for(field of fields; track field.key) {
+    @for(field of fields(); track field.key) {
     <ion-item>
       <ion-label>{{field.key}}</ion-label>
       <ion-label class="ion-text-right">{{field.value}}</ion-label>

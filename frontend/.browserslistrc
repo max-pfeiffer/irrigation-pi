@@ -8,9 +8,19 @@
 # You can see what browsers were selected by your queries by running:
 #   npx browserslist
 
-Chrome >=89
-ChromeAndroid >=89
-Firefox >=75
-Edge >=89
-Safari >=15
-iOS >=15
+# Modern browsers only (Angular 20+ requirement)
+last 2 Chrome versions
+last 2 Firefox versions
+last 2 Edge versions
+last 2 Safari versions
+last 2 iOS versions
+
+# Target stable Android Chrome rather than experimental "Android" versions
+last 2 and_chr versions
+
+# Exclude specific problematic/legacy mobile browsers
+not dead
+not op_mini all
+not kaios > 0
+not and_qq > 0
+not and_uc > 0
