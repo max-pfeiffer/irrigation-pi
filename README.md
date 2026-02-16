@@ -63,7 +63,7 @@ just exit the script (CTRL-C) and re-run it.
 The management CLI requires superuser privileges for installation. If you encounter a password challenge, please enter your user's
 password.
 
-The application is available on the hostname you configured for device afterwards, for instance http://yourhostname.local/.
+The application is available with hostname you configured for device, for instance http://yourhostname.local/.
 The API can also be used directly on http://yourhostname.local/api.
 
 All servers are configured to be fired up automatically after the Raspberry was switched on.
@@ -167,8 +167,12 @@ Options:
   --help                       Show this message and exit.
 ```
 
-## Options for enclosures
-For the Raspberry Pi 3 and the [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) I found these options for 3D printables:
+## Casings
+For the Raspberry Pi 3 and the [Waveshare RPi Relay Board](https://www.waveshare.com/wiki/RPi_Relay_Board) this project maintains its own casings in the
+[irrigation-pi-casings](https://github.com/max-pfeiffer/irrigation-pi-casings) repository:
+* [Movray case](https://github.com/max-pfeiffer/irrigation-pi-casings/tree/main/movray)
+
+I also found these 3rd party options:
 * [Raspberry Pi WaveShare Relay case](https://www.printables.com/model/29682-raspberry-pi-waveshare-relay-case)
 
 ## Why another irrigation controller software for the Raspberry Pi?
