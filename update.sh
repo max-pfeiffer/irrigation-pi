@@ -6,7 +6,7 @@ git checkout main
 git pull
 
 echo "Installing Python packages with Poetry..."
-~/.local/bin/poetry install --sync --without dev
+~/.local/bin/poetry sync --without dev
 
 echo "Restarting Uvicorn server..."
 ~/.local/bin/poetry run irrigation-pi restart uvicorn
