@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "irrigation-pi"
-version = "1.4.0"
+version = "1.4.1"
 description = ""
 authors = ["Max Pfeiffer <max@maxpfeiffer.ch>"]
 license = "MIT"

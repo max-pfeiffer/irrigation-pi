@@ -15,6 +15,7 @@ from irrigation_pi.constants import (
     APPLICATION_USER_GROUP,
     BACKEND_PATH,
     DATABASE_PATH,
+    DEBIAN_PACKAGES,
     FRONTEND_PATH_HOSTNAME_CONFIGURATION_PATH,
     NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
@@ -31,7 +32,6 @@ from irrigation_pi.utils import (
     create_frontend_hostname_configuration,
     create_nginx_config,
     create_systemd_config,
-    debian_packages,
     run_subprocess,
 )
 
@@ -66,7 +66,7 @@ def install_debian_packages():
             "sudo",
             "apt-get",
             "install",
-            *debian_packages(),
+            *DEBIAN_PACKAGES,
             "--no-install-recommends",
             "-y",
         ]

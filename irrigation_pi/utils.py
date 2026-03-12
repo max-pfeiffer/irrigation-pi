@@ -3,7 +3,6 @@
 import os
 import sys
 from pathlib import Path
-from platform import freedesktop_os_release
 from socket import gethostname
 from subprocess import PIPE, Popen
 
@@ -125,30 +124,3 @@ def create_frontend_hostname_configuration() -> dict[str, dict[str, str]]:
     url: str = f"http://{hostname}.local/api"
     config: dict[str, dict[str, str]] = {"api": {"host": url}}
     return config
-
-
-def debian_packages() -> list[str]:
-    """List of debian packages.
-
-    :return:
-    """
-    debian_version: str = freedesktop_os_release()["VERSION_ID"]
-
-    packages: list[str] = [
-        "python3-gpiozero",
-        "python3-pigpio",
-        "python3-rpi.gpio",
-        "nginx",
-    ]
-
-    # Needed when using the Debian lite version
-    # to build the rpi-gpio Python package.
-    match debian_version:
-        case "12":
-            packages.append("python3.11-dev")
-        case "13":
-            packages.append("python3.13-dev")
-        case _:
-            pass
-
-    return packages
