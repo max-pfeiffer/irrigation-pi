@@ -27,3 +27,12 @@ PORT: str = "80"
 
 NETWORKMANAGER_CONFIG_FILE: Path = Path("/etc/NetworkManager/NetworkManager.conf")
 WIFI_HOTSPOT_CONNECTION_NAME: str = "Irrigation-Pi"
+
+DEBIAN_PACKAGES: list[str] = [
+    "build-essential",
+    "python3-dev",
+    "python3-gpiozero",
+    "python3-pigpio",
+    "python3-rpi.gpio",
+    "nginx",
+]
