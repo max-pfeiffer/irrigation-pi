@@ -94,19 +94,20 @@ zookeeper = ["kazoo"]
 
 [[package]]
 name = "asyncer"
-version = "0.0.13"
+version = "0.0.17"
 description = "Asyncer, async and await, focused on developer experience."
 optional = false
-python-versions = ">=3.9"
+python-versions = ">=3.10"
 groups = ["main"]
 files = [
-    {file = "asyncer-0.0.13-py3-none-any.whl", hash = "sha256:a139293eb0268f60690556d0a2e97df12b600c778c5f8bb9bc86ffc0fc1b82f3"},
-    {file = "asyncer-0.0.13.tar.gz", hash = "sha256:f750abc10f17a1e4aa73862ba89d880fcf7bea683d9481020c992c26699b14f0"},
+    {file = "asyncer-0.0.17-py3-none-any.whl", hash = "sha256:b0055950e094fb84fd8d21611c7e7b6f5715ddcb57c522c058f64c20badd1438"},
+    {file = "asyncer-0.0.17.tar.gz", hash = "sha256:8a41e185e7ec2ecd583c269d72907a0f9f832e744b6c7474aeb21e349c4becf4"},
 ]
 
 [package.dependencies]
 anyio = ">=3.4.0,<5.0"
 sniffio = ">=1.1"
+typing_extensions = {version = ">=4.12.0", markers = "python_version < \"3.15\""}
 
 [[package]]
 name = "certifi"
@@ -1808,4 +1809,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.11"
-content-hash = "37a5693dcdd3e28b6478b885c87b06770c21e1469d48173c7f11759eab7004f3"
+content-hash = "dba99de1aa63c3ed4d1e1bb5bcc2f2dc8fe8081b71ac2a6b71aa480d398888a2"
