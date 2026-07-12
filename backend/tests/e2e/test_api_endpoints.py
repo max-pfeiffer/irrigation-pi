@@ -1,9 +1,13 @@
 """Tests for API root."""
 
+from subprocess import CompletedProcess
+
 import pytest
 from fastapi.testclient import TestClient
 from httpx import Response
 from starlette import status
+
+import app.services.system_date_time
 
 TEST_DATA: list[dict] = [
     {
@@ -63,12 +67,35 @@ TEST_DATA: list[dict] = [
         "method": "get",
         "data": None,
     },
+    {
+        "path": "/v1/system-date-time",
+        "method": "get",
+        "data": None,
+    },
+    {
+        "path": "/v1/system-date-time",
+        "method": "put",
+        "data": {"date_time": "2026-07-12T14:30:00+02:00"},
+    },
 ]
+
+
+def fake_subprocess_run(command: list[str], **kwargs) -> CompletedProcess:
+    """Fake subprocess.run so no timedatectl command is executed locally.
+
+    :param command:
+    :return:
+    """
+    stdout: str = "yes\n" if "show" in command else ""
+    return CompletedProcess(args=command, returncode=0, stdout=stdout, stderr="")
 
 
 @pytest.mark.parametrize("test_data", TEST_DATA)
 def test_all_api_endpoints(test_client: TestClient, test_data: dict, monkeypatch):
     """Test API endpoints."""
+    monkeypatch.setattr(
+        app.services.system_date_time.subprocess, "run", fake_subprocess_run
+    )
     method: str = test_data["method"]
     path: str = test_data["path"]
     data: str = test_data["data"]

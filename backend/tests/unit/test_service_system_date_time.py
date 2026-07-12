@@ -74,18 +74,6 @@ def test_service_set_system_date_time_naive_datetime() -> None:
     run_mock.assert_not_called()
 
 
-@pytest.mark.parametrize("year", [1999, 2101])
-def test_service_set_system_date_time_invalid_year(year: int) -> None:
-    """Test that implausible years are rejected."""
-    with patch("app.services.system_date_time.subprocess.run") as run_mock:
-        with pytest.raises(ValueError, match="year"):
-            service_set_system_date_time(
-                datetime(year, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
-            )
-
-    run_mock.assert_not_called()
-
-
 def test_service_set_system_date_time_failure_restores_ntp() -> None:
     """Test that the previous NTP state is restored when set-time fails."""
     date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)

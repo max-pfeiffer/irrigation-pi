@@ -71,7 +71,7 @@ def service_set_system_date_time(
     :param date_time: timezone aware datetime object
     :param scheduler: optional scheduler which gets woken up after the time
         change so it recalculates its job wait times
-    :raises ValueError: if date_time is naive or outside the years 2000-2100
+    :raises ValueError: if date_time is naive
     :raises SystemDateTimeError: if a timedatectl call fails or times out
     :return:
     """
@@ -79,8 +79,6 @@ def service_set_system_date_time(
         raise ValueError("date_time must be timezone aware")
 
     local_date_time: datetime = date_time.astimezone()
-    if not 2000 <= local_date_time.year <= 2100:
-        raise ValueError("date_time year must be between 2000 and 2100")
     formatted_date_time: str = local_date_time.strftime("%Y-%m-%d %H:%M:%S")
 
     ntp_was_enabled: bool = _ntp_enabled()

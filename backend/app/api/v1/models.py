@@ -2,7 +2,7 @@
 
 from datetime import time
 
-from pydantic import BaseModel, Field, PositiveInt
+from pydantic import AwareDatetime, BaseModel, Field, PositiveInt
 
 from app.scheduling import Repeat
 
@@ -59,6 +59,14 @@ class RelayUpdate(BaseModel):
     """Update schema for Relay object."""
 
     on: bool = Field(description="Indicates if relay is switched on")
+
+
+class SystemDateTime(BaseModel):
+    """Schema for system date and time."""
+
+    date_time: AwareDatetime = Field(
+        description="Timezone aware date and time in ISO 8601 format"
+    )
 
 
 class RaspberryPiBoardInfo(BaseModel):
