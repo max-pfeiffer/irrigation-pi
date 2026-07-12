@@ -37,3 +37,36 @@ class ActiveScheduleExistsError(HTTPException):
         if detail is None:
             detail = "An active schedule already exists"
         super().__init__(status_code=409, detail=detail, headers=headers)
+
+
+class SystemDateTimeError(HTTPException):
+    """Raised when setting the system date and time fails."""
+
+    def __init__(
+        self,
+        detail: Annotated[
+            Any,
+            Doc(
+                """
+                Any data to be sent to the client in the `detail` key of the JSON
+                response.
+                """
+            ),
+        ] = None,
+        headers: Annotated[
+            dict[str, str] | None,
+            Doc(
+                """
+                Any headers to send to the client in the response.
+                """
+            ),
+        ] = None,
+    ) -> None:
+        """Class initializer.
+
+        :param detail:
+        :param headers:
+        """
+        if detail is None:
+            detail = "Setting system date and time failed"
+        super().__init__(status_code=500, detail=detail, headers=headers)
