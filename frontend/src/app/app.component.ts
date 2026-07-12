@@ -49,8 +49,8 @@ export class AppComponent {
   public appPages = [
     { title: 'Schedules', url: '/schedules', icon: 'timer' },
     { title: 'Relays', url: '/relays', icon: 'toggle' },
-    { title: 'Info', url: '/info', icon: 'information' },
     { title: 'Date & Time', url: '/system-date-time', icon: 'time' },
+    { title: 'Info', url: '/info', icon: 'information' },
   ];
 
   public constructor() {
