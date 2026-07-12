@@ -39,4 +39,11 @@ export const routes: Routes = [
         (m) => m.BoardInfoPage
       ),
   },
+  {
+    path: 'system-date-time',
+    loadComponent: () =>
+      import(
+        './system-date-time/pages/system-date-time/system-date-time.page'
+      ).then((m) => m.SystemDateTimePage),
+  },
 ];
