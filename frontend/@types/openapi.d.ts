@@ -151,10 +151,13 @@ declare namespace Components {
              */
             duration: number;
             /**
-             * Repeat
              * Specifies how the schedule is repeated
              */
-            repeat: "every_day" | "weekdays" | "weekends" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+            repeat: /**
+             * Repeat
+             * Enumeration for repeat values.
+             */
+            Repeat;
             /**
              * Active
              * Whether the schedule is active
@@ -187,10 +190,13 @@ declare namespace Components {
              */
             duration: number;
             /**
-             * Repeat
              * Specifies how the schedule is repeated
              */
-            repeat: "every_day" | "weekdays" | "weekends" | "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
+            repeat: /**
+             * Repeat
+             * Enumeration for repeat values.
+             */
+            Repeat;
             /**
              * Active
              * Whether the schedule is active
@@ -253,6 +259,17 @@ declare namespace Components {
             number | null;
         }
         /**
+         * SystemDateTime
+         * Schema for system date and time.
+         */
+        export interface SystemDateTime {
+            /**
+             * Date Time
+             * Timezone aware date and time in ISO 8601 format
+             */
+            date_time: string; // date-time
+        }
+        /**
          * ValidationError
          */
         export interface ValidationError {
@@ -268,6 +285,16 @@ declare namespace Components {
              * Error Type
              */
             type: string;
+            /**
+             * Input
+             */
+            input?: any;
+            /**
+             * Context
+             */
+            ctx?: {
+                [key: string]: any;
+            };
         }
     }
 }
@@ -374,6 +401,28 @@ declare namespace Paths {
             Components.Schemas.ScheduleResponse[];
         }
     }
+    namespace GetSystemDateTimeV1SystemDateTimeGet {
+        namespace Responses {
+            export type $200 = /**
+             * SystemDateTime
+             * Schema for system date and time.
+             */
+            Components.Schemas.SystemDateTime;
+        }
+    }
+    namespace SetSystemDateTimeV1SystemDateTimePut {
+        export type RequestBody = /**
+         * SystemDateTime
+         * Schema for system date and time.
+         */
+        Components.Schemas.SystemDateTime;
+        namespace Responses {
+            export type $200 = any;
+            export type $422 = /* HTTPValidationError */ Components.Schemas.HTTPValidationError;
+            export interface $500 {
+            }
+        }
+    }
     namespace UpdateRelayV1RelayPositionPut {
         namespace Parameters {
             /**
@@ -417,6 +466,7 @@ declare namespace Paths {
         }
     }
 }
+
 
 export interface OperationMethods {
   /**
@@ -520,6 +570,32 @@ export interface OperationMethods {
     data?: any,
     config?: AxiosRequestConfig  
   ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
+  /**
+   * get_system_date_time_v1_system_date_time__get - Get System Date Time
+   * 
+   * Get system date and time.
+   * 
+   * :return:
+   */
+  'get_system_date_time_v1_system_date_time__get'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: any,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.GetSystemDateTimeV1SystemDateTimeGet.Responses.$200>
+  /**
+   * set_system_date_time_v1_system_date_time__put - Set System Date Time
+   * 
+   * Set system date and time.
+   * 
+   * :param request:
+   * :param date_time_data:
+   * :return:
+   */
+  'set_system_date_time_v1_system_date_time__put'(
+    parameters?: Parameters<UnknownParamsObject> | null,
+    data?: Paths.SetSystemDateTimeV1SystemDateTimePut.RequestBody,
+    config?: AxiosRequestConfig  
+  ): OperationResponse<Paths.SetSystemDateTimeV1SystemDateTimePut.Responses.$200>
 }
 
 export interface PathsDictionary {
@@ -634,6 +710,46 @@ export interface PathsDictionary {
       config?: AxiosRequestConfig  
     ): OperationResponse<Paths.GetBoardInfoV1InfoGet.Responses.$200>
   }
+  ['/v1/system-date-time/']: {
+    /**
+     * get_system_date_time_v1_system_date_time__get - Get System Date Time
+     * 
+     * Get system date and time.
+     * 
+     * :return:
+     */
+    'get'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: any,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.GetSystemDateTimeV1SystemDateTimeGet.Responses.$200>
+    /**
+     * set_system_date_time_v1_system_date_time__put - Set System Date Time
+     * 
+     * Set system date and time.
+     * 
+     * :param request:
+     * :param date_time_data:
+     * :return:
+     */
+    'put'(
+      parameters?: Parameters<UnknownParamsObject> | null,
+      data?: Paths.SetSystemDateTimeV1SystemDateTimePut.RequestBody,
+      config?: AxiosRequestConfig  
+    ): OperationResponse<Paths.SetSystemDateTimeV1SystemDateTimePut.Responses.$200>
+  }
 }
 
 export type Client = OpenAPIClient<OperationMethods, PathsDictionary>
+
+
+export type HTTPValidationError = Components.Schemas.HTTPValidationError;
+export type RaspberryPiBoardInfo = Components.Schemas.RaspberryPiBoardInfo;
+export type Relay = Components.Schemas.Relay;
+export type RelayUpdate = Components.Schemas.RelayUpdate;
+export type Repeat = Components.Schemas.Repeat;
+export type ScheduleCreate = Components.Schemas.ScheduleCreate;
+export type ScheduleResponse = Components.Schemas.ScheduleResponse;
+export type ScheduleUpdate = Components.Schemas.ScheduleUpdate;
+export type SystemDateTime = Components.Schemas.SystemDateTime;
+export type ValidationError = Components.Schemas.ValidationError;

@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>System Date and Time</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <form [formGroup]="setDateTimeForm" (ngSubmit)="onSubmit()">
+    <ion-list>
+      <!-- Current system date and time -->
+      <ion-item>
+        <ion-label>Current system date and time:</ion-label>
+        <ion-label class="ion-text-right"
+          >{{ currentDateTime() | date : 'medium' }}</ion-label
+        >
+      </ion-item>
+
+      <!-- New date and time -->
+      <ion-item>
+        <ion-label>New date and time:</ion-label>
+        <ion-datetime-button
+          slot="end"
+          datetime="date-time-picker"
+        ></ion-datetime-button>
+        <ion-modal [keepContentsMounted]="true">
+          <ng-template>
+            <ion-datetime
+              id="date-time-picker"
+              formControlName="date_time"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </ion-item>
+
+      <!-- Use device time -->
+      <ion-item lines="none">
+        <ion-button slot="end" fill="outline" (click)="useDeviceTime()"
+          >Use device time</ion-button
+        >
+      </ion-item>
+    </ion-list>
+    <ion-button expand="block" type="submit" color="danger">SAVE</ion-button>
+  </form>
+</ion-content>

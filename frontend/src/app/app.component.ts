@@ -17,8 +17,10 @@ import { addIcons } from 'ionicons';
 import {
   informationOutline,
   informationSharp,
+  timeOutline,
   timerOutline,
   timerSharp,
+  timeSharp,
   toggleOutline,
   toggleSharp,
 } from 'ionicons/icons';
@@ -48,6 +50,7 @@ export class AppComponent {
     { title: 'Schedules', url: '/schedules', icon: 'timer' },
     { title: 'Relays', url: '/relays', icon: 'toggle' },
     { title: 'Info', url: '/info', icon: 'information' },
+    { title: 'Date & Time', url: '/system-date-time', icon: 'time' },
   ];
 
   public constructor() {
@@ -58,6 +61,8 @@ export class AppComponent {
       toggleSharp,
       informationOutline,
       informationSharp,
+      timeOutline,
+      timeSharp,
     });
   }
 }
