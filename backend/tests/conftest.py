@@ -288,12 +288,15 @@ def repeat_query_schedules(
 
 
 @pytest.fixture(scope="function")
-def async_scheduler() -> AsyncIOScheduler:
+async def async_scheduler() -> AsyncIOScheduler:
     """Provide AsyncIOScheduler as fixture.
+
+    AsyncIOScheduler.start() needs a running event loop on Python >= 3.12,
+    so this fixture must be async.
 
     :return:
     """
     scheduler: AsyncIOScheduler = AsyncIOScheduler()
     scheduler.start()
     yield scheduler
-    scheduler.shutdown()
+    scheduler.shutdown(wait=False)
