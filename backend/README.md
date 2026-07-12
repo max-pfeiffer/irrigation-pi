@@ -6,20 +6,15 @@ A Python backend application using FastAPI.
 This installation section is meant for software engineers which like to do contributions to the project.
 If you are an end user who just wants to install Irrigation-Pi on your Raspberry Pi, you can ignore this section. 
 
-### Poetry
-[Install Poetry](https://python-poetry.org/docs/#installation) on your machine, i.e.:
+### uv
+[Install uv](https://docs.astral.sh/uv/getting-started/installation/) on your machine, i.e.:
 ```shell
-curl -sSL https://install.python-poetry.org | python3 -
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Configure poetry to install virtual environments in project folders:
+In project root install Python package dependencies with uv and create a virtual environment:
 ```shell
-poetry config virtualenvs.in-project true
-```
-
-In project root install Python package dependencies with Poetry and create a virtual environment:
-```shell
-poetry install
+uv sync
 ```
 
 ### Database

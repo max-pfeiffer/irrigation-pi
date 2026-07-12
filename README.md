@@ -1,4 +1,4 @@
-[![Poetry](https://img.shields.io/endpoint?url=https://python-poetry.org/badge/v0.json)](https://python-poetry.org/)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![codecov](https://codecov.io/gh/max-pfeiffer/irrigation-pi/graph/badge.svg?token=Tk9STeqlPn)](https://codecov.io/gh/max-pfeiffer/irrigation-pi)
 [![Code Quality](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/code-quality.yaml/badge.svg)](https://github.com/max-pfeiffer/irrigation-pi/actions/workflows/code-quality.yaml)
@@ -49,7 +49,7 @@ cd /srv
 sudo git clone https://github.com/max-pfeiffer/irrigation-pi.git
 ```
 
-Then go to project directory and run the installer script. This script installs Poetry and Python package dependencies.
+Then go to project directory and run the installer script. This script installs uv and Python package dependencies.
 It also installs Debian package dependencies. Then it configures Irrigation-Pi application, nginx web server and
 Uvicorn application server.
 ```shell

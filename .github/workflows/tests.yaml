@@ -6,7 +6,7 @@ on:
       - .github/**
       - backend/**
       - irrigation_pi/**
-      - poetry.lock
+      - uv.lock
 
 jobs:
   tests:
@@ -14,14 +14,16 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v6
-      - name: Set up Python environment
-        uses: ./.github/actions/setup-environment
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v7
+        with:
+          python-version: "3.11"
       - name: Install dependencies
         run: |
-          poetry install --with dev --no-interaction --no-root
+          uv sync --locked
       - name: Run all tests with pytest
         run: |
-          poetry run pytest --cov --cov-report=xml:coverage_report.xml
+          uv run pytest --cov --cov-report=xml:coverage_report.xml
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
         with:
