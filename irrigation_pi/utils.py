@@ -61,9 +61,6 @@ def activate_virtual_environment(virtual_environment_path: Path) -> dict:
     # Pointing VIRTUAL_ENV to the new virtual environment
     environment_variables["VIRTUAL_ENV"] = str(virtual_environment_path)
 
-    # Configuring Poetry to put the virtual environment in project directory
-    environment_variables["POETRY_VIRTUALENVS_IN_PROJECT"] = "true"
-
     return environment_variables
 
 

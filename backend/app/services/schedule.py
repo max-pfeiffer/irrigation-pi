@@ -1,6 +1,6 @@
 """Services for handling persistence of Schedule objects."""
 
-from datetime import date, datetime, time, timedelta, timezone, tzinfo
+from datetime import UTC, date, datetime, time, timedelta, tzinfo
 
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from sqlalchemy.sql.expression import select
@@ -18,7 +18,7 @@ def set_system_timezone(time_input: time):
     :param time_input:
     :return:
     """
-    system_timezone: tzinfo = datetime.now(timezone.utc).astimezone().tzinfo
+    system_timezone: tzinfo = datetime.now(UTC).astimezone().tzinfo
     time_output = time(
         hour=time_input.hour, minute=time_input.minute, tzinfo=system_timezone
     )

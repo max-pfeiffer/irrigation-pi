@@ -1,13 +1,13 @@
 """Scheduling for relay switches."""
 
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 
 from app.config import relayBoardAdapter
 from app.services.relay import service_update_relay
 
 
-class Repeat(str, Enum):
+class Repeat(StrEnum):
     """Enumeration for repeat values."""
 
     every_day = "every_day"

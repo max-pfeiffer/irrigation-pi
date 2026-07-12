@@ -1,11 +1,11 @@
 """Adapters module."""
 
-from enum import Enum
+from enum import StrEnum
 
 from app.adapters.waveshare import WaveshareRpiRelayBoardAdapter
 
 
-class RelayBoardType(str, Enum):
+class RelayBoardType(StrEnum):
     """Enumeration for repeat values."""
 
     waveshare_rpi_relay_board = "waveshare_rpi_relay_board"

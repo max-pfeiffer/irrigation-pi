@@ -1,7 +1,7 @@
 """Tests for service system date and time."""
 
 import subprocess
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -48,7 +48,7 @@ def test_service_get_system_date_time() -> None:
 
 def test_service_set_system_date_time() -> None:
     """Test setting the system date and time."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     expected_time: str = date_time.astimezone().strftime("%Y-%m-%d %H:%M:%S")
 
     with patch(
@@ -76,7 +76,7 @@ def test_service_set_system_date_time_naive_datetime() -> None:
 
 def test_service_set_system_date_time_failure_restores_ntp() -> None:
     """Test that the previous NTP state is restored when set-time fails."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     set_time_error = subprocess.CalledProcessError(
         returncode=1, cmd=["timedatectl"], stderr="Failed to set time"
     )
@@ -97,7 +97,7 @@ def test_service_set_system_date_time_failure_restores_ntp() -> None:
 
 def test_service_set_system_date_time_failure_keeps_ntp_disabled() -> None:
     """Test that NTP is not re-enabled when it was disabled before."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     set_time_error = subprocess.CalledProcessError(
         returncode=1, cmd=["timedatectl"], stderr="Failed to set time"
     )
@@ -117,7 +117,7 @@ def test_service_set_system_date_time_failure_keeps_ntp_disabled() -> None:
 
 def test_service_set_system_date_time_timeout() -> None:
     """Test that a hanging timedatectl call raises SystemDateTimeError."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     set_time_error = subprocess.TimeoutExpired(cmd=["timedatectl"], timeout=10)
 
     with patch(
@@ -132,7 +132,7 @@ def test_service_set_system_date_time_timeout() -> None:
 
 def test_service_set_system_date_time_wakes_up_scheduler() -> None:
     """Test that the scheduler is woken up after a successful time change."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     scheduler: MagicMock = MagicMock()
 
     with patch(
@@ -146,7 +146,7 @@ def test_service_set_system_date_time_wakes_up_scheduler() -> None:
 
 def test_service_set_system_date_time_no_scheduler_wakeup_on_failure() -> None:
     """Test that the scheduler is not woken up when setting the time fails."""
-    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=timezone.utc)
+    date_time: datetime = datetime(2026, 7, 12, 12, 30, 0, tzinfo=UTC)
     scheduler: MagicMock = MagicMock()
     set_time_error = subprocess.CalledProcessError(
         returncode=1, cmd=["timedatectl"], stderr="Failed to set time"

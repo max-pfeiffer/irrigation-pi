@@ -1,6 +1,6 @@
 """Tests for trigger creation."""
 
-from datetime import time, timezone
+from datetime import UTC, time
 from random import randint
 
 import pytest
@@ -26,8 +26,8 @@ async def test_create_trigger_data(repeat: Repeat):
     stop_minute: int = randint(0, 59)
 
     job_data: dict = {
-        "start_time": time(hour=start_hour, minute=start_minute, tzinfo=timezone.utc),
-        "stop_time": time(hour=stop_hour, minute=stop_minute, tzinfo=timezone.utc),
+        "start_time": time(hour=start_hour, minute=start_minute, tzinfo=UTC),
+        "stop_time": time(hour=stop_hour, minute=stop_minute, tzinfo=UTC),
         "repeat": repeat,
     }
 
@@ -72,9 +72,7 @@ async def test_create_trigger_data_fail():
     :return:
     """
     job_data: dict = {
-        "start_time": time(
-            hour=randint(0, 23), minute=randint(0, 59), tzinfo=timezone.utc
-        ),
+        "start_time": time(hour=randint(0, 23), minute=randint(0, 59), tzinfo=UTC),
         "duration": randint(1, 1440),
         "repeat": Repeat.every_day,
         "active": False,
@@ -92,8 +90,8 @@ async def test_create_schedule():
     :return:
     """
     job_data: dict = {
-        "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
-        "stop_time": time(hour=23, minute=20, tzinfo=timezone.utc),
+        "start_time": time(hour=20, minute=10, tzinfo=UTC),
+        "stop_time": time(hour=23, minute=20, tzinfo=UTC),
         "repeat": Repeat.every_day,
         "relay_position": 1,
     }
@@ -117,20 +115,20 @@ async def test_create_multiple_schedules():
     """
     job_data: list[dict] = [
         {
-            "start_time": time(hour=2, minute=57, tzinfo=timezone.utc),
-            "stop_time": time(hour=3, minute=20, tzinfo=timezone.utc),
+            "start_time": time(hour=2, minute=57, tzinfo=UTC),
+            "stop_time": time(hour=3, minute=20, tzinfo=UTC),
             "repeat": Repeat.every_day,
             "relay_position": 1,
         },
         {
-            "start_time": time(hour=14, minute=10, tzinfo=timezone.utc),
-            "stop_time": time(hour=15, minute=20, tzinfo=timezone.utc),
+            "start_time": time(hour=14, minute=10, tzinfo=UTC),
+            "stop_time": time(hour=15, minute=20, tzinfo=UTC),
             "repeat": Repeat.friday,
             "relay_position": 1,
         },
         {
-            "start_time": time(hour=22, minute=53, tzinfo=timezone.utc),
-            "stop_time": time(hour=23, minute=20, tzinfo=timezone.utc),
+            "start_time": time(hour=22, minute=53, tzinfo=UTC),
+            "stop_time": time(hour=23, minute=20, tzinfo=UTC),
             "repeat": Repeat.weekends,
             "relay_position": 1,
         },
@@ -151,8 +149,8 @@ async def test_delete_schedule():
     :return:
     """
     job_data: dict = {
-        "start_time": time(hour=20, minute=10, tzinfo=timezone.utc),
-        "stop_time": time(hour=21, minute=14, tzinfo=timezone.utc),
+        "start_time": time(hour=20, minute=10, tzinfo=UTC),
+        "stop_time": time(hour=21, minute=14, tzinfo=UTC),
         "repeat": Repeat.every_day,
         "relay_position": 1,
     }
