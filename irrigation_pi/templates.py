@@ -21,6 +21,9 @@ WantedBy=multi-user.target
 
 """)
 
+SUDOERS_TEMPLATE: Template = Template("""$user ALL=(root) NOPASSWD: /usr/bin/timedatectl set-ntp *, /usr/bin/timedatectl set-time *
+""")
+
 NGINX_SITE_TEMPLATE: Template = Template("""map $$http_upgrade $$connection_upgrade {
     default upgrade;
     '' close;

@@ -12,6 +12,7 @@ from irrigation_pi.constants import (
     NETWORKMANAGER_CONFIG_FILE,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
+    SUDOERS_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
     WIFI_HOTSPOT_CONNECTION_NAME,
 )
@@ -29,6 +30,7 @@ def uninstall_all(ctx: Context):
     """
     ctx.forward(uninstall_application_configuration)
     ctx.forward(uninstall_database)
+    ctx.forward(uninstall_sudoers_configuration)
     ctx.forward(uninstall_systemd_configuration)
     ctx.forward(uninstall_nginx_configuration)
     ctx.forward(uninstall_systemd_resolved)
@@ -52,6 +54,16 @@ def uninstall_database():
     """
     click.echo("Uninstalling database...")
     DATABASE_PATH.unlink(missing_ok=True)
+
+
+@click.command(name="sudoers-config")
+def uninstall_sudoers_configuration():
+    """Uninstall sudoers configuration.
+    \f
+    :return:
+    """
+    click.echo("Uninstalling sudoers configuration...")
+    SUDOERS_CONFIG_PATH.unlink(missing_ok=True)
 
 
 @click.command(name="systemd-config")

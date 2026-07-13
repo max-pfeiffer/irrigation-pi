@@ -11,6 +11,7 @@ from irrigation_pi.constants import (
 from irrigation_pi.utils import (
     create_application_configuration,
     create_nginx_config,
+    create_sudoers_config,
     create_systemd_config,
 )
 
@@ -50,3 +51,22 @@ def test_create_systemd_config():
     assert APPLICATION_USER in systemd_config
     assert str(VIRTUAL_ENVIRONMENT_PATH) in systemd_config
     assert str(BACKEND_PATH) in systemd_config
+    # System binary directories must be on PATH so the backend can run
+    # system commands like timedatectl and sudo
+    assert f"PATH={VIRTUAL_ENVIRONMENT_PATH / 'bin'}:/usr/local/bin" in systemd_config
+    assert "/usr/bin" in systemd_config
+
+
+def test_create_sudoers_config():
+    """Test generating sudoers config.
+
+    :return:
+    """
+    sudoers_config: str = create_sudoers_config(APPLICATION_USER)
+
+    assert sudoers_config.startswith(APPLICATION_USER)
+    assert "NOPASSWD" in sudoers_config
+    assert "/usr/bin/timedatectl set-ntp *" in sudoers_config
+    assert "/usr/bin/timedatectl set-time *" in sudoers_config
+    # sudoers files must end with a newline, otherwise sudo rejects them
+    assert sudoers_config.endswith("\n")
