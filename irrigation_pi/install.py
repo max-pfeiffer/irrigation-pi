@@ -2,6 +2,7 @@
 
 # ruff: noqa: D205, D301, D400
 import json
+import subprocess
 from configparser import ConfigParser
 from pathlib import Path
 from shutil import chown
@@ -22,6 +23,7 @@ from irrigation_pi.constants import (
     NGINX_CONFIG_PATH,
     NGINX_DEFAULT_CONFIG_ACTIVATION_PATH,
     PORT,
+    SUDOERS_CONFIG_PATH,
     SYSTEMD_CONFIG_PATH,
     VIRTUAL_ENVIRONMENT_PATH,
     WIFI_HOTSPOT_CONNECTION_NAME,
@@ -31,6 +33,7 @@ from irrigation_pi.utils import (
     create_application_configuration,
     create_frontend_hostname_configuration,
     create_nginx_config,
+    create_sudoers_config,
     create_systemd_config,
     run_subprocess,
 )
@@ -46,6 +49,7 @@ def install_all(ctx: Context):
     ctx.forward(install_debian_packages)
     ctx.forward(install_application_configuration)
     ctx.forward(install_database)
+    ctx.forward(install_sudoers_configuration)
     ctx.forward(install_systemd_configuration)
     ctx.forward(install_nginx_configuration)
     ctx.forward(install_systemd_resolved)
@@ -96,6 +100,41 @@ def install_database():
     env: dict = activate_virtual_environment(VIRTUAL_ENVIRONMENT_PATH)
     run_subprocess(["alembic", "upgrade", "head"], cwd=BACKEND_PATH, env=env)
     chown(DATABASE_PATH, APPLICATION_USER, APPLICATION_USER_GROUP)
+
+
+@click.command(name="sudoers-config")
+def install_sudoers_configuration():
+    """Install sudoers configuration.
+
+    Allows the application user to run the timedatectl subcommands via sudo
+    without a password, which the backend application needs for setting the
+    system date and time.
+
+    See: https://www.sudo.ws/docs/man/sudoers.man/
+    \f
+    :return:
+    """
+    click.echo("Installing sudoers configuration...")
+    sudoers_config: str = create_sudoers_config(APPLICATION_USER)
+
+    # sudo ignores files in /etc/sudoers.d whose names contain a dot, so the
+    # configuration can be validated at this path without any risk of a
+    # syntax error breaking sudo system-wide.
+    temporary_path: Path = SUDOERS_CONFIG_PATH.with_name(
+        f"{SUDOERS_CONFIG_PATH.name}.tmp"
+    )
+    with open(temporary_path, "w") as file:
+        file.write(sudoers_config)
+    temporary_path.chmod(0o440)
+
+    completed_process: subprocess.CompletedProcess = subprocess.run(
+        ["sudo", "visudo", "-cf", str(temporary_path)]
+    )
+    if completed_process.returncode != 0:
+        temporary_path.unlink()
+        raise click.ClickException("Invalid sudoers configuration")
+
+    temporary_path.rename(SUDOERS_CONFIG_PATH)
 
 
 @click.command(name="systemd-config")

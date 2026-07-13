@@ -12,13 +12,16 @@ Requires=network.target
 [Service]
 Type=exec
 User=$user
-Environment="PATH=$virtual_environment_binary_path"
+Environment="PATH=$virtual_environment_binary_path:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 WorkingDirectory=$backend_path
 ExecStart=$virtual_environment_binary_path/uvicorn --proxy-headers --forwarded-allow-ips='*' --uds /tmp/uvicorn.sock --workers 1 app.main:app
 
 [Install]
 WantedBy=multi-user.target
 
+""")
+
+SUDOERS_TEMPLATE: Template = Template("""$user ALL=(root) NOPASSWD: /usr/bin/timedatectl set-ntp *, /usr/bin/timedatectl set-time *
 """)
 
 NGINX_SITE_TEMPLATE: Template = Template("""map $$http_upgrade $$connection_upgrade {

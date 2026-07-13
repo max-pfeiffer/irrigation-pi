@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+echo "Installing dependencies for building Python packages..."
+apt-get update
+apt-get install --no-install-recommends -y build-essential python3-dev
+
 echo "Installing uv..."
 curl -LsSf https://astral.sh/uv/install.sh | sh
 

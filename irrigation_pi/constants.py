@@ -19,6 +19,8 @@ NGINX_DEFAULT_CONFIG_ACTIVATION_PATH: Path = Path("/etc/nginx/sites-enabled/defa
 
 SYSTEMD_CONFIG_PATH: Path = Path("/etc/systemd/system/irrigation-pi.service")
 
+SUDOERS_CONFIG_PATH: Path = Path("/etc/sudoers.d/irrigation-pi")
+
 APPLICATION_USER: str = PROJECT_ROOT_PATH.owner()
 APPLICATION_USER_GROUP: str = PROJECT_ROOT_PATH.group()
 

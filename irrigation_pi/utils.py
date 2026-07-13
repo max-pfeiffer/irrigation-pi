@@ -11,6 +11,7 @@ import click
 from irrigation_pi.templates import (
     APPLICATION_CONFIGURATION_TEMPLATE,
     NGINX_SITE_TEMPLATE,
+    SUDOERS_TEMPLATE,
     SYSTEMD_SERVICE_TEMPLATE,
 )
 
@@ -98,6 +99,19 @@ def create_systemd_config(
             "backend_path": str(backend_path),
         }
     )
+    return config
+
+
+def create_sudoers_config(user: str) -> str:
+    """Generate sudoers configuration file.
+
+    Allows the application user to run the timedatectl subcommands needed
+    for setting the system date and time without a password.
+
+    :param user:
+    :return:
+    """
+    config: str = SUDOERS_TEMPLATE.substitute({"user": user})
     return config
 
 
