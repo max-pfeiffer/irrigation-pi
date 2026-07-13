@@ -12,7 +12,7 @@ Requires=network.target
 [Service]
 Type=exec
 User=$user
-Environment="PATH=$virtual_environment_binary_path"
+Environment="PATH=$virtual_environment_binary_path:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 WorkingDirectory=$backend_path
 ExecStart=$virtual_environment_binary_path/uvicorn --proxy-headers --forwarded-allow-ips='*' --uds /tmp/uvicorn.sock --workers 1 app.main:app
 
