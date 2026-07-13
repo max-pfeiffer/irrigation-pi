@@ -1,6 +1,6 @@
 [project]
 name = "irrigation-pi"
-version = "1.4.1"
+version = "1.5.0"
 description = ""
 authors = [{ name = "Max Pfeiffer", email = "max@maxpfeiffer.ch" }]
 license = "MIT"
