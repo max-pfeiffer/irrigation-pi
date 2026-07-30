@@ -20,7 +20,7 @@ dependencies = [
     "sqlmodel==0.0.39",
     "toml==0.10.2",
     "uvicorn[standard]==0.51.0",
-    "gpiozero==2.0.1",
+    "gpiozero==2.0.1.post3",
     "pigpio==1.78",
     "RPi.GPIO==0.7.1 ; sys_platform == 'linux'",
 ]
