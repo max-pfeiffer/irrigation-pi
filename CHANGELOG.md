@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.5.1](https://github.com/max-pfeiffer/irrigation-pi/compare/irrigation-pi-1.5.0...irrigation-pi-1.5.1) (2026-08-08)
+
+
+### Bug Fixes
+
+* **deps:** update dependency alembic to v1.19.0 ([#193](https://github.com/max-pfeiffer/irrigation-pi/issues/193)) ([b78b361](https://github.com/max-pfeiffer/irrigation-pi/commit/b78b36136f636aaa0dec9b30c7f604437d991c49))
+* **deps:** update dependency fastapi to v0.140.0 ([#188](https://github.com/max-pfeiffer/irrigation-pi/issues/188)) ([930682c](https://github.com/max-pfeiffer/irrigation-pi/commit/930682ce1d0af7cd4d039a642b0eb61f19b31e38))
+* **deps:** update dependency fastapi to v0.141.1 ([#191](https://github.com/max-pfeiffer/irrigation-pi/issues/191)) ([062fbe7](https://github.com/max-pfeiffer/irrigation-pi/commit/062fbe75e3696d4b12e281b367972ce00798ffd4))
+* **deps:** update dependency gpiozero to v2.0.1.post3 ([#190](https://github.com/max-pfeiffer/irrigation-pi/issues/190)) ([cf7284c](https://github.com/max-pfeiffer/irrigation-pi/commit/cf7284c53c5c1a6aa0665274d3e87b51dc1ec345))
+* **deps:** update dependency uvicorn to v0.52.1 ([#192](https://github.com/max-pfeiffer/irrigation-pi/issues/192)) ([f1364d2](https://github.com/max-pfeiffer/irrigation-pi/commit/f1364d29af0a3dd07e80e0305e8120af34ae9505))
+
 ## [1.5.0](https://github.com/max-pfeiffer/irrigation-pi/compare/irrigation-pi-1.4.1...irrigation-pi-1.5.0) (2026-07-13)
 
 
