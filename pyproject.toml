@@ -19,7 +19,7 @@ dependencies = [
     "sqlalchemy==2.0.52",
     "sqlmodel==0.0.39",
     "toml==0.10.2",
-    "uvicorn[standard]==0.52.1",
+    "uvicorn[standard]==0.52.3",
     "gpiozero==2.0.1.post3",
     "pigpio==1.78",
     "RPi.GPIO==0.7.1 ; sys_platform == 'linux'",
