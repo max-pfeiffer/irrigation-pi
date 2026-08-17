@@ -14,7 +14,7 @@ dependencies = [
     "fastapi==0.141.1",
     "furl==2.1.4",
     "psutil==7.2.2",
-    "pydantic-settings==2.14.2",
+    "pydantic-settings==2.15.0",
     "semver==3.0.4",
     "sqlalchemy==2.0.52",
     "sqlmodel==0.0.39",
