@@ -10,7 +10,7 @@ dependencies = [
     "alembic==1.19.1",
     "APScheduler==3.10.4",
     "asyncer==0.0.18",
-    "click==8.4.2",
+    "click==8.5.0",
     "fastapi==0.141.1",
     "furl==2.1.4",
     "psutil==7.2.2",
