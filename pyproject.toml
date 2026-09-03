@@ -17,7 +17,7 @@ dependencies = [
     "pydantic-settings==2.15.0",
     "semver==3.0.4",
     "sqlalchemy==2.0.52",
-    "sqlmodel==0.0.39",
+    "sqlmodel==0.0.42",
     "toml==0.10.2",
     "uvicorn[standard]==0.52.4",
     "gpiozero==2.0.1.post3",
