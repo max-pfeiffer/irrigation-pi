@@ -30,7 +30,7 @@ irrigation-pi = "irrigation_pi:cli"
 
 [dependency-groups]
 dev = [
-    "coverage==7.17.2",
+    "coverage==7.17.3",
     "pre-commit==4.7.0",
     "pytest==9.2.0",
     "pytest-asyncio==1.4.1.post1",
