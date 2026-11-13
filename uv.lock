@@ -63,16 +63,16 @@ wheels = [
 
 [[package]]
 name = "asyncer"
-version = "0.0.18"
+version = "0.0.19"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "anyio" },
     { name = "sniffio" },
-    { name = "typing-extensions", marker = "python_full_version < '3.15'" },
+    { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/95/e3/a9de31596d386b8e76e17c609e20775c6a414cff95d025551aca3c63f282/asyncer-0.0.18.tar.gz", hash = "sha256:dc233a466f85f1bc17dafcdb861b06291b64777a8d9076f7884467cbb66f95ef", size = 24503, upload-time = "2026-06-25T13:41:08.826Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/ae/96/79e267240ba87a4332551aba788a11372041eb6826d1d7a8a7d075c4545a/asyncer-0.0.19.tar.gz", hash = "sha256:fac6af37829fce28fab77a5ce5930ea01331c9bd4ed20df0822f59e200bcc386", size = 24524, upload-time = "2026-11-11T10:59:15.057Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/1d/62/73cea402f7c55b830bc02850f84724d9f6e3538c68610f69016f6f480a94/asyncer-0.0.18-py3-none-any.whl", hash = "sha256:054be3c0c3d7f0f79aac5b7d2cf7ad3a740bc465b62a77b48716a30c22679962", size = 12099, upload-time = "2026-06-25T13:41:07.98Z" },
+    { url = "https://files.pythonhosted.org/packages/66/25/2ef67627bbd34bab5dc6f0637fbac2c43116a9b2ad4103d4e92f72e53be8/asyncer-0.0.19-py3-none-any.whl", hash = "sha256:602b4ae1e78af697d3fafd3f8e1ca55b4e94419ca05919b5a72f905bd933da7b", size = 12175, upload-time = "2026-11-11T10:59:13.903Z" },
 ]
 
 [[package]]
@@ -453,7 +453,7 @@ dev = [
 requires-dist = [
     { name = "alembic", specifier = "==1.20.1" },
     { name = "apscheduler", specifier = "==3.10.4" },
-    { name = "asyncer", specifier = "==0.0.18" },
+    { name = "asyncer", specifier = "==0.0.19" },
     { name = "click", specifier = "==8.5.0" },
     { name = "fastapi", specifier = "==0.162.0" },
     { name = "furl", specifier = "==2.1.4" },
