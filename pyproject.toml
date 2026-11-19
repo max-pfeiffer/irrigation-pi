@@ -9,7 +9,7 @@ requires-python = ">=3.11"
 dependencies = [
     "alembic==1.20.1",
     "APScheduler==3.10.4",
-    "asyncer==0.0.19",
+    "asyncer==0.0.20",
     "click==8.5.1",
     "fastapi==0.163.2",
     "furl==2.1.4",
