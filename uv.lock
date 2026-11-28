@@ -463,7 +463,7 @@ requires-dist = [
     { name = "psutil", specifier = "==7.2.2" },
     { name = "pydantic-settings", specifier = "==2.16.3" },
     { name = "rpi-gpio", marker = "sys_platform == 'linux'", specifier = "==0.7.1" },
-    { name = "semver", specifier = "==3.1.2" },
+    { name = "semver", specifier = "==3.2.0" },
     { name = "sqlalchemy", specifier = "==2.1.9" },
     { name = "sqlmodel", specifier = "==0.0.50" },
     { name = "toml", specifier = "==0.10.2" },
@@ -957,11 +957,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/c4/0f/10b524a12b3445af1
 
 [[package]]
 name = "semver"
-version = "3.1.2"
+version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/ec/a0/3d3f51a1304c0e8c93e06a23308f566f2d52d62f92dac903b85ef79dea6f/semver-3.1.2.tar.gz", hash = "sha256:bea193552413194252d33ff26ce0962b76669bd1c6fb17e8e203ac37f072feaf", size = 293659, upload-time = "2026-11-15T17:01:42.931Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/00/72/8b815ec1af19017aa9eacebb242715017d9950490a43319087af7758b19d/semver-3.2.0.tar.gz", hash = "sha256:adf2c822d2d8908a1dce0121da7da6511851fbd33080e61da8d2ba1e0677e8f3", size = 294641, upload-time = "2026-11-26T14:57:42.028Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ab/60/27e29790ff15ea0a485b8dc200d514328294f956e4abc3d43d88c0b5338d/semver-3.1.2-py3-none-any.whl", hash = "sha256:45d107c3fa880910441dfab9d555046cba2829a25feeadfe4a1566439635c510", size = 19100, upload-time = "2026-11-15T17:01:41.321Z" },
+    { url = "https://files.pythonhosted.org/packages/04/6b/3d136df12e661b573a66aa322b85361c13ddd6e37351dea4676612bb2a4e/semver-3.2.0-py3-none-any.whl", hash = "sha256:7a90434311f2d9914b1902490439d2c37b9477cd27958ff5f67021afa3e5db0b", size = 19834, upload-time = "2026-11-26T14:57:40.743Z" },
 ]
 
 [[package]]
